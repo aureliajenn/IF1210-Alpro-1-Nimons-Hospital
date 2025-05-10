@@ -4,6 +4,8 @@
         "string.h": "c",
         "dataparser.h": "c",
         "model.h": "c",
-        "pasien.h": "c"
+        "pasien.h": "c",
+        "stdio.h": "c",
+        "label.h": "c"
     }
 }

@@ -5,6 +5,8 @@
 #include "src/Laman/pasien.h"
 #include "src/Laman/dokter.h"
 #include "src/Laman/manager.h"
+#include "src/Utils/save.h"
+#include "src/Utils/load.h"
 
 // Prosedur Lokal
 void labelInput();
@@ -21,7 +23,7 @@ Pilihan pilihan;
 PilihanPasien pilihanP;
 PilihanDokter pilihanD;
 
-int main(){
+int main(int argc, char *argv[]) {
     user = (User *)malloc(sizeof(User));    // Alokasi pointer user
     if (user == NULL) {
         perror("Gagal mengalokasikan user");
@@ -40,19 +42,38 @@ int main(){
         return 1;
     }
 
-    // Konversi data user.csv ke arr dulu
-    jumlah_user=0;  jumlah_penyakit = 0;
-    ParseTarget pt = {users, &jumlah_user};
-    ParsePenyakit pp = {users, &jumlah_penyakit};
-    CSVtoArr("data/user.csv",handleUserRow,&pt);
-    CSVtoArr("data/penyakit.csv",handlePenyakitRow,&pp);
-
-    users = (User *)realloc(users, jumlah_user * sizeof(User));
-    if (users == NULL){
-        perror("gagal membuat array");
+    if (argc < 2) {
+        printf("Tidak ada nama folder yang diberikan!\n");
+        printf("Usage : ./main <<nama_folder>>\n");
         return 1;
     }
 
+    const char *folder = argv[1];
+    load(folder);
+    printf("Selamat datang kembali di rumah sakit K01-N !\n\n");
+
+    // Konversi data user.csv ke arr dulu
+    jumlah_user=0;  jumlah_penyakit = 0;
+    ParseTarget pt = {users, &jumlah_user};
+    ParsePenyakit pp = {penyakits, &jumlah_penyakit};
+    
+    char user_path[256], penyakit_path[256];
+    snprintf(user_path, sizeof(user_path), "data/%s/user.csv", folder);
+    snprintf(penyakit_path, sizeof(penyakit_path), "data/%s/penyakit.csv", folder);
+
+    CSVtoArr(user_path, handleUserRow, &pt);
+    CSVtoArr(penyakit_path, handlePenyakitRow, &pp);
+
+    if (jumlah_user > 0) {
+    User *temp = realloc(users, jumlah_user * sizeof(User));
+    if (temp == NULL){
+        perror("gagal membuat array");
+        free(users);
+        return 1;
+    }
+    users = temp;
+}
+    
     do {
         labelInput();
 
@@ -114,17 +135,20 @@ int main(){
     } }while(pilihan != EXIT);
 
     clearScreen();
-
+    
     char c;
     do{
         printf("\nApakah Anda mau melakukan penyimpanan file yang sudah diubah?(y/n)\n");
         scanf(" %c",&c);
         if(c=='y' || c=='Y'){
-            ArrtoCSV("data/user.csv",writeUsersToFile,NULL);
+            char folder_name[MAX_LINE_LEN];
+            printf("Masukkan nama folder penyimpanan (misal: RSMitraKasih): ");
+            scanf("%99s", folder_name);
+            save(folder_name);  // panggil prosedur save
         }
     }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
    
-    clearScreen();
+    // clearScreen();
     
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 

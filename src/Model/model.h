@@ -32,11 +32,10 @@ typedef struct {
     char username[MAX_LINE_LEN];
     char password[MAX_LINE_LEN];
     char role[MAX_LINE_LEN];
-    char riwayat_penyakit[MAX_LINE_LEN];
-    
 } Identitas;
 
 typedef struct {
+    char riwayat_penyakit[MAX_LINE_LEN];
     float suhu_tubuh;
     int tekanan_darah_sistolik;
     int tekanan_darah_diastolik;
