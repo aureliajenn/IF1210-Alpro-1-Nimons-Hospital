@@ -62,9 +62,9 @@ int main(){
         }
 
         if (user != NULL){
-        if(strcmpi(user->identitas.role,"PASIEN")==0){lamanPasien();}
-        else if(strcmpi(user->identitas.role,"MANAGER")==0){lamanManager();}
-        else if(strcmpi(user->identitas.role,"DOKTER")==0){lamanDokter();}
+        if(strcasecmp(user->identitas.role,"PASIEN")==0){lamanPasien();}
+        else if(strcasecmp(user->identitas.role,"MANAGER")==0){lamanManager();}
+        else if(strcasecmp(user->identitas.role,"DOKTER")==0){lamanDokter();}
         }
 
         switch(pilihanP){
@@ -80,7 +80,7 @@ int main(){
             case MINUMPENAWAR: 
                 // blm 
                 break;
-            case LOGOUT:
+            case LOGOUTP:
                 logout();
                 break;
         }
@@ -92,12 +92,12 @@ int main(){
             case NGOBATIN:
                 //blm
                 break;
-            case LOGOUT:
+            case LOGOUTD:
                 logout();
                 break;
         }
 
-        if (pilihan != EXIT && pilihanP != LOGOUT) {
+        if (pilihan != EXIT && pilihanP != LOGOUTP && pilihanD != LOGOUTD) {
             printf("\nTekan Enter untuk kembali ke menu...");
             getchar(); getchar(); // pause
     } }while(pilihan != EXIT);
@@ -109,7 +109,7 @@ int main(){
         printf("\nApakah Anda mau melakukan penyimpanan file yang sudah diubah?(y/n)\n");
         scanf(" %c",&c);
         if(c=='y' || c=='Y'){
-            ArrtoCSV("../../../data/user.csv",writeUsersToFile,NULL);
+            ArrtoCSV("data/user.csv",writeUsersToFile,NULL);
         }
     }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
    

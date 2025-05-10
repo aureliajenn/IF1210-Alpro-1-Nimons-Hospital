@@ -113,8 +113,8 @@ void login(){
     printf("Password: ");
     scanf("%s", user->identitas.password);
     for (int i = 0; i < jumlah_user; i++) {
-        if (strcmpi(users[i].identitas.username, user->identitas.username) == 0) {
-            if (strcmp(users[i].identitas.password, user->identitas.password) == 0) {
+        if (strcasecmp(users[i].identitas.username, user->identitas.username) == 0) {
+            if (strcasecmp(users[i].identitas.password, user->identitas.password) == 0) {
             valid = 1; 
             strcpy(role,users[i].identitas.role);
             strcpy(user->identitas.role,role);
@@ -164,7 +164,7 @@ void registerpasien(){
     }while(!format);
 
     for(int i=0;i<jumlah_user;i++){
-        if(strcmpi((users)[i].identitas.username,user->identitas.username)==0){
+        if(strcasecmp((users)[i].identitas.username,user->identitas.username)==0){
             valid=0;
         }
     }
@@ -210,7 +210,7 @@ void lupaPassword(){
         }while(!format);
 
         for(int i=0;i<jumlah_user;i++){
-            if(strcmpi((users)[i].identitas.username,user->identitas.username)==0){
+            if(strcasecmp((users)[i].identitas.username,user->identitas.username)==0){
                 valid=1; idx=i;
             }
         }
@@ -245,7 +245,7 @@ void lupaPassword(){
         }
         pass[p] = '\0'; // Terminasi
 
-        if(strcmpi(user->identitas.password,pass)==0){
+        if(strcasecmp(user->identitas.password,pass)==0){
             printf("Halo Dokter %s, silakan daftarkan ulang password anda!\n",user->identitas.username);
             printf("Password baru: ");
             scanf("%s",&(users)[idx].identitas.password);
@@ -292,7 +292,7 @@ void lamanPasien(){
                         lamanPasien();
                     }
                 }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
-                pilihanP = LOGOUT;
+                pilihanP = LOGOUTP;
                 valid = 1;
                 break;
             default:
@@ -302,7 +302,7 @@ void lamanPasien(){
     }
 
     char *opsi[] = {"", "DAFTAR CHECK-UP", "ANTRIAN SAYA", "MINUM OBAT","MINUM PENAWAR"};
-    if (pilihanP != LOGOUT)
+    if (pilihanP != LOGOUTP)
         printf("\n>>> %s\n\n", opsi[pilihanP]);
 }
 

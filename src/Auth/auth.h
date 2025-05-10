@@ -19,13 +19,13 @@ typedef enum{
     ANTRIANSAYA,
     MINUMOBAT,
     MINUMPENAWAR,
-    LOGOUT=-1
+    LOGOUTP
 } PilihanPasien;
 
 typedef enum{
     DIAGNOSIS = 1,
     NGOBATIN,
-    LOGOUT=-1
+    LOGOUTD
  } PilihanDokter;
 
 #define MAX_USER 100

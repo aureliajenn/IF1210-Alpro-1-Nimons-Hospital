@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../Auth/auth.h"
 
 #define MAX_USER 100
 #define MAX_LINE_LEN 1024
@@ -12,34 +13,10 @@
 
 typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
 
-typedef struct {
-    int id;
-    char username[MAX_LINE_LEN];
-    char password[MAX_LINE_LEN];
-    char role[MAX_LINE_LEN];
-    char riwayat_penyakit[MAX_LINE_LEN];
-    
-} Identitas;
 
-typedef struct {
-    float suhu_tubuh;
-    int tekanan_darah_sistolik;
-    int tekanan_darah_diastolik;
-    int detak_jantung;
-    float saturasi_oksigen;
-    int kadar_gula_darah;
-    float berat_badan;
-    int tinggi_badan;
-    int kadar_kolesterol;
-    int kadar_kolesterol_ldl;
-    int trombosit;
 
-} KondisiPasien;
 
-typedef struct {
-    Identitas identitas;
-    KondisiPasien kondisi;
-} User;
+
 
 typedef struct {
     int id;
@@ -68,10 +45,7 @@ typedef struct {
 } Penyakit;
 
 
-typedef struct {
-    User *arr;
-    int *jumlah;
-} ParseTarget;
+
 
 typedef struct {
     Penyakit *arr;
