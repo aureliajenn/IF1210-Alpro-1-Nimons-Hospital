@@ -1,4 +1,4 @@
-#include "dokter.h"
+// #include "dokter.h"
 
 void lamanDokter(){
     extern User *user;
@@ -63,13 +63,6 @@ void diagnosis(){
     extern Penyakit *penyakits;
     extern int jumlah_penyakit;
 
-    extern User *pasien; //pasien dari laman dokter
-
-    //kasus tidak ada pasien
-    if (pasien == NULL){
-        printf("Tidak ada pasien untuk diperiksa!\n");
-        return;
-    }
 
     //diagnosis penyakit
     int id_penyakit;
@@ -90,7 +83,4 @@ void diagnosis(){
         printf("%s terdiagnosa penyakit %s!\n", pasien->identitas.username);
         return;
     }
-
-    //tidak sakit
-    printf("%s tidak terdiagnosis penyakit apapun!\n", pasien->identitas.username);
-}
+    }
