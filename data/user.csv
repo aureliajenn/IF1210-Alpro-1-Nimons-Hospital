@@ -1,6 +1,6 @@
 id,username,password,role,riwayat_penyakit,suhu_tubuh,tekanan_darah_sistolik,tekanan_darah_diastolik,detak_jantung,saturasi_oksigen,kadar_gula_darah,berat_badan,tinggi_badan,kadar_kolesterol,kadar_kolesterol_ldl,trombosit
-1,user1,pass11,pasien,Anemia,36.099998,92,77,66,93.699997,127,52.400002,177,193
-2,user2,pass22,pasien,COVID-19,36.599998,126,85,67,96.500000,175,45.700001,156,235
+1,Influenza,, I´Rı,.V,0.000000,0,0,0,0.000000,-111580027,0.000000,0,-865311808
+2,ÿ,,pasien,COVID-19,36.599998,126,85,67,96.500000,175,45.700001,156,235
 3,user3,pass33,pasien,Diabetes Mellitus,36.400002,96,68,94,92.300003,162,64.099998,158,240
 4,user4,pass44,pasien,COVID-19,36.900002,110,85,73,98.699997,152,62.799999,157,184
 5,user5,pass55,dokter,Diabetes Mellitus,0.000000,0,0,0,0.000000,0,0.000000,0,0
@@ -10,6 +10,6 @@ id,username,password,role,riwayat_penyakit,suhu_tubuh,tekanan_darah_sistolik,tek
 9,user9,pass99,pasien,COVID-19,36.799999,114,74,61,94.599998,100,80.599998,173,152
 10,user10,pass110,pasien,Anemia,36.200001,103,87,65,96.599998,102,72.300003,184,150
 11,yaudah,IYAAA,pasien,,0.000000,0,0,0,0.000000,0,0.000000,0,0
-12,adit,denisxxx,pasien,,0.000000,0,0,0,0.000000,0,0.000000,0,0
+12,adit,dnaidit,pasien,,0.000000,0,0,0,0.000000,0,0.000000,0,0
 13,a,a,pasien,,0.000000,0,0,0,0.000000,0,0.000000,0,0
 14,denis,ADITGTG,pasien,,0.000000,0,0,0,0.000000,0,0.000000,0,0
