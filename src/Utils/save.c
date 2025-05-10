@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "save.h"
+#include "../Auth/auth.h"
 
 void make_folder(const char* path[]) {
     char command[256];
@@ -9,7 +10,7 @@ void make_folder(const char* path[]) {
     system(command);
 }
 
-void save(char* folder_name[]) {
+void save(char folder_name[]) {
     char base_path[] = "data";
     char full_path[300];
     sprintf(full_path, "%s/%s", base_path, folder_name);
