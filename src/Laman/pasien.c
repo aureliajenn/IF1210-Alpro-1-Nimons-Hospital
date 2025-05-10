@@ -12,8 +12,17 @@ void lamanPasien(){
         printf("\nSelamat pagi %s! Ada keluhan apa?\n\n",user->identitas.username);
         labelMenuPasien();
         printf(">>> Masukkan pilihan (1-5): ");
-        scanf("%d", &input);
-        if (input != 1 && input != 2 && input != 3 && input != 4 && input != 5){
+        
+        int ret = scanf("%d", &input);
+
+        if(ret != 1){
+            while(getchar() != '\n'); // flush input buffer
+            printf("\nInput tidak valid! Masukkan angka antara 1-5.");
+            printf("\nSilahkan enter untuk mengulang!\n");
+            getchar(); // tunggu enter
+            continue;
+        }
+        else if (input != 1 && input != 2 && input != 3 && input != 4 && input != 5){
             // input bukan angka
             while(getchar() != '\n'); // flush input buffer
             printf("\nInput tidak valid! Masukkan angka antara 1-5.");
