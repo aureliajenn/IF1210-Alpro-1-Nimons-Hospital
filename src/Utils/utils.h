@@ -1,1 +1,3 @@
 void clearScreen();
+
+void help();
