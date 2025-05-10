@@ -5,9 +5,14 @@
 // Definisi Global
 User *user = NULL;
 User *users = NULL;
+Penyakit *penyakits = NULL;
+
 int jumlah_user = 0;
+int jumlah_penyakit = 0;
+
 Pilihan pilihan;
 PilihanPasien pilihanP;
+PilihanDokter pilihanD;
 
 int main(){
     user = (User *)malloc(sizeof(User));    // Alokasi pointer user
@@ -22,10 +27,19 @@ int main(){
         return 1;
     }
 
+    penyakits = (Penyakit *)malloc(MAX_USER * sizeof(Penyakit));    // Alokasi pointer users
+    if (penyakits == NULL){
+        perror("Gagal membuat array");
+        return 1;
+    }
+
     // Konversi data user.csv ke arr dulu
-    jumlah_user=0;
+    jumlah_user=0;  jumlah_penyakit = 0;
     ParseTarget pt = {users, &jumlah_user};
+    ParsePenyakit pp = {users, &jumlah_penyakit};
     CSVtoArr("data/user.csv",handleUserRow,&pt);
+    CSVtoArr("data/penyakit.csv",handlePenyakitRow,&pp);
+
     users = (User *)realloc(users, jumlah_user * sizeof(User));
     if (users == NULL){
         perror("gagal membuat array");
@@ -48,9 +62,9 @@ int main(){
         }
 
         if (user != NULL){
-        if(strcasecmp(user->identitas.role,"PASIEN")==0){lamanPasien();}
-        else if(strcasecmp(user->identitas.role,"MANAGER")==0){lamanManager();}
-        else if(strcasecmp(user->identitas.role,"DOKTER")==0){lamanDokter();}
+        if(strcmpi(user->identitas.role,"PASIEN")==0){lamanPasien();}
+        else if(strcmpi(user->identitas.role,"MANAGER")==0){lamanManager();}
+        else if(strcmpi(user->identitas.role,"DOKTER")==0){lamanDokter();}
         }
 
         switch(pilihanP){
@@ -71,6 +85,18 @@ int main(){
                 break;
         }
 
+        switch(pilihanD){
+            case DIAGNOSIS:
+                //blm
+                break;
+            case NGOBATIN:
+                //blm
+                break;
+            case LOGOUT:
+                logout();
+                break;
+        }
+
         if (pilihan != EXIT && pilihanP != LOGOUT) {
             printf("\nTekan Enter untuk kembali ke menu...");
             getchar(); getchar(); // pause
@@ -83,7 +109,7 @@ int main(){
         printf("\nApakah Anda mau melakukan penyimpanan file yang sudah diubah?(y/n)\n");
         scanf(" %c",&c);
         if(c=='y' || c=='Y'){
-            ArrtoCSV("data/user.csv",writeUsersToFile,NULL);
+            ArrtoCSV("../../../data/user.csv",writeUsersToFile,NULL);
         }
     }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
    

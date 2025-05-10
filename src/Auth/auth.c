@@ -1,5 +1,6 @@
 // File auth.c
 #include "auth.h"
+#include <strings.h>
 
 void clearScreen(){
     #ifdef _WIN32
