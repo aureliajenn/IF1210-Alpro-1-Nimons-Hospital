@@ -1,0 +1,90 @@
+#ifndef DATAPARSER_H
+#define DATAPARSER_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_USER 100
+#define MAX_LINE_LEN 1024
+#define MAX_FIELD 50
+#define MAX_COL_LEN 100
+
+typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
+
+typedef struct {
+    int id;
+    char username[MAX_LINE_LEN];
+    char password[MAX_LINE_LEN];
+    char role[MAX_LINE_LEN];
+    char riwayat_penyakit[MAX_LINE_LEN];
+    
+} Identitas;
+
+typedef struct {
+    float suhu_tubuh;
+    int tekanan_darah_sistolik;
+    int tekanan_darah_diastolik;
+    int detak_jantung;
+    float saturasi_oksigen;
+    int kadar_gula_darah;
+    float berat_badan;
+    int tinggi_badan;
+    int kadar_kolesterol;
+    int kadar_kolesterol_ldl;
+    int trombosit;
+
+} KondisiPasien;
+
+typedef struct {
+    Identitas identitas;
+    KondisiPasien kondisi;
+} User;
+
+typedef struct {
+    int id;
+    char nama[MAX_LINE_LEN];
+    float suhu_tubuh_min;
+    float suhu_tubuh_max;
+    int tekanan_darah_sistolik_min;
+    int tekanan_darah_sistolik_max;
+    int tekanan_darah_diastolik_min;
+    int tekanan_darah_diastolik_max;
+    int detak_jantung_min;
+    int detak_jantung_max;
+    float saturasi_oksigen_min;
+    float saturasi_oksigen_max;
+    int kadar_gula_darah_min;
+    int kadar_gula_darah_max;
+    float berat_badan_min;
+    float berat_badan_max;
+    int tinggi_badan_min;
+    int tinggi_badan_max;
+    int kadar_kolesterol_min;
+    int kadar_kolesterol_max;
+    int trombosit_min;
+    int trombosit_max;
+
+} Penyakit;
+
+
+typedef struct {
+    User *arr;
+    int *jumlah;
+} ParseTarget;
+
+typedef struct {
+    Penyakit *arr;
+    int *jumlah;
+} ParsePenyakit;
+
+void ArrtoCSV(const char *filename, CSVRowHandler handler, void *target);
+
+void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target); 
+
+void CSVtoArr(const char *filename, CSVRowHandler handler, void *target);
+
+void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target);
+
+void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target);
+#endif
