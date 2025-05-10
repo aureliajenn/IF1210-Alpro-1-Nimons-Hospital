@@ -4,9 +4,14 @@
 // Definisi Global
 User *user = NULL;
 User *users = NULL;
+Penyakit *penyakits = NULL;
+
 int jumlah_user = 0;
+int jumlah_penyakit = 0;
+
 Pilihan pilihan;
 PilihanPasien pilihanP;
+PilihanDokter pilihanD;
 
 int main(){
     user = (User *)malloc(sizeof(User));    // Alokasi pointer user
@@ -21,10 +26,19 @@ int main(){
         return 1;
     }
 
+    penyakits = (Penyakit *)malloc(MAX_USER * sizeof(Penyakit));    // Alokasi pointer users
+    if (penyakits == NULL){
+        perror("Gagal membuat array");
+        return 1;
+    }
+
     // Konversi data user.csv ke arr dulu
-    jumlah_user=0;
+    jumlah_user=0;  jumlah_penyakit = 0;
     ParseTarget pt = {users, &jumlah_user};
+    ParsePenyakit pp = {users, &jumlah_penyakit};
     CSVtoArr("../../../data/user.csv",handleUserRow,&pt);
+    CSVtoArr("../../../data/penyakit.csv",handlePenyakitRow,&pp);
+
     users = (User *)realloc(users, jumlah_user * sizeof(User));
     if (users == NULL){
         perror("gagal membuat array");
@@ -64,6 +78,18 @@ int main(){
                 break;
             case MINUMPENAWAR: 
                 // blm 
+                break;
+            case LOGOUT:
+                logout();
+                break;
+        }
+
+        switch(pilihanD){
+            case DIAGNOSIS:
+                //blm
+                break;
+            case NGOBATIN:
+                //blm
                 break;
             case LOGOUT:
                 logout();

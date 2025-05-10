@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../DataParser/dataParser.h"
+
 #ifndef AUTH_H
 #define AUTH_H
 
@@ -17,15 +19,20 @@ typedef enum{
     ANTRIANSAYA,
     MINUMOBAT,
     MINUMPENAWAR,
-    LOGOUT
+    LOGOUT=-1
 } PilihanPasien;
+
+typedef enum{
+    DIAGNOSIS = 1,
+    NGOBATIN,
+    LOGOUT=-1
+ } PilihanDokter;
 
 #define MAX_USER 100
 #define MAX_LINE_LEN 1024
 #define MAX_FIELD 50
 #define MAX_COL_LEN 100
 
-typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
 
 typedef struct {
     int id;
@@ -66,7 +73,7 @@ void clearScreen();
 void labelRS();
 // Menampilkan label besar "RS K01-N" sebagai user interface
 
-void labelPasien();
+void labelUser();
 // Menampilkan label besar "<Role> <Username>" sebagai user interface
 
 void labelMenu();
@@ -104,13 +111,5 @@ void lamanDokter();
 
 void lamanManager();
 // Halaman untuk manager yang berhasil masuk ke akun
-
-void ArrtoCSV(const char *filename, CSVRowHandler handler, void *target);
-
-void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target); 
-
-void CSVtoArr(const char *filename, CSVRowHandler handler, void *target);
-
-void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target);
 
 #endif
