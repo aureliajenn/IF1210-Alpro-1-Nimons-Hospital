@@ -1,6 +1,13 @@
 // File main.c
-#include "src/Auth/auth.h"
-#include <strings.h>
+#include "src/Model/model.h"
+#include "src/Label/label.h"
+#include "src/DataParser/dataParser.h"
+#include "src/Laman/pasien.h"
+#include "src/Laman/dokter.h"
+#include "src/Laman/manager.h"
+
+//
+void labelInput();
 
 // Definisi Global
 User *user = NULL;
@@ -63,8 +70,12 @@ int main(){
 
         if (user != NULL){
         if(strcasecmp(user->identitas.role,"PASIEN")==0){lamanPasien();}
-        else if(strcasecmp(user->identitas.role,"MANAGER")==0){lamanManager();}
-        else if(strcasecmp(user->identitas.role,"DOKTER")==0){lamanDokter();}
+        else if(strcasecmp(user->identitas.role,"MANAGER")==0){
+            // lamanManager();
+        }
+        else if(strcasecmp(user->identitas.role,"DOKTER")==0){
+            // lamanDokter();
+        }
         }
 
         switch(pilihanP){
@@ -102,7 +113,7 @@ int main(){
             getchar(); getchar(); // pause
     } }while(pilihan != EXIT);
 
-    clearScreen();
+    // clearScreen();
 
     char c;
     do{
@@ -113,9 +124,49 @@ int main(){
         }
     }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
    
-    clearScreen();
+    // clearScreen();
     
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
     return 0;
+}
+
+void labelInput(){
+    extern Pilihan pilihan;
+    int input;
+    int valid = 0;
+
+    while (!valid) {
+        clearScreen();
+        labelRS();
+        labelMenu();
+        printf(">>> Masukkan pilihan (1-4): ");
+        scanf("%d", &input);
+        if (input != 1 && input != 2 && input != 3 && input != 4){
+            // input bukan angka
+            while(getchar() != '\n'); // flush input buffer
+            printf("\nInput tidak valid! Masukkan angka antara 1-4.");
+            printf("\nSilahkan enter untuk mengulang!\n");
+            getchar(); // tunggu enter
+            continue;
+        }
+
+        switch (input) {
+            case 1: case 2: case 3:
+                pilihan = input;
+                valid = 1;
+                break;
+            case 4:
+                pilihan = EXIT;
+                valid = 1;
+                break;
+            default:
+                printf("\nPilihan tidak valid! Silakan ulangi.\n");
+                getchar(); // tunggu enter
+        }
+    }
+
+    char *opsi[] = {"", "LOGIN", "REGISTER", "LUPA PASSWORD"};
+    if (pilihan != EXIT)
+        printf("\n>>> %s\n\n", opsi[pilihan]);
 }
