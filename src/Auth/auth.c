@@ -22,7 +22,7 @@ void login(){
     extern User *users;
     extern int jumlah_user;
     int valid=0,format;
-    char nama[50],role[50];
+    char nama[MAX_LINE_LEN],role[MAX_LINE_LEN];
 
     clearScreen();
 

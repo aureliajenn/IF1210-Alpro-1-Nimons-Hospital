@@ -6,7 +6,7 @@
 #include "src/Laman/dokter.h"
 #include "src/Laman/manager.h"
 
-//
+// Prosedur Lokal
 void labelInput();
 
 // Definisi Global
@@ -113,7 +113,7 @@ int main(){
             getchar(); getchar(); // pause
     } }while(pilihan != EXIT);
 
-    // clearScreen();
+    clearScreen();
 
     char c;
     do{
@@ -124,7 +124,7 @@ int main(){
         }
     }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
    
-    // clearScreen();
+    clearScreen();
     
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
