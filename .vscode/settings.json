@@ -6,6 +6,7 @@
         "model.h": "c",
         "pasien.h": "c",
         "stdio.h": "c",
-        "label.h": "c"
+        "label.h": "c",
+        "denah.h": "c"
     }
 }

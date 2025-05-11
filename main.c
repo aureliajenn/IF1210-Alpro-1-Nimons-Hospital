@@ -7,6 +7,7 @@
 #include "src/Laman/manager.h"
 #include "src/Utils/save.h"
 #include "src/Utils/load.h"
+#include "src/Laman/Denah/denah.h"
 
 // Prosedur Lokal
 void labelInput();
@@ -113,7 +114,9 @@ int main(int argc, char *argv[]) {
                 // blm 
                 break;
             case DENAHRUMAHSAKIT: 
-                // blm 
+                clearScreen();
+                const char *configFile = "config.txt";
+                tampilkanDenahRS(configFile);
                 break;
             case LOGOUTP:
                 logout();
