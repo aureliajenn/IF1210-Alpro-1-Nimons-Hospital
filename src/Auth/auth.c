@@ -3,18 +3,18 @@
 
 void cekFormatUsn(int *format, User *user){
     do{
-        format=1;
+        *format=1;
         printf("Username: ");
         scanf("%s", user->identitas.username);
         for (int i = 0; user->identitas.username[i] != '\0'; i++) {
             char c = user->identitas.username[i];
             if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))){
-                format = 0;
+                *format = 0;
                 printf("Format username hanya boleh huruf! Ulangi\n");
                 break;
             }
         }
-        }while(!format);
+        }while(!*format);
 }
 
 void login(){
@@ -26,7 +26,7 @@ void login(){
 
     clearScreen();
 
-    cekFormatUsn(format,user);
+    cekFormatUsn(&format,user);
 
     strcpy(nama,user->identitas.username);
     printf("Password: ");
@@ -69,7 +69,7 @@ void registerpasien(){
     
     clearScreen();
 
-    cekFormatUsn(format,user);
+    cekFormatUsn(&format,user);
 
     for(int i=0;i<jumlah_user;i++){
         if(strcasecmp((users)[i].identitas.username,user->identitas.username)==0){
@@ -79,6 +79,9 @@ void registerpasien(){
 
     if(!valid){
         printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.",user->identitas.username);
+        free(user);
+        user = NULL;
+        return;  // Kembali agar tidak lanjut
     }else{
         users = (User *)realloc(users,(jumlah_user+1) * sizeof(User));
         if(users==NULL){
@@ -103,7 +106,7 @@ void lupaPassword(){
     int format,idx,valid=0;
     char kodeUnik[MAX_LINE_LEN],pass[MAX_LINE_LEN];
 
-    cekFormatUsn(format,user);
+    cekFormatUsn(&format,user);
     
     for(int i=0;i<jumlah_user;i++){
         if(strcasecmp((users)[i].identitas.username,user->identitas.username)==0){

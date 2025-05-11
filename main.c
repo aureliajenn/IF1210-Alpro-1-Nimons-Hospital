@@ -132,6 +132,14 @@ int main(int argc, char *argv[]) {
                 break;
         }
 
+        if (user == NULL) {
+            user = (User *)malloc(sizeof(User));
+            if (user == NULL) {
+                perror("Gagal mengalokasikan ulang user");
+                return 1;
+            }
+        }
+        
         if (pilihan != EXIT && pilihanP != LOGOUTP && pilihanD != LOGOUTD) {
             printf("\nTekan Enter untuk kembali ke menu...");
             getchar(); getchar(); // pause
@@ -151,7 +159,7 @@ int main(int argc, char *argv[]) {
         }
     }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
    
-    // clearScreen();
+    clearScreen();
     
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
