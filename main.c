@@ -112,6 +112,9 @@ int main(int argc, char *argv[]) {
             case MINUMPENAWAR: 
                 // blm 
                 break;
+            case DENAHRUMAHSAKIT: 
+                // blm 
+                break;
             case LOGOUTP:
                 logout();
                 break;

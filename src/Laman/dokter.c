@@ -1,4 +1,5 @@
-// #include "dokter.h"
+#include "dokter.h"
+#include "../Model/model.h"
 
 // void lamanDokter(){
 //     extern User *user;

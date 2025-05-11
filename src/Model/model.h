@@ -18,6 +18,7 @@ typedef enum{
     ANTRIANSAYA,
     MINUMOBAT,
     MINUMPENAWAR,
+    DENAHRUMAHSAKIT,
     LOGOUTP
 } PilihanPasien;
 
