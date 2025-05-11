@@ -32,11 +32,11 @@ void lamanPasien(){
         }
 
         switch (input) {
-            case 1: case 2: case 3: case 4:
+            case 1: case 2: case 3: case 4: case 5:
                 pilihanP = input;
                 valid = 1;
                 break;
-            case 5:
+            case 6:
                 char c;
                 do{
                     printf("Yakin mau logout? (y/n)\n");
@@ -54,7 +54,7 @@ void lamanPasien(){
         }
     }
 
-    char *opsi[] = {"", "DAFTAR CHECK-UP", "ANTRIAN SAYA", "MINUM OBAT","MINUM PENAWAR"};
+    char *opsi[] = {"", "DAFTAR CHECK-UP", "ANTRIAN SAYA", "MINUM OBAT","MINUM PENAWAR", "DENAH RUMAH SAKIT"};
     if (pilihanP != LOGOUTP)
         printf("\n>>> %s\n\n", opsi[pilihanP]);
 }
