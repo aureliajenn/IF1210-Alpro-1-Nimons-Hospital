@@ -106,6 +106,8 @@ void lupaPassword(){
     int format,idx,valid=0;
     char kodeUnik[MAX_LINE_LEN],pass[MAX_LINE_LEN];
 
+    clearScreen();
+    
     cekFormatUsn(&format,user);
     
     for(int i=0;i<jumlah_user;i++){
