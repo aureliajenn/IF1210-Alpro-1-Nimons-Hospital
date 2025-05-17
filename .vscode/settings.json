@@ -1,12 +1,15 @@
 {
-    "files.associations": {
-        "auth.h": "c",
-        "string.h": "c",
-        "dataparser.h": "c",
-        "model.h": "c",
-        "pasien.h": "c",
-        "stdio.h": "c",
-        "label.h": "c",
-        "denah.h": "c"
-    }
+  "files.associations": {
+    "auth.h": "c",
+    "string.h": "c",
+    "dataparser.h": "c",
+    "model.h": "c",
+    "pasien.h": "c",
+    "stdio.h": "c",
+    "label.h": "c",
+    "denah.h": "c",
+    "manager.h": "c",
+    "unistd.h": "c",
+    "lihatuser.h": "c"
+  }
 }

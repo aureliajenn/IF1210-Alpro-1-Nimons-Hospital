@@ -5,17 +5,16 @@
 #include "../Model/model.h"
 #include "../Utils/utils.h"
 
-
 #ifndef AUTH_H
 #define AUTH_H
 
-void login();
+int login();
 // Procedure untuk login
 
 void logout();
 // Procedure untuk logout
 
-void registerpasien();
+int registerpasien();
 // Procedure untuk register pasien
 
 void lupaPassword();

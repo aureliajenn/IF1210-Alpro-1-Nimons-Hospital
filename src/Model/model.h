@@ -6,15 +6,17 @@
 #define MAX_FIELD 50
 #define MAX_COL_LEN 100
 
-typedef enum{
-    LOGIN=1,
+typedef enum
+{
+    LOGIN = 1,
     REGISTER,
     LUPAPASSWORD,
     EXIT
 } Pilihan;
 
-typedef enum{
-    DAFTARCHECKUP=1,
+typedef enum
+{
+    DAFTARCHECKUP = 1,
     ANTRIANSAYA,
     MINUMOBAT,
     MINUMPENAWAR,
@@ -22,20 +24,30 @@ typedef enum{
     LOGOUTP
 } PilihanPasien;
 
-typedef enum{
+typedef enum
+{
+    DENAHRUMAHSAKITMANAGER = 1,
+    LIHATUSER,
+    LOGOUTM,
+} PilihanManager;
+
+typedef enum
+{
     DIAGNOSIS = 1,
     NGOBATIN,
     LOGOUTD
 } PilihanDokter;
 
-typedef struct {
+typedef struct
+{
     int id;
     char username[MAX_LINE_LEN];
     char password[MAX_LINE_LEN];
     char role[MAX_LINE_LEN];
 } Identitas;
 
-typedef struct {
+typedef struct
+{
     char riwayat_penyakit[MAX_LINE_LEN];
     float suhu_tubuh;
     int tekanan_darah_sistolik;
@@ -51,12 +63,14 @@ typedef struct {
 
 } KondisiPasien;
 
-typedef struct {
+typedef struct
+{
     Identitas identitas;
     KondisiPasien kondisi;
 } User;
 
-typedef struct {
+typedef struct
+{
     int id;
     char nama[MAX_LINE_LEN];
     float suhu_tubuh_min;
