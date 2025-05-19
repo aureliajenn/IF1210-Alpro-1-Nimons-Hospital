@@ -15,11 +15,19 @@ int lamanLihatUser()
     printf(">>> Pilihan: ");
     scanf("%d", &by);
 
-    printf("\nUrutan sort?\n");
-    printf("1. ASC (A-Z)\n");
-    printf("2. DESC (Z-A)\n");
-    printf(">>> Pilihan: ");
-    scanf("%d", &order);
+    if(by==1){
+        printf("\nUrutan sort?\n");
+        printf("1. ASC (1-100)\n");
+        printf("2. DESC (100-1)\n");
+        printf(">>> Pilihan: ");
+        scanf("%d", &order);
+    }else if(by==2){
+        printf("\nUrutan sort?\n");
+        printf("1. ASC (A-Z)\n");
+        printf("2. DESC (Z-A)\n");
+        printf(">>> Pilihan: ");
+        scanf("%d", &order);
+    }
 
     User *copy = malloc(jumlah_user * sizeof(User));
     for (int i = 0; i < jumlah_user; i++)
