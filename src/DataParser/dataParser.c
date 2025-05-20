@@ -17,19 +17,20 @@ void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target) {
     
     // HEADER
     if (count == -1) {
-        fprintf(file, "id,username,password,role,riwayat_penyakit,suhu_tubuh,tekanan_darah_sistolik,tekanan_darah_diastolik,detak_jantung,saturasi_oksigen,kadar_gula_darah,berat_badan,tinggi_badan,kadar_kolesterol,kadar_kolesterol_ldl,trombosit\n");
+        fprintf(file, "id;username;password;role;riwayat_penyakit;suhu_tubuh;tekanan_darah_sistolik;tekanan_darah_diastolik;detak_jantung;saturasi_oksigen;kadar_gula_darah;berat_badan;tinggi_badan;kadar_kolesterol;kadar_kolesterol_ldl;trombosit\n");
         
         extern User *users;
         extern int jumlah_user;
 
         for (int i = 0; i < jumlah_user; i++) {
             // Tulis setiap baris User
-            fprintf(file, "%d,%s,%s,%s,%s,%f,%d,%d,%d,%f,%d,%f,%d,%d\n",
+            
+            fprintf(file, "%d;%s;%s;%s;%s;%.2f;%d;%d;%d;%.2f;%d;%.2f;%d;%d;%d;%d\n",
             i+1,
             users[i].identitas.username,
             users[i].identitas.password,
             users[i].identitas.role,
-            users[i].identitas.riwayat_penyakit,
+            users[i].kondisi.riwayat_penyakit,
             users[i].kondisi.suhu_tubuh,
             users[i].kondisi.tekanan_darah_sistolik,
             users[i].kondisi.tekanan_darah_diastolik,
@@ -62,7 +63,7 @@ void CSVtoArr(const char *filename, CSVRowHandler handler, void *target) {
 
         for (int i = 0; ; i++) {
             char c = line[i];
-            if (c == ',' || c == '\n' || c == '\0') {
+            if (c == ';' || c == '\n' || c == '\0') {
                 fields[fieldIdx][charIdx] = '\0';
                 fieldIdx++;
                 charIdx = 0;
@@ -81,14 +82,13 @@ void CSVtoArr(const char *filename, CSVRowHandler handler, void *target) {
 
 void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target) {
     ParseTarget *pt = (ParseTarget *)target;  // cast target ke struct kita
-    static int idx = 0;
 
     User u;
     u.identitas.id = atoi(fields[0]);
     strcpy(u.identitas.username, fields[1]);
     strcpy(u.identitas.password, fields[2]);
     strcpy(u.identitas.role, fields[3]);
-    strcpy(u.identitas.riwayat_penyakit, fields[4]);
+    strcpy(u.kondisi.riwayat_penyakit, fields[4]);
     u.kondisi.suhu_tubuh = atof(fields[5]);
     u.kondisi.tekanan_darah_sistolik = atoi(fields[6]);
     u.kondisi.tekanan_darah_diastolik = atoi(fields[7]);
@@ -100,13 +100,12 @@ void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target) {
     u.kondisi.kadar_kolesterol = atoi(fields[13]);
     u.kondisi.kadar_kolesterol_ldl = atoi(fields[14]);
     u.kondisi.trombosit = atoi(fields[15]);
-
+    
     pt->arr[(*pt->jumlah)++] = u;
 }
 
 void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target) {
     ParsePenyakit *pp = (ParsePenyakit *)target;  // cast target ke struct kita
-    static int idx = 0;
 
     Penyakit p;
     p.id = atoi(fields[0]);
