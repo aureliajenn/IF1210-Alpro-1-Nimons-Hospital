@@ -1,5 +1,5 @@
-#ifndef CHECKUP_H
-#define CHECKUP_H
+#ifndef DAFTAR_CHECKUP_H
+#define DAFTAR_CHECKUP_H
 
 #define MAX_NAME 50
 
