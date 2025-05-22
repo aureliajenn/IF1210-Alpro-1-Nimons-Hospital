@@ -10,6 +10,9 @@
     "denah.h": "c",
     "manager.h": "c",
     "unistd.h": "c",
-    "lihatuser.h": "c"
+    "lihatuser.h": "c",
+    "cariuser.h": "c",
+    "tambahdokter.h": "c",
+    "utils.h": "c"
   }
 }

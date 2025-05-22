@@ -9,6 +9,9 @@
 #include "src/Laman/Denah/denah.h"
 #include "src/Auth/auth.h"
 #include "src/Laman/LihatUser/lihatuser.h"
+#include "src/Laman/CariUser/cariuser.h"
+#include "src/Laman/TambahDokter/tambahdokter.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -91,6 +94,7 @@ int main(int argc, char *argv[])
 
     do
     {
+      
         if (!isLoggedIn)
         {
             labelInput();
@@ -157,6 +161,18 @@ int main(int argc, char *argv[])
                     clearScreen();
                     printf("\n>>> %s\n\n", "LIHAT USER");
                     lamanLihatUser();
+                    waitForEnter();
+                    break;
+                case CARIUSER:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "CARI USER");
+                    lamanCariUser(-1);
+                    waitForEnter();
+                    break;
+                case TAMBAHDOKTER:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "TAMBAH DOKTER");
+                    lamanTambahDokter();
                     waitForEnter();
                     break;
                 case LOGOUTM:

@@ -28,6 +28,8 @@ typedef enum
 {
     DENAHRUMAHSAKITMANAGER = 1,
     LIHATUSER,
+    CARIUSER,
+    TAMBAHDOKTER,
     LOGOUTM,
 } PilihanManager;
 

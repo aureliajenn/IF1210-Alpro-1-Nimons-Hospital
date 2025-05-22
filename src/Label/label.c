@@ -34,7 +34,9 @@ void labelMenuPasien(){
 void labelMenuManager(){
     printf("1. Lihat Denah Rumah Sakit\n");
     printf("2. Lihat User\n");
-    printf("3. Logout\n");
+    printf("3. Cari User\n");
+    printf("4. Tambah User Dokter\n");
+    printf("5. Logout\n");
     printf("\n");
 }
 
@@ -88,6 +90,7 @@ void labelHelpPasien(){
 }
 
 void labelHelpManager(){
+    extern User *user;
     printf("=========== HELP ===========\n");
     printf("Halo Manager %s. Kenapa kamu memanggil command HELP? Kan kamu manager, tapi yasudahlah kamu pasti sedang kebingungan. Berikut adalah hal-hal yang dapat kamu lakukan sekarang:\n", user->identitas.username);
     printf("\n");
