@@ -13,6 +13,7 @@
     "lihatuser.h": "c",
     "cariuser.h": "c",
     "tambahdokter.h": "c",
-    "utils.h": "c"
+    "utils.h": "c",
+    "daftar_checkup.h": "c"
   }
 }
