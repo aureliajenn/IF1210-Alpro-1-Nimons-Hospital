@@ -277,12 +277,7 @@ void labelInput()
         printf("\n>>> %s\n\n", opsi[pilihan]);
 }
 
-void cleanInputBuffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
+
 
 void waitForEnter()
 {
