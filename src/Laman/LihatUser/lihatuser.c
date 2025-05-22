@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "lihatuser.h"
+#include "../CariUser/cariuser.h"
 
 int lamanLihatUser()
 {
@@ -75,5 +76,21 @@ int lamanLihatUser()
     printf("+------------+---------------------+------------+--------------------+\n");
 
     free(copy);
+    int selectSearchUser;
+    printf("\nApakah anda ingin mencari user?\n");
+    printf("1. Iya\n");
+    printf("2. Tidak\n");
+    printf(">>> Pilihan: ");
+    scanf("%d", &selectSearchUser);
+
+    if(selectSearchUser == 1) {
+        clearScreen();
+        return lamanCariUser(by);
+        
+
+    } else {
+        return 1;
+    }
+
     return 1;
 }
