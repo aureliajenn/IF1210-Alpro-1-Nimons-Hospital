@@ -35,22 +35,17 @@ typedef struct {
     int medicineCount;   // Jumlah informasi obat
 } Hospital;
 
-// Fungsi untuk mendapatkan label ruangan (A1, B2, dll.) dari indeks
 void dapatkanLabelRuangan(int indeks, char *label, int kolom);
 
-// Fungsi untuk memuat data rumah sakit dari file konfigurasi
 int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit);
 
-// Fungsi untuk menampilkan tata letak rumah sakit
 void tampilkanDenahRumahSakit(Hospital *rumahSakit);
 
-// Fungsi untuk menampilkan informasi detail ruangan
 void tampilkanDetailRuangan(Hospital *rumahSakit);
 
-// Fungsi untuk menampilkan inventaris obat
 void tampilkanInventarisObat(Hospital *rumahSakit);
 
-// Fungsi utama untuk menampilkan seluruh informasi rumah sakit
 void tampilkanDenahRS(const char *fileKonfigurasi);
+
 
 #endif // DENAH_H

@@ -21,6 +21,13 @@ void labelMenu(){
     printf("\n");
 }
 
+void labelDokter(){
+    printf("1. Diagnosis\n");
+    printf("2. Ngobatin\n");
+    printf("3. Logout\n");
+    printf("\n");
+}
+
 void labelMenuPasien(){
     printf("1. Daftar Check-Up\n");
     printf("2. Antrian Saya\n");

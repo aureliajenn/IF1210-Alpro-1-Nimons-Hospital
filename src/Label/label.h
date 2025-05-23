@@ -20,3 +20,5 @@ void labelMenuManager();
 
 void labelInput();
 // Menampilkan menu dan input sebagai UI utama
+
+void labelDokter();
