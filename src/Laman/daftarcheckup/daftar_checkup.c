@@ -2,6 +2,53 @@
 #include <string.h>
 #include "../daftarcheckup/daftar_checkup.h"
 
+void validateData(char *head, char *desc, int data) {
+	printf("%s (%s): ", head, desc);
+	scanf("%d", data);
+	while (data < 0) {
+		for (int i = 0; i < strlen(head); i++) {
+			if (i > 0) {
+				printf("%c", toLowerCase(head[i]));
+			} else {
+				printf("%c", head[i]);
+			}
+		}
+		printf(" harus berupa angka positif!\n");
+		scanf("%d", data);
+	}
+}
+
+void validatefData(char *head, char *desc, float data) {
+	printf("%s (%s): ", head, desc);
+	scanf("%d", data);
+	while (data < 0) {
+		for (int i = 0; i < strlen(head); i++) {
+			if (i > 0) {
+				printf("%c", toLowerCase(head[i]));
+			} else {
+				printf("%c", head[i]);
+			}
+		}
+		printf(" harus berupa angka positif!\n");
+		scanf("%d", data);
+	}
+}
+
+void validate2Data(char *head, char *desc, int *data1, int *data2) {
+	printf("%s (%s): ", head, desc);
+	scanf("%d %d", data1, data2);
+	while (*data1 < 0 || *data2 < 0) {
+		for (int i = 0; i < strlen(head); i++) {
+			if (i > 0) {
+				printf("%c", toLowerCase(head[i]));
+			} else {
+				printf("%c", head[i]);
+			}
+		}
+		printf(" harus berupa angka positif!\n");
+		scanf("%d %d", data1, data2);
+	}
+}
 
 Map* getavailableDokter(Map* map) {
     if (map == NULL) return NULL;
@@ -77,37 +124,16 @@ void daftar_checkup() {
 
     printf("Silakan masukkan data check-up Anda:\n");
 
-    printf("Suhu Tubuh (Celcius): ");
-    scanf("%f", &suhu);
-    if (suhu <= 0) { printf("Suhu tubuh harus berupa angka positif!\n"); return; }
-
-    printf("Tekanan Darah (Sistol Diastol): ");
-    scanf("%d %d", &sistol, &diastol);
-    if (sistol <= 0 || diastol <= 0) { printf("Tekanan darah harus berupa angka positif!\n"); return; }
-
-    printf("Detak Jantung (bpm): ");
-    scanf("%d", &bpm);
-
-    printf("Saturasi Oksigen (%%): ");
-    scanf("%f", &oksigen);
-
-    printf("Kadar Gula Darah (mg/dL): ");
-    scanf("%d", &gula);
-
-    printf("Berat Badan (kg): ");
-    scanf("%f", &berat);
-
-    printf("Tinggi Badan (cm): ");
-    scanf("%f", &tinggi);
-
-    printf("Kadar Kolestrol (mg/dL): ");
-    scanf("%d", &kolestrol);
-
-    printf("Kadar Kolestrol LDL (mg/dL): ");
-    scanf("%d", &ldl);
-
-    printf("Trombosit (ribu/uL): ");
-    scanf("%d", &trombosit);
+    validatefData("Suhu Tubuh", "Celcius", suhu);
+	validate2Data("Tekanan Darah", "sistol/diastol, contoh 120 80", sistol, diastol);
+	validateData("Detak Jantung", "bpm", bpm);
+	validatefData("Saturasi Oksigen", "%%", oksigen);
+	validateData("Kadar Gula Darah", "mg/dL", gula);
+	validatefData("Berat Badan", "kg", berat);
+	validatefData("Tinggi Badan", "cm", tinggi);
+	validateData("Kadar Kolestrol", "mg/dL", kolestrol);
+	validateData("Kadar Kolestrol LDL", "mg/dL", ldl);
+	validateData("Trombosit", "ribu/mikroL", trombosit);
 
     printf("\nBerikut adalah daftar dokter yang tersedia:\n");
 
