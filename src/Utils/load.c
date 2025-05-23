@@ -55,7 +55,6 @@ void load(const char *folder_name) {
 }
 
 User *getUserById(int id) {
-    printf("Mencari user dengan ID %d\n", id);
     for (int i = 0; i < jumlah_user; i++) {
         if (users[i].identitas.id == id) {
             return &users[i];

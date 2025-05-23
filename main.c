@@ -76,7 +76,6 @@ int main(int argc, char *argv[])
 
     const char *folder = argv[1];
     load(folder);
-    printf("Selamat datang kembali di rumah sakit K01-N !\n\n");
 
     jumlah_user = jumlah_penyakit = 0;
     ParseTarget pt = {users, &jumlah_user};
@@ -107,6 +106,7 @@ int main(int argc, char *argv[])
       
         if (!isLoggedIn)
         {
+            clearScreen();
             labelInput();
             switch (pilihan)
             {
@@ -269,38 +269,9 @@ int main(int argc, char *argv[])
 void labelInput()
 {
     extern Pilihan pilihan;
-    int input, valid = 0;
-
-    while (!valid)
-    {
-        clearScreen();
-        labelRS();
-        labelMenu();
-        printf(">>> Masukkan pilihan (1-4): ");
-
-
-        if (scanf("%d", &input) != 1)
-        {
-            cleanInputBuffer();
-            printf("\nInput tidak valid! Masukkan angka antara 1-4.\n");
-            waitForEnter();
-            continue;
-        }
-
-        if (input < 1 || input > 4)
-        {
-            printf("\nInput di luar rentang! Masukkan angka antara 1-4.\n");
-            waitForEnter();
-            continue;
-        }
-
-        pilihan = (input == 4) ? EXIT : input;
-        valid = 1;
-    }
-
-    const char *opsi[] = {"", "LOGIN", "REGISTER", "LUPA PASSWORD"};
-    if (pilihan != EXIT)
-        printf("\n>>> %s\n\n", opsi[pilihan]);
+    labelRS();
+    labelMenu();
+    pilihan = getValidIntInput(1, 4, "Pilih opsi (1-4): ");
 }
 
 
