@@ -32,6 +32,7 @@ int login()
                 valid = 1;
                 strcpy(user->identitas.role, users[i].identitas.role);
                 strcpy(role, user->identitas.role);
+                user->identitas.id = users[i].identitas.id;
                 break;
             }
             else

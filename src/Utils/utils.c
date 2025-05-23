@@ -1,6 +1,28 @@
 #include "utils.h"
 #include <stdio.h>
 
+int convertCharToInt(char c) {
+    return c - '0'; 
+}
+void dapatkanLabelRuangan(int indeks, char *label, int kolom) {
+    char baris = 'A' + (indeks / kolom);
+    int kol = (indeks % kolom) + 1;
+    sprintf(label, "%c%d", baris, kol);
+}
+
+int convertStringToInt(const char *str) {
+    int result = 0;
+    int i = 0;
+    while (str[i] != '\0') {
+        if (str[i] >= '0' && str[i] <= '9') {
+            result = result * 10 + convertCharToInt(str[i]);
+        } else {
+            break;
+        }
+        i++;
+    }
+    return result;
+}
 
 void clearScreen(){
     #ifdef _WIN32
