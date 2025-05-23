@@ -2,7 +2,7 @@
 #include <string.h>
 #include "../daftarcheckup/daftar_checkup.h"
 
-void validateData(char *head, char *desc, int data) {
+void validateData(char *head, char *desc, int *data) {
 	printf("%s (%s): ", head, desc);
 	scanf("%d", data);
 	while (data < 0) {
@@ -18,7 +18,7 @@ void validateData(char *head, char *desc, int data) {
 	}
 }
 
-void validatefData(char *head, char *desc, float data) {
+void validatefData(char *head, char *desc, float *data) {
 	printf("%s (%s): ", head, desc);
 	scanf("%d", data);
 	while (data < 0) {
@@ -124,16 +124,16 @@ void daftar_checkup() {
 
     printf("Silakan masukkan data check-up Anda:\n");
 
-    validatefData("Suhu Tubuh", "Celcius", suhu);
-	validate2Data("Tekanan Darah", "sistol/diastol, contoh 120 80", sistol, diastol);
-	validateData("Detak Jantung", "bpm", bpm);
-	validatefData("Saturasi Oksigen", "%%", oksigen);
-	validateData("Kadar Gula Darah", "mg/dL", gula);
-	validatefData("Berat Badan", "kg", berat);
-	validatefData("Tinggi Badan", "cm", tinggi);
-	validateData("Kadar Kolestrol", "mg/dL", kolestrol);
-	validateData("Kadar Kolestrol LDL", "mg/dL", ldl);
-	validateData("Trombosit", "ribu/mikroL", trombosit);
+    validatefData("Suhu Tubuh", "Celcius", &suhu);
+	validate2Data("Tekanan Darah", "sistol/diastol, contoh 120 80", &sistol, &diastol);
+	validateData("Detak Jantung", "bpm", &bpm);
+	validatefData("Saturasi Oksigen", "%%", &oksigen);
+	validateData("Kadar Gula Darah", "mg/dL", &gula);
+	validatefData("Berat Badan", "kg", &berat);
+	validatefData("Tinggi Badan", "cm", &tinggi);
+	validateData("Kadar Kolestrol", "mg/dL", &kolestrol);
+	validateData("Kadar Kolestrol LDL", "mg/dL", &ldl);
+	validateData("Trombosit", "ribu/mikroL", &trombosit);
 
     printf("\nBerikut adalah daftar dokter yang tersedia:\n");
 
