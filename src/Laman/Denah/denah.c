@@ -1,10 +1,10 @@
-#include "Denah.h"
+#include "denah.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void dapatkanLabelRuangan(int indeks, char *label, int kolom) {
-    char baris = 'A' + (indeks / kolom);
-    int kol = (indeks % kolom) + 1;
-    sprintf(label, "%c%d", baris, kol);
-}
+
+
 
 int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit) {
     FILE *file = fopen(namaFile, "r");
@@ -20,22 +20,59 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit) {
     rumahSakit->medicineCount = 0;
     
     while (fgets(baris, MAX_LINE_LENGTH, file)) {
-        baris[strcspn(baris, "\n")] = 0;
+        baris[strcspn(baris, "\n")] = 0;  
         
         hitungBaris++;
         
         if (hitungBaris == 1) {
-            sscanf(baris, "%d %d", &rumahSakit->rows, &rumahSakit->cols);
+            char rowsStr[10], colsStr[10];
+            int i = 0;
+            
+            while (baris[i] >= '0' && baris[i] <= '9') {
+                rowsStr[i] = baris[i];
+                i++;
+            }
+            rowsStr[i] = '\0'; 
+            rumahSakit->rows = convertStringToInt(rowsStr);
+            
+            i++;  
+            int j = 0;
+            while (baris[i] >= '0' && baris[i] <= '9') {
+                colsStr[j] = baris[i];
+                i++;
+                j++;
+            }
+            colsStr[j] = '\0'; 
+            rumahSakit->cols = convertStringToInt(colsStr);
         } else if (hitungBaris == 2) {
-            sscanf(baris, "%d", &rumahSakit->maxPatientsPerRoom);
+            char maxPatientsStr[10];
+            int i = 0;
+            
+            while (baris[i] >= '0' && baris[i] <= '9') {
+                maxPatientsStr[i] = baris[i];
+                i++;
+            }
+            maxPatientsStr[i] = '\0';
+            rumahSakit->maxPatientsPerRoom = convertStringToInt(maxPatientsStr);
         } else if (hitungBaris <= 8) {
             int nilai[MAX_PATIENTS + 1]; 
-            char *token = strtok(baris, " ");
             int hitungNilai = 0;
-            
-            while (token != NULL && hitungNilai < MAX_PATIENTS + 1) {
-                nilai[hitungNilai++] = atoi(token);
-                token = strtok(NULL, " ");
+            int i = 0;
+
+            while (baris[i] != '\0') {
+                if (baris[i] >= '0' && baris[i] <= '9') {
+                    char temp[10];
+                    int j = 0;
+                    while (baris[i] >= '0' && baris[i] <= '9') {
+                        temp[j] = baris[i];
+                        j++;
+                        i++;
+                    }
+                    temp[j] = '\0';  
+                    nilai[hitungNilai++] = convertStringToInt(temp);
+                } else {
+                    i++;
+                }
             }
             
             if (hitungNilai >= 1) {
@@ -52,12 +89,23 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit) {
             }
         } else {
             int nilai[MAX_PATIENTS];
-            char *token = strtok(baris, " ");
             int hitungNilai = 0;
+            int i = 0;
             
-            while (token != NULL && hitungNilai < MAX_PATIENTS) {
-                nilai[hitungNilai++] = atoi(token);
-                token = strtok(NULL, " ");
+            while (baris[i] != '\0') {
+                if (baris[i] >= '0' && baris[i] <= '9') {
+                    char temp[10];
+                    int j = 0;
+                    while (baris[i] >= '0' && baris[i] <= '9') {
+                        temp[j] = baris[i];
+                        j++;
+                        i++;
+                    }
+                    temp[j] = '\0';  
+                    nilai[hitungNilai++] = convertStringToInt(temp);
+                } else {
+                    i++;
+                }
             }
             
             if (hitungNilai >= 1) {

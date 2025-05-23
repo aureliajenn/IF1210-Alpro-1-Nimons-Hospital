@@ -10,6 +10,15 @@
     "denah.h": "c",
     "manager.h": "c",
     "unistd.h": "c",
-    "lihatuser.h": "c"
+    "lihatuser.h": "c",
+    "cariuser.h": "c",
+    "tambahdokter.h": "c",
+    "utils.h": "c",
+    "daftar_checkup.h": "c",
+    "queue.h": "c",
+    "load.h": "c",
+    "map.h": "c",
+    "antriansaya.h": "c",
+    "diagnosis.h": "c"
   }
 }

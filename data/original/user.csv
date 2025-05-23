@@ -8,8 +8,13 @@ id;username;password;role;riwayat_penyakit;suhu_tubuh;tekanan_darah_sistolik;tek
 7;zeru;pass77;manager;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
 8;minonette;pass88;pasien;Diabetes Mellitus;36.70;93;87;63;97.80;136;77.00;172;227;64;380
 9;tobo;pass99;pasien;COVID-19;36.80;114;74;61;94.60;100;80.60;173;152;139;386
-10;ropik;pass110;pasien;Anemia;36.20;103;87;65;96.60;102;72.30;184;150;91;292
-11;la;la;pasien;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
-12;alo;aloha;pasien;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
-13;a;a;pasien;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
+10;Asep;pass110;dokter;Anemia;36.20;103;87;65;96.60;102;72.30;184;150;91;292
+11;Gunawan;la;dokter;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
+12;Aulia;aloha;dokter;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
+13;Fajar;a;dokter;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
 14;fazri;d;PASIEN;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
+15;Agus;d123;DOKTER;;0.00;0;0;0;0.00;0;0.00;0;0;0;0
+16;sup;pass88;pasien;COVID-19;36.90;110;85;73;98.70;152;62.80;157;184;152;390
+17;akep;pass99;pasien;COVID-19;36.90;110;85;73;98.70;152;62.80;157;184;152;390
+18;adab;pass99;pasien;COVID-19;36.90;110;85;73;98.70;152;62.80;157;184;152;390
+

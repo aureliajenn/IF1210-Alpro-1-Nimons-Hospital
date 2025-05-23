@@ -13,7 +13,7 @@ void lamanManager()
         labelUser();
         printf("\nSelamat datang %s! Ada yang bisa saya bantu?\n\n", user->identitas.username);
         labelMenuManager();
-        printf(">>> Masukkan pilihan (1-3): ");
+        printf(">>> Masukkan pilihan (1-5): ");
 
         int ret = scanf("%d", &input);
 
@@ -30,10 +30,12 @@ void lamanManager()
         {
         case 1:
         case 2:
+        case 3:
+        case 4:
             pilihanM = input;
             valid = 1;
             break;
-        case 3:
+        case 5:
         {
             char c;
             int confirmLogout = 0;
@@ -70,7 +72,7 @@ void lamanManager()
         }
     }
 
-    char *opsi[] = {"", "DENAH RUMAH SAKIT", "LIHAT USER"};
+    char *opsi[] = {"", "DENAH RUMAH SAKIT", "LIHAT USER", "CARI USER"};
     if (pilihanM != LOGOUTM)
         printf("\n>>> %s\n\n", opsi[pilihanM]);
 }

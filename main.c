@@ -9,6 +9,12 @@
 #include "src/Laman/Denah/denah.h"
 #include "src/Auth/auth.h"
 #include "src/Laman/LihatUser/lihatuser.h"
+#include "src/Laman/CariUser/cariuser.h"
+#include "src/Laman/TambahDokter/tambahdokter.h"
+#include "src/Laman/daftarcheckup/daftar_checkup.h"
+#include "src/Laman/AntrianSaya/antriansaya.h"
+#include "src/Laman/Diagnosis/diagnosis.h"
+
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -20,6 +26,7 @@ void cleanInputBuffer();
 User *user = NULL;
 User *users = NULL;
 Penyakit *penyakits = NULL;
+Map *map = NULL;
 
 int jumlah_user = 0;
 int jumlah_penyakit = 0;
@@ -69,15 +76,17 @@ int main(int argc, char *argv[])
 
     const char *folder = argv[1];
     load(folder);
-    printf("Selamat datang kembali di rumah sakit K01-N !\n\n");
 
     jumlah_user = jumlah_penyakit = 0;
     ParseTarget pt = {users, &jumlah_user};
     ParsePenyakit pp = {penyakits, &jumlah_penyakit};
 
     char user_path[256], penyakit_path[256];
+    char config_path[256];
+    snprintf(config_path, sizeof(config_path), "data/%s/config.txt", folder);
     snprintf(user_path, sizeof(user_path), "data/%s/user.csv", folder);
     snprintf(penyakit_path, sizeof(penyakit_path), "data/%s/penyakit.csv", folder);
+    
 
     CSVtoArr(user_path, handleUserRow, &pt);
     CSVtoArr(penyakit_path, handlePenyakitRow, &pp);
@@ -89,12 +98,16 @@ int main(int argc, char *argv[])
             users = temp;
     }
 
+    map = loadConfig(config_path);
+
+
     do
     {
+      
         if (!isLoggedIn)
         {
+            clearScreen();
             labelInput();
-
             switch (pilihan)
             {
             case LOGIN:
@@ -123,14 +136,24 @@ int main(int argc, char *argv[])
                 switch (pilihanP)
                 {
                 case DAFTARCHECKUP:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "DAFTAR CHECKUP");
+                    daftar_checkup();
+                    waitForEnter();
+                    break;
                 case ANTRIANSAYA:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "ANTRIAN SAYA");
+                    lamanLihatAntrianSaya();
+                    waitForEnter();
+                    break;
                 case MINUMOBAT:
                 case MINUMPENAWAR:
                     waitForEnter();
                     break;
                 case DENAHRUMAHSAKIT:
                     clearScreen();
-                    tampilkanDenahRS("config.txt");
+                    tampilkanDenahRS(config_path);
                     waitForEnter();
                     break;
                 case LOGOUTP:
@@ -150,13 +173,25 @@ int main(int argc, char *argv[])
                 case DENAHRUMAHSAKITMANAGER:
                     clearScreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
-                    tampilkanDenahRS("config.txt");
+                    tampilkanDenahRS(config_path);
                     waitForEnter();
                     break;
                 case LIHATUSER:
                     clearScreen();
                     printf("\n>>> %s\n\n", "LIHAT USER");
                     lamanLihatUser();
+                    waitForEnter();
+                    break;
+                case CARIUSER:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "CARI USER");
+                    lamanCariUser(-1);
+                    waitForEnter();
+                    break;
+                case TAMBAHDOKTER:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "TAMBAH DOKTER");
+                    lamanTambahDokter();
                     waitForEnter();
                     break;
                 case LOGOUTM:
@@ -169,11 +204,16 @@ int main(int argc, char *argv[])
             else if (strcasecmp(user->identitas.role, "DOKTER") == 0)
             {
                 clearScreen();
-                // lamanDokter();
+                lamanDokter();
 
                 switch (pilihanD)
                 {
                 case DIAGNOSIS:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "DIAGNOSIS");
+                    lamanDiagnosis();
+                    waitForEnter();
+                    break;
                 case NGOBATIN:
                     waitForEnter();
                     break;
@@ -229,44 +269,12 @@ int main(int argc, char *argv[])
 void labelInput()
 {
     extern Pilihan pilihan;
-    int input, valid = 0;
-
-    while (!valid)
-    {
-        clearScreen();
-        labelRS();
-        labelMenu();
-        printf(">>> Masukkan pilihan (1-4): ");
-        if (scanf("%d", &input) != 1)
-        {
-            cleanInputBuffer();
-            printf("\nInput tidak valid! Masukkan angka antara 1-4.\n");
-            waitForEnter();
-            continue;
-        }
-
-        if (input < 1 || input > 4)
-        {
-            printf("\nInput di luar rentang! Masukkan angka antara 1-4.\n");
-            waitForEnter();
-            continue;
-        }
-
-        pilihan = (input == 4) ? EXIT : input;
-        valid = 1;
-    }
-
-    const char *opsi[] = {"", "LOGIN", "REGISTER", "LUPA PASSWORD"};
-    if (pilihan != EXIT)
-        printf("\n>>> %s\n\n", opsi[pilihan]);
+    labelRS();
+    labelMenu();
+    pilihan = getValidIntInput(1, 4, "Pilih opsi (1-4): ");
 }
 
-void cleanInputBuffer()
-{
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
-}
+
 
 void waitForEnter()
 {
