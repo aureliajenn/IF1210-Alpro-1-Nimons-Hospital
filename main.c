@@ -4,8 +4,7 @@
 #include "src/Laman/pasien.h"
 #include "src/Laman/manager.h"
 #include "src/Laman/dokter.h"
-#include "src/Utils/save.h"
-#include "src/Utils/load.h"
+#include "src/Utils/saveload.h"
 #include "src/Laman/Denah/denah.h"
 #include "src/Auth/auth.h"
 #include "src/Laman/LihatUser/lihatuser.h"
@@ -26,6 +25,7 @@ void cleanInputBuffer();
 User *user = NULL;
 User *users = NULL;
 Penyakit *penyakits = NULL;
+Hospital *rumahSakit = NULL; 
 Map *map = NULL;
 
 int jumlah_user = 0;
@@ -39,7 +39,14 @@ PilihanDokter pilihanD;
 int isLoggedIn = 0;
 
 int main(int argc, char *argv[])
-{
+{   
+    map = malloc(sizeof(Map));
+    if (!map)
+    {
+        perror("Gagal mengalokasikan user");
+        return 1;
+    }
+
     user = malloc(sizeof(User));
     if (!user)
     {
@@ -64,6 +71,12 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    rumahSakit = malloc(sizeof(Hospital)); 
+    if (rumahSakit == NULL) {
+        perror("Gagal mengalokasikan memori untuk rumahSakit");
+        return 1;
+    }
+
     if (argc < 2)
     {
         printf("Tidak ada nama folder yang diberikan!\n");
@@ -73,10 +86,9 @@ int main(int argc, char *argv[])
         free(penyakits);
         return 1;
     }
-
+    
     const char *folder = argv[1];
-    load(folder);
-
+    load(folder); 
     jumlah_user = jumlah_penyakit = 0;
     ParseTarget pt = {users, &jumlah_user};
     ParsePenyakit pp = {penyakits, &jumlah_penyakit};
@@ -99,11 +111,10 @@ int main(int argc, char *argv[])
     }
 
     map = loadConfig(config_path);
-
+    muatDataRumahSakit(config_path,rumahSakit);
 
     do
     {
-      
         if (!isLoggedIn)
         {
             clearScreen();
@@ -147,13 +158,9 @@ int main(int argc, char *argv[])
                     lamanLihatAntrianSaya();
                     waitForEnter();
                     break;
-                case MINUMOBAT:
-                case MINUMPENAWAR:
-                    waitForEnter();
-                    break;
                 case DENAHRUMAHSAKIT:
                     clearScreen();
-                    tampilkanDenahRS(config_path);
+                    tampilkanDenahRS(config_path); 
                     waitForEnter();
                     break;
                 case LOGOUTP:
@@ -173,19 +180,13 @@ int main(int argc, char *argv[])
                 case DENAHRUMAHSAKITMANAGER:
                     clearScreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
-                    tampilkanDenahRS(config_path);
+                    tampilkanDenahRS(config_path); 
                     waitForEnter();
                     break;
                 case LIHATUSER:
                     clearScreen();
                     printf("\n>>> %s\n\n", "LIHAT USER");
                     lamanLihatUser();
-                    waitForEnter();
-                    break;
-                case CARIUSER:
-                    clearScreen();
-                    printf("\n>>> %s\n\n", "CARI USER");
-                    lamanCariUser(-1);
                     waitForEnter();
                     break;
                 case TAMBAHDOKTER:
@@ -262,6 +263,8 @@ int main(int argc, char *argv[])
         free(users);
     if (penyakits)
         free(penyakits);
+    if (rumahSakit)
+        free(rumahSakit);
 
     return 0;
 }
@@ -273,8 +276,6 @@ void labelInput()
     labelMenu();
     pilihan = getValidIntInput(1, 4, "Pilih opsi (1-4): ");
 }
-
-
 
 void waitForEnter()
 {
