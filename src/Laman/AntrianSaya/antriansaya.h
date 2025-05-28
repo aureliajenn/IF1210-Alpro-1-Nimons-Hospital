@@ -2,6 +2,7 @@
 #define ANTRIANSAYA_H
 #include "../../Model/model.h"
 #include "../../Utils/map.h"
+#include "../../Denah/denah.h"
 
 int lamanLihatAntrianSaya();
 

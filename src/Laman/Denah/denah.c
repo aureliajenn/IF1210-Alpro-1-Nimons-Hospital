@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
-
 int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit) {
     FILE *file = fopen(namaFile, "r");
     if (file == NULL) {
