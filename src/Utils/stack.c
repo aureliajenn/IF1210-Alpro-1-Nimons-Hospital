@@ -8,12 +8,12 @@ void initPerutStack(StackPerut *stack, int capacity) {
     stack->capacity = capacity;
 }
 
-int isPerutFull(StackPerut *stack) {
-    return stack->top == stack->capacity - 1;
+bool isPerutFull(StackPerut *stack) {
+    return (stack->top == stack->capacity - 1);
 }
 
-int isPerutEmpty(StackPerut *stack) {
-    return stack->top == -1;
+bool isPerutEmpty(StackPerut *stack) {
+    return (stack->top == -1);
 }
 
 int pushObat(User *user, int obatId, const char *obatNama) {
