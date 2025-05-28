@@ -45,7 +45,7 @@ t
     }
     int idx = pilihan - 1;
 
-    if (!pushToPerut(user, inventoryObat[idx].id, inventoryObat[idx].nama)) {
+    if (!pushObat(user, inventoryObat[idx].id, inventoryObat[idx].nama)) {
         printf("Gagal menyimpan obat ke perut!\n");
         return;
     }
