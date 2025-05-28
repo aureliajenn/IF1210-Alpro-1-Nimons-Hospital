@@ -2,6 +2,7 @@
     "files.associations": {
         "auth.h": "c",
         "string.h": "c",
-        "dataparser.h": "c"
+        "dataparser.h": "c",
+        "stack.h": "c"
     }
 }
