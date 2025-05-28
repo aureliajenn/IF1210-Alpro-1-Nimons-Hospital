@@ -4,7 +4,7 @@
 #include <sys/stat.h> // Untuk cek folder
 #include "../Model/model.h"
 #include "../DataParser/dataParser.h"
-#include "../Utils/map.h"
+#include "../Utils/ADT/map.h"
 #include "../Laman/Denah/denah.h"
 
 // Deklarasi global dari main.c
