@@ -6,6 +6,6 @@
 
 void make_folder(const char* path);
 
-void save(char* folder_name);
+void save(const char folder_name[]);
 
 #endif

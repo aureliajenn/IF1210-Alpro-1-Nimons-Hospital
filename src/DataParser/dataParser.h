@@ -4,53 +4,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../Auth/auth.h"
+#include "../Model/model.h"
 
 #define MAX_USER 100
 #define MAX_LINE_LEN 1024
 #define MAX_FIELD 50
 #define MAX_COL_LEN 100
 
-typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
-
-
-
-
-
-
-typedef struct {
-    int id;
-    char nama[MAX_LINE_LEN];
-    float suhu_tubuh_min;
-    float suhu_tubuh_max;
-    int tekanan_darah_sistolik_min;
-    int tekanan_darah_sistolik_max;
-    int tekanan_darah_diastolik_min;
-    int tekanan_darah_diastolik_max;
-    int detak_jantung_min;
-    int detak_jantung_max;
-    float saturasi_oksigen_min;
-    float saturasi_oksigen_max;
-    int kadar_gula_darah_min;
-    int kadar_gula_darah_max;
-    float berat_badan_min;
-    float berat_badan_max;
-    int tinggi_badan_min;
-    int tinggi_badan_max;
-    int kadar_kolesterol_min;
-    int kadar_kolesterol_max;
-    int trombosit_min;
-    int trombosit_max;
-
-} Penyakit;
-
-
-
-
 typedef struct {
     Penyakit *arr;
     int *jumlah;
 } ParsePenyakit;
+
+
+typedef struct {
+    User *arr;
+    int *jumlah;
+} ParseTarget;
+
+typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
 
 void ArrtoCSV(const char *filename, CSVRowHandler handler, void *target);
 
@@ -61,4 +33,5 @@ void CSVtoArr(const char *filename, CSVRowHandler handler, void *target);
 void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target);
 
 void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target);
+
 #endif

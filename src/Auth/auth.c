@@ -1,316 +1,185 @@
-// File auth.c
 #include "auth.h"
-#include <strings.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-void clearScreen(){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
 
-void labelRS(){
-    printf("=====================================\n");
-    printf("           RUMAH SAKIT K01-N         \n");
-    printf("=====================================\n");
-}
 
-void labelUser(){
+int login()
+{
     extern User *user;
-    printf("=====================================\n");
-    printf("           %s %s      \n",user->identitas.role,user->identitas.username);
-    printf("=====================================\n");
-}
-
-void labelMenu(){
-    printf("1. Login\n");
-    printf("2. Register\n");
-    printf("3. LupaPassword\n");
-    printf("4. Exit\n");
-    printf("\n");
-}
-
-void labelMenuPasien(){
-    printf("1. Daftar Check-Up\n");
-    printf("2. Antrian Saya\n");
-    printf("3. Minum Obat\n");
-    printf("4. Minum Penawar\n");
-    printf("5. Logout\n");
-    printf("\n");
-}
-
-void labelMenuDokter(){
-    printf("1. Diagnosis\n");
-    printf("2. Ngobatin\n");
-    printf("3. Logout\n");
-    printf("\n");
-}
-
-void labelInput(){
-    extern Pilihan pilihan;
-    int input;
-    int valid = 0;
-
-    while (!valid) {
-        clearScreen();
-        labelRS();
-        labelMenu();
-        printf(">>> Masukkan pilihan (1-4): ");
-        scanf("%d", &input);
-        if (input != 1 && input != 2 && input != 3 && input != 4){
-            // input bukan angka
-            while(getchar() != '\n'); // flush input buffer
-            printf("\nInput tidak valid! Masukkan angka antara 1-4.");
-            printf("\nSilahkan enter untuk mengulang!\n");
-            getchar(); // tunggu enter
-            continue;
-        }
-
-        switch (input) {
-            case 1: case 2: case 3:
-                pilihan = input;
-                valid = 1;
-                break;
-            case 4:
-                pilihan = EXIT;
-                valid = 1;
-                break;
-            default:
-                printf("\nPilihan tidak valid! Silakan ulangi.\n");
-                getchar(); // tunggu enter
-        }
-    }
-
-    char *opsi[] = {"", "LOGIN", "REGISTER", "LUPA PASSWORD"};
-    if (pilihan != EXIT)
-        printf("\n>>> %s\n\n", opsi[pilihan]);
-}
-
-void login(){
-    extern User *user; 
     extern User *users;
     extern int jumlah_user;
-    int valid=0,format;
-    char nama[50],role[50];
+    int valid = 0, format;
+    char nama[MAX_LINE_LEN], role[MAX_LINE_LEN];
+
+    if (user == NULL)
+        user = malloc(sizeof(User));
 
     clearScreen();
-    do{
-        format=1;
-        printf("Username: ");
-        scanf("%s", user->identitas.username);
-        for (int i = 0; user->identitas.username[i] != '\0'; i++) {
-            char c = user->identitas.username[i];
-            if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))){
-                format = 0;
-                printf("Format username hanya boleh huruf! Ulangi\n");
-                break;
-            }
-        }
-        }while(!format);
+    cekFormatUsn(&format, user);
+    strcpy(nama, user->identitas.username);
 
-    strcpy(nama,user->identitas.username);
     printf("Password: ");
     scanf("%s", user->identitas.password);
-    for (int i = 0; i < jumlah_user; i++) {
-        if (strcasecmp(users[i].identitas.username, user->identitas.username) == 0) {
-            if (strcasecmp(users[i].identitas.password, user->identitas.password) == 0) {
-            valid = 1; 
-            strcpy(role,users[i].identitas.role);
-            strcpy(user->identitas.role,role);
-            break;
-            }else{
-                printf("\nUsername atau password salah untuk pengguna yang bernama %s!\n\n",nama);
-                valid = -1;
-            }
-        }
-    }
 
-    if (!valid) {
-        printf("\nTidak ada Manager, Dokter, atau pun Pasien yang bernama %s!\n\n",nama);
-    }
-    else if(valid==1)
+    for (int i = 0; i < jumlah_user; i++)
     {
-    printf("\nSelamat pagi %s %s! \n\n",role,nama);}
+        if (strcasecmp(users[i].identitas.username, user->identitas.username) == 0)
+        {
+            if (strcmp(users[i].identitas.password, user->identitas.password) == 0)
+            {
+                valid = 1;
+                strcpy(user->identitas.role, users[i].identitas.role);
+                strcpy(role, user->identitas.role);
+                user->identitas.id = users[i].identitas.id;
+                break;
+            }
+            else
+            {
+                clearScreen();
+                printf("\nUsername atau password salah untuk pengguna %s!\n", nama);
+                waitForEnter();
+                return 0;
+            }
+        }
+    }
+
+    if (!valid)
+    {
+        clearScreen();
+        printf("\nTidak ada pengguna dengan username %s!\n", nama);
+        waitForEnter();
+        return 0;
+    }
+
+    printf("\nSelamat pagi %s %s!\n", role, nama);
+    printf("\nSedang memuat laman %s...\n", role);
+    return 1;
 }
 
-void logout(){
+void logout()
+{
     extern User *user;
-    if (user != NULL) {
-        free(user);     
-        user = NULL;    
+    if (user != NULL)
+    {
+        free(user);
+        user = NULL;
     }
 }
 
-void registerpasien(){
+int registerpasien()
+{
     extern User *user;
     extern User *users;
     extern int jumlah_user;
-    int format,valid=1;
-    
+    int format, valid = 1;
+
+    if (user == NULL)
+        user = malloc(sizeof(User));
+
     clearScreen();
-    do{
-    format=1;
-    printf("Username: ");
-    scanf("%s", user->identitas.username);
-    for (int i = 0; user->identitas.username[i] != '\0'; i++) {
-        char c = user->identitas.username[i];
-        if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))){
-            format = 0;
-            printf("Format username hanya boleh huruf! Ulangi\n");
+    cekFormatUsn(&format, user);
+
+    for (int i = 0; i < jumlah_user; i++)
+    {
+        if (strcasecmp(users[i].identitas.username, user->identitas.username) == 0)
+        {
+            valid = 0;
             break;
         }
     }
-    }while(!format);
 
-    for(int i=0;i<jumlah_user;i++){
-        if(strcasecmp((users)[i].identitas.username,user->identitas.username)==0){
-            valid=0;
-        }
+    if (!valid)
+    {
+        clearScreen();
+        printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.\n", user->identitas.username);
+        waitForEnter();
+        free(user);
+        user = NULL;
+        return 0;
     }
 
-    if(!valid){
-        printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.",user->identitas.username);
-    }else{
-        users = (User *)realloc(users,(jumlah_user+1) * sizeof(User));
-        if(users==NULL){
-            perror("gagal membuat array");
-            exit(1);
-        }else{
-            printf("Password: ");
-            scanf("%s", user->identitas.password);
-            strcpy((users)[jumlah_user].identitas.username,user->identitas.username);
-            strcpy((users)[jumlah_user].identitas.password,user->identitas.password);
-            strcpy((users)[jumlah_user].identitas.role,"pasien");
-            jumlah_user++;
-            printf("Pasien %s berhasil ditambahkan!\n",user->identitas.username);
-        }
+    users = realloc(users, (jumlah_user + 1) * sizeof(User));
+    if (!users)
+    {
+        perror("Gagal menambahkan pasien baru");
+        exit(1);
     }
+
+    printf("Password: ");
+    scanf("%s", user->identitas.password);
+    strcpy(users[jumlah_user].identitas.username, user->identitas.username);
+    strcpy(users[jumlah_user].identitas.password, user->identitas.password);
+    strcpy(users[jumlah_user].identitas.role, "PASIEN");
+    strcpy(user->identitas.role, "PASIEN");
+
+    jumlah_user++;
+    printf("Pasien %s berhasil ditambahkan!\n", user->identitas.username);
+    return 1;
 }
 
-void lupaPassword(){
-    extern User *user;
+void runLengthEncode(char *input, char *output)
+{
+    int len = strlen(input);
+    int count = 1;
+    int index = 0;
+
+    for (int i = 1; i <= len; i++)
+    {
+        if (input[i] == input[i - 1])
+        {
+            count++;
+        }
+        else
+        {
+            output[index++] = input[i - 1];
+            output[index++] = count + '0';
+            count = 1;
+        }
+    }
+    output[index] = '\0';
+}
+
+void lupaPassword()
+{
     extern User *users;
     extern int jumlah_user;
-    int format,idx,valid=0;
-    char kodeUnik[MAX_LINE_LEN],pass[MAX_LINE_LEN];
 
-        do{
-            format=1;
-            printf("Username: ");
-            scanf("%s", user->identitas.username);
-            for (int i = 0; user->identitas.username[i] != '\0'; i++) {
-                char c = user->identitas.username[i];
-                if (!((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))){
-                    format = 0;
-                    printf("Format username hanya boleh huruf! Ulangi\n");
-                    break;
-                }
-            }
-        }while(!format);
+    char username[MAX_LINE_LEN];
+    char newPassword[MAX_LINE_LEN];
+    char kodeUnik[MAX_LINE_LEN];
+    int found = 0;
 
-        for(int i=0;i<jumlah_user;i++){
-            if(strcasecmp((users)[i].identitas.username,user->identitas.username)==0){
-                valid=1; idx=i;
-            }
-        }
+    clearScreen();
+    printf(">>>Lupa Password\n\n");
 
-        if(!valid){
-            printf("Username tidak terdaftar!\n");
-        }else{
-        printf("Kode Unik: ");
-        scanf("%s", kodeUnik);
-        int i = 0, p = 0;
-        while (kodeUnik[i] != '\0') {
-            char c = kodeUnik[i];
-            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) {
-                i++; // pindah ke angka
-                char count[10]; int k = 0;
-                while (kodeUnik[i] >= '0' && kodeUnik[i] <= '9') {
-                    count[k++] = kodeUnik[i++];
-                }
-                count[k] = '\0'; // Terminasi
-         
-                int result = 0;
-                for (int j = 0; count[j] != '\0'; j++) {
-                    result = result * 10 + (count[j] - '0');
-                }
-        
-                for (int r = 0; r < result; r++) {
-                    pass[p++] = c;
-                }
-            } else {
-                i++; // skip karakter aneh
-            }
-        }
-        pass[p] = '\0'; // Terminasi
+    printf("Masukkan username Anda: ");
+    scanf("%s", username);
 
-        if(strcasecmp(user->identitas.password,pass)==0){
-            printf("Halo Dokter %s, silakan daftarkan ulang password anda!\n",user->identitas.username);
-            printf("Password baru: ");
-            scanf("%s",&(users)[idx].identitas.password);
-            printf("Berhasil!\n");
-        }else{
-            printf("Kode unik salah!\n");
-        }
-        }
-}
+    runLengthEncode(username, kodeUnik);
+    printf("Kode Unik: %s\n", kodeUnik);
 
-void lamanPasien(){
-    extern User *user;
-    extern PilihanPasien pilihanP;
-    int input;
-    int valid = 0;
+    for (int i = 0; i < jumlah_user; i++)
+    {
+        char validKodeUnik[MAX_LINE_LEN];
+        runLengthEncode(users[i].identitas.username, validKodeUnik);
 
-    while (!valid) {
-        clearScreen();
-        labelUser();
-        printf("\nSelamat pagi %s! Ada keluhan apa?\n\n",user->identitas.username);
-        labelMenuPasien();
-        printf(">>> Masukkan pilihan (1-5): ");
-        scanf("%d", &input);
-        if (input != 1 && input != 2 && input != 3 && input != 4 && input != 5){
-            // input bukan angka
-            while(getchar() != '\n'); // flush input buffer
-            printf("\nInput tidak valid! Masukkan angka antara 1-5.");
-            printf("\nSilahkan enter untuk mengulang!\n");
-            getchar(); // tunggu enter
-            continue;
-        }
-
-        switch (input) {
-            case 1: case 2: case 3: case 4:
-                pilihanP = input;
-                valid = 1;
-                break;
-            case 5:
-                char c;
-                do{
-                    printf("Yakin mau logout? (y/n)\n");
-                    scanf(" %c",&c);
-                    if(c=='n' || c=='N'){
-                        lamanPasien();
-                    }
-                }while(c != 'y' && c != 'n' && c != 'Y' && c != 'N');
-                pilihanP = LOGOUTP;
-                valid = 1;
-                break;
-            default:
-                printf("\nPilihan tidak valid! Silakan ulangi.\n");
-                getchar(); // tunggu enter
+        if (strcasecmp(users[i].identitas.username, username) == 0)
+        {
+            found = 1;
+            printf("Username ditemukan.\n");
+            printf("Masukkan password baru: ");
+            scanf("%s", newPassword);
+            strcpy(users[i].identitas.password, newPassword);
+            printf("Password berhasil diubah untuk %s.\n", username);
+            return;
         }
     }
 
-    char *opsi[] = {"", "DAFTAR CHECK-UP", "ANTRIAN SAYA", "MINUM OBAT","MINUM PENAWAR"};
-    if (pilihanP != LOGOUTP)
-        printf("\n>>> %s\n\n", opsi[pilihanP]);
+    if (!found)
+    {
+        printf("Username tidak ditemukan!\n");
+        waitForEnter();
+    }
 }
-
-void lamanManager(){
-
-}
-
-void lamanDokter(){
-
-}
-

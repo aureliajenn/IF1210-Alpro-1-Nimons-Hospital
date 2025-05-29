@@ -1,8 +1,24 @@
-{
-    "files.associations": {
-        "auth.h": "c",
-        "string.h": "c",
-        "dataparser.h": "c",
-        "stack.h": "c"
-    }
+
+  "files.associations": {
+    "auth.h": "c",
+    "string.h": "c",
+    "dataparser.h": "c",
+    "model.h": "c",
+    "pasien.h": "c",
+    "stdio.h": "c",
+    "label.h": "c",
+    "denah.h": "c",
+    "manager.h": "c",
+    "unistd.h": "c",
+    "lihatuser.h": "c",
+    "cariuser.h": "c",
+    "tambahdokter.h": "c",
+    "utils.h": "c",
+    "daftar_checkup.h": "c",
+    "queue.h": "c",
+    "load.h": "c",
+    "map.h": "c",
+    "antriansaya.h": "c",
+    "diagnosis.h": "c"
+  }
 }
