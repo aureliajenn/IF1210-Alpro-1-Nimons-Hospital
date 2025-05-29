@@ -34,3 +34,4 @@ void help(const char role[], const char username[]) {
     printf("1. Untuk menggunakan aplikasi, silahkan masukkan nama fungsi yang terdaftar\n");
     printf("2. Jangan lupa untuk memasukkan input yang valid\n\n");
 }
+
