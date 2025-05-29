@@ -199,14 +199,10 @@ void tampilkanInventarisObat(Hospital *rumahSakit) {
     }
 }
 
-void tampilkanDenahRS(const char *fileKonfigurasi) {
-    Hospital rumahSakit;
-    
-    if (muatDataRumahSakit(fileKonfigurasi, &rumahSakit)) {
+void tampilkanDenahRS() {
+    extern Hospital *rumahSakit;
+
         tampilkanDenahRumahSakit(&rumahSakit);
         tampilkanDetailRuangan(&rumahSakit);
         tampilkanInventarisObat(&rumahSakit);
-    } else {
-        printf("Gagal memuat data rumah sakit.\n");
-    }
 }

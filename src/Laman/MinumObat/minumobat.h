@@ -1,7 +1,7 @@
 #ifndef MINUMOBAT_H
 #define MINUMOBAT_
 #include "../../Model/model.h"
-#include "../../ADT/stack.h"
+#include "../../Utils/ADT/stack.h"
 
 void tampilkanDaftarObat(Obat inventory[], int jumlahObat);
 /*Proses: Menampilkan daftar obat. */

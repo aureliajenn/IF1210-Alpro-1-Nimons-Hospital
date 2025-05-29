@@ -12,16 +12,18 @@ extern User *users;
 extern Penyakit *penyakits;
 extern int jumlah_user;
 extern int jumlah_penyakit;
-
+extern Map *map;
+extern Hospital *rumahSakit;
 
 
 
 void load(const char *folder_name) {
-    char userpath[256], penyakitpath[256];
+    char userpath[256], penyakitpath[256], configpath[256];
 
     sprintf(userpath, "data/%s/user.csv", folder_name);
     sprintf(penyakitpath, "data/%s/penyakit.csv", folder_name);
-
+    sprintf(configpath, "data/%s/config.txt", folder_name);
+    
     // Cek apakah folder ada
     char folderpath[256];
     sprintf(folderpath, "data/%s", folder_name);
@@ -50,7 +52,8 @@ void load(const char *folder_name) {
         exit(1);
     }
     users = temp_users;
-
+    loadConfig(configpath);
+    muatDataRumahSakit(configpath,rumahSakit);
     printf("Loading...\n");
 }
 
@@ -64,8 +67,7 @@ User *getUserById(int id) {
 }
 
 
-Map *loadConfig(const char *configPath) {
-    Map *map = NULL;
+void loadConfig(const char *configPath) {
     FILE *file = fopen(configPath, "r");
     if (!file) {
         perror("Gagal membuka file config.txt");
@@ -229,6 +231,4 @@ Map *loadConfig(const char *configPath) {
 
 
     fclose(file);
-
-    return map;
 }

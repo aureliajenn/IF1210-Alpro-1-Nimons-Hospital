@@ -66,6 +66,18 @@ typedef struct
 
 } KondisiPasien;
 
+
+typedef struct {
+    int id;
+    char nama[50];
+} Obat;
+
+typedef struct {
+    Obat *items;
+    int top;
+    int capacity;
+} StackPerut;
+
 typedef struct
 {
     Identitas identitas;
@@ -101,16 +113,5 @@ typedef struct
     int trombosit_max;
 
 } Penyakit;
-
-typedef struct {
-    int id;
-    char nama[50];
-} Obat;
-
-typedef struct {
-    Obat *items;
-    int top;
-    int capacity;
-} StackPerut;
 
 #endif

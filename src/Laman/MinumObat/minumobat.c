@@ -26,11 +26,11 @@ void lamanMinumObat() {
 
     Obat inventoryObat[user->jumlahObat];
     for (int i = 0; i < user->jumlahObat; i++) {
-        inventoryObat[i].id = user->obat[i].id;
-        strcpy(inventoryObat[i].nama, user->obat[i].nama);
+        inventoryObat[i].id = user->inventory[i].id;
+        strcpy(inventoryObat[i].nama, user->inventory[i].nama);
     }
     tampilkanDaftarObat(inventoryObat, user->jumlahObat);
-t
+
     printf("Pilih obat untuk diminum (1-%d): ", user->jumlahObat);
     int pilihan;
     if (scanf("%d", &pilihan) != 1) {
@@ -51,14 +51,14 @@ t
     }
 
     for (int i = idx; i < user->jumlahObat - 1; i++) {
-        user->obat[i] = user->obat[i + 1];
+        user->inventory[i] = user->inventory[i + 1];
     }
     user->jumlahObat--;
     printf("\nGLEKGLEKGLEK... %s berhasil diminum!!!\n", inventoryObat[idx].nama);
 
     if (user->jumlahObat > 0) {
         printf("\nSisa obat di inventory:\n");
-        tampilkanDaftarObat(user->obat, user->jumlahObat);
+        tampilkanDaftarObat(user->inventory, user->jumlahObat);
     } else {
         printf("\nInventory obat kamu sekarang kosong!\n");
     }

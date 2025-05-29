@@ -2,19 +2,19 @@
 #define STACK_H
 
 #include "../../Model/model.h"
-#include "../../Utils/Boolean.h"
+#include "../Boolean.h"
 
 void initPerutStack(StackPerut *stack, int capacity);
 /*Proses: Menginisialisasi stack kosong dengan kapasitas tertentu dan mengalokasikan memori untuk array penampung elemen stack. */
 /*I.S. stack sudah dialokasikan tetapi belum memiliki array penampung serta nilai top dan capacity belum terdefinisi. */
 /*F.S. stack kosong dengan array items sebesar capacity, top bernilai -1, dan capacity sudah diinisialisasi. */
 
-bool isPerutFull(StackPerut *stack);
+boolean isPerutFull(StackPerut *stack);
 /*Proses: Mengecek apakah stack penuh.*/
 /*I.S. stack terinisialisasi.*/
 /*F.S. mengirimkan true jika stack penuh, dan false jika tidak.*/
 
-bool isPerutEmpty(StackPerut *stack);
+boolean isPerutEmpty(StackPerut *stack);
 /*Proses: Mengecek apakah stack kosong.*/
 /*I.S. stack terinisialisasi.*/
 /*F.S. mengirimkan true jika stack kosong, dan false jika tidak.*/

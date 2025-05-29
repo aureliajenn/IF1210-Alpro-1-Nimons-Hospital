@@ -27,6 +27,7 @@ User *user = NULL;
 User *users = NULL;
 Penyakit *penyakits = NULL;
 Map *map = NULL;
+Hospital *rumahSakit = NULL;
 
 int jumlah_user = 0;
 int jumlah_penyakit = 0;
@@ -44,6 +45,20 @@ int main(int argc, char *argv[])
     if (!user)
     {
         perror("Gagal mengalokasikan user");
+        return 1;
+    }
+
+    rumahSakit = malloc(sizeof(Hospital));
+    if (!rumahSakit)
+    {
+        perror("Gagal mengalokasikan RS");
+        return 1;
+    }
+
+    map = malloc(sizeof(Map));
+    if (!map)
+    {
+        perror("Gagal mengalokasikan map");
         return 1;
     }
 
@@ -77,29 +92,12 @@ int main(int argc, char *argv[])
     const char *folder = argv[1];
     load(folder);
 
-    jumlah_user = jumlah_penyakit = 0;
-    ParseTarget pt = {users, &jumlah_user};
-    ParsePenyakit pp = {penyakits, &jumlah_penyakit};
-
-    char user_path[256], penyakit_path[256];
-    char config_path[256];
-    snprintf(config_path, sizeof(config_path), "data/%s/config.txt", folder);
-    snprintf(user_path, sizeof(user_path), "data/%s/user.csv", folder);
-    snprintf(penyakit_path, sizeof(penyakit_path), "data/%s/penyakit.csv", folder);
-    
-
-    CSVtoArr(user_path, handleUserRow, &pt);
-    CSVtoArr(penyakit_path, handlePenyakitRow, &pp);
-
     if (jumlah_user > 0)
     {
         User *temp = realloc(users, jumlah_user * sizeof(User));
         if (temp)
             users = temp;
     }
-
-    map = loadConfig(config_path);
-
 
     do
     {
@@ -153,7 +151,7 @@ int main(int argc, char *argv[])
                     break;
                 case DENAHRUMAHSAKIT:
                     clearScreen();
-                    tampilkanDenahRS(config_path);
+                    tampilkanDenahRS();
                     waitForEnter();
                     break;
                 case LOGOUTP:
@@ -173,7 +171,7 @@ int main(int argc, char *argv[])
                 case DENAHRUMAHSAKITMANAGER:
                     clearScreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
-                    tampilkanDenahRS(config_path);
+                    tampilkanDenahRS();
                     waitForEnter();
                     break;
                 case LIHATUSER:

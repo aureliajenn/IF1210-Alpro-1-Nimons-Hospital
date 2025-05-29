@@ -45,7 +45,7 @@ void tampilkanDetailRuangan(Hospital *rumahSakit);
 
 void tampilkanInventarisObat(Hospital *rumahSakit);
 
-void tampilkanDenahRS(const char *fileKonfigurasi);
+void tampilkanDenahRS();
 
 
 #endif // DENAH_H

@@ -8,11 +8,11 @@ void initPerutStack(StackPerut *stack, int capacity) {
     stack->capacity = capacity;
 }
 
-bool isPerutFull(StackPerut *stack) {
+boolean isPerutFull(StackPerut *stack) {
     return (stack->top == stack->capacity - 1);
 }
 
-bool isPerutEmpty(StackPerut *stack) {
+boolean isPerutEmpty(StackPerut *stack) {
     return (stack->top == -1);
 }
 

@@ -2,7 +2,7 @@
 #define MAP_H
 
 #include "Queue.h"
-#include "../Model/model.h"
+#include "../../Model/model.h"
 
 typedef struct Dokter {
     int id;
