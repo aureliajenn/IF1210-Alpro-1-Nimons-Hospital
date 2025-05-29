@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit) {
+int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit){
     FILE *file = fopen(namaFile, "r");
     if (file == NULL) {
         printf("Error: Gagal membuka file %s\n", namaFile);
@@ -202,7 +202,7 @@ void tampilkanInventarisObat(Hospital *rumahSakit) {
 void tampilkanDenahRS() {
     extern Hospital *rumahSakit;
 
-        tampilkanDenahRumahSakit(&rumahSakit);
-        tampilkanDetailRuangan(&rumahSakit);
-        tampilkanInventarisObat(&rumahSakit);
+        tampilkanDenahRumahSakit(rumahSakit);
+        tampilkanDetailRuangan(rumahSakit);
+        tampilkanInventarisObat(rumahSakit);
 }

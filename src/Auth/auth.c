@@ -13,13 +13,9 @@ int login()
     int valid = 0, format;
     char nama[MAX_LINE_LEN], role[MAX_LINE_LEN];
 
-    if (user == NULL)
-        user = malloc(sizeof(User));
-
     clearScreen();
     cekFormatUsn(&format, user);
     strcpy(nama, user->identitas.username);
-
     printf("Password: ");
     scanf("%s", user->identitas.password);
 
