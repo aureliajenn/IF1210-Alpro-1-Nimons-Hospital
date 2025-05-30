@@ -1,9 +1,4 @@
-#ifndef DENAH_H
-#define DENAH_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#pragma once
 
 #define MAX_LINE_LENGTH 100
 #define MAX_ROOMS 20
@@ -46,6 +41,3 @@ void tampilkanDetailRuangan(Hospital *rumahSakit);
 void tampilkanInventarisObat(Hospital *rumahSakit);
 
 void tampilkanDenahRS();
-
-
-#endif // DENAH_H

@@ -1,4 +1,4 @@
-#include "label.h"
+#include "main.h"
 
 void labelRS(){
     printf("=====================================\n");

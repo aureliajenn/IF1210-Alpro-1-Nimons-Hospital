@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "antriansaya.h"
+#include "main.h"
 
 int lamanLihatAntrianSaya() {
     extern User *user;
@@ -77,7 +74,7 @@ int lamanLihatAntrianSaya() {
     if (!found)
     {
         printf("Anda belum terdaftar dalam antrian check-up!\n");
-        printf("Silakan daftar terlebih dahulu dengan command DAFTAR_CHECKUP.\n");
+        printf("Silakan Daftar Check-Up terlebih dahulu.\n");
     }
 
     return 1;

@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <string.h>
 
 void help(const char role[], const char username[]) {
     printf("============= HELP =============\n\n");

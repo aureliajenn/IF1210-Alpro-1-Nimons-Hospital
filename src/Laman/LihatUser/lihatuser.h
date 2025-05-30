@@ -1,6 +1,3 @@
-#ifndef LIHATUSER_H
-#define LIHATUSER_H
-#include "../../Model/model.h"
-int lamanLihatUser();
+#pragma once
 
-#endif LIHATUSER_H
+int lamanLihatUser();

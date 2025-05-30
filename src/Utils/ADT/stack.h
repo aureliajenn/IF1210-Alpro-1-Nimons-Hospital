@@ -1,7 +1,5 @@
-#ifndef STACK_H
-#define STACK_H
+#pragma once
 
-#include "../../Model/model.h"
 #include "../Boolean.h"
 
 void initPerutStack(StackPerut *stack, int capacity);
@@ -30,5 +28,3 @@ int popFromPerut(User *user, Obat *obat);
 /*I.S. Stack terdefinisi, mungkin kosong.*/
 /*F.S. Elemen puncak stack dikeluarkan dan disimpan ke obat, top berkurang 1.*/
 /*      Mengembalikan 1 jika berhasil, 0 jika stack kosong (tidak terjadi perubahan).*/
-
-#endif

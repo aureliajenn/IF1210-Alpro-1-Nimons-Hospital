@@ -1,8 +1,4 @@
-#include "Map.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "main.h"
 
 extern User *user;
 
@@ -16,13 +12,30 @@ Map* createMap(int capacity) {
     map->size = 0;
     map->rows = 0;
     map->cols = 0;
+
     map->dokter = malloc(sizeof(Dokter*) * capacity);
     if (map->dokter == NULL) {
         perror("Failed to allocate memory for doctors array");
+        free(map);
         exit(1);
+    }
+
+    for (int i = 0; i < capacity; i++) {
+        map->dokter[i] = malloc(sizeof(Dokter));
+        if (map->dokter[i] == NULL) {
+            perror("Failed to allocate memory for dokter");
+            // Bebaskan yang sudah dialokasikan sebelumnya
+            for (int j = 0; j < i; j++) {
+                free(map->dokter[j]);
+            }
+            free(map->dokter);
+            free(map);
+            exit(1);
+        }
     }
     return map;
 }
+
 
 void insertDoctor(Map *map, Dokter *doctor) {
     if (map->size >= map->capacity) {

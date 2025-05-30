@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -g -Wall -I./src  # Menambahkan path ke folder src untuk mencari file header
+INCLUDES = -I. $(addprefix -I, $(shell find src -type d))
+CFLAGS = -Wall -Wextra -std=c99 $(INCLUDES)
 TARGET = main
 TARGET_DIR = build
 

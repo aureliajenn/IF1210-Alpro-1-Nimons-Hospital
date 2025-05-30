@@ -1,6 +1,4 @@
-#include "stack.h"
-#include <stdlib.h>
-#include <string.h>
+#include "main.h"
 
 void initPerutStack(StackPerut *stack, int capacity) {
     stack->items = malloc(capacity * sizeof(Obat));
@@ -17,25 +15,25 @@ boolean isPerutEmpty(StackPerut *stack) {
 }
 
 int pushObat(User *user, int obatId, const char *obatNama) {
-    if (isPerutFull(&user->perut)) {
+    if (isPerutFull(&user->kondisi.perut)) {
         return 0;
     }
 
-    user->perut.top++;
-    user->perut.items[user->perut.top].id = obatId;
-    strncpy(user->perut.items[user->perut.top].nama, obatNama, 49);
-    user->perut.items[user->perut.top].nama[49] = '\0';
+    user->kondisi.perut.top++;
+    user->kondisi.perut.items[user->kondisi.perut.top].id = obatId;
+    strncpy(user->kondisi.perut.items[user->kondisi.perut.top].nama, obatNama, 49);
+    user->kondisi.perut.items[user->kondisi.perut.top].nama[49] = '\0';
 
     return 1;
 }
 
 int popObat(User *user, Obat *obat) {
-    if (isPerutEmpty(&user->perut)) {
+    if (isPerutEmpty(&user->kondisi.perut)) {
         return 0;
     }
 
-    *obat = user->perut.items[user->perut.top];
-    user->perut.top--;
+    *obat = user->kondisi.perut.items[user->kondisi.perut.top];
+    user->kondisi.perut.top--;
 
     return 1;
 }

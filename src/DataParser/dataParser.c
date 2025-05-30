@@ -1,4 +1,4 @@
-#include "dataParser.h"
+#include "main.h"
 
 void ArrtoCSV(const char *filename, CSVRowHandler handler, void *target){
     FILE *file = fopen(filename, "w");
@@ -85,9 +85,13 @@ void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target) {
 
     User u;
     u.identitas.id = atoi(fields[0]);
+    stripNewline(fields[1]);
     strcpy(u.identitas.username, fields[1]);
+    stripNewline(fields[2]);
     strcpy(u.identitas.password, fields[2]);
+    stripNewline(fields[3]);
     strcpy(u.identitas.role, fields[3]);
+    stripNewline(fields[4]);
     strcpy(u.kondisi.riwayat_penyakit, fields[4]);
     u.kondisi.suhu_tubuh = atof(fields[5]);
     u.kondisi.tekanan_darah_sistolik = atoi(fields[6]);
@@ -100,15 +104,24 @@ void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target) {
     u.kondisi.kadar_kolesterol = atoi(fields[13]);
     u.kondisi.kadar_kolesterol_ldl = atoi(fields[14]);
     u.kondisi.trombosit = atoi(fields[15]);
-    
+
+    u.kondisi.jumlahObat = 0;  // kosong saat awal
+
+    // Inisialisasi StackPerut
+    u.kondisi.perut.items = malloc(10 * sizeof(Obat)); // alokasi awal
+    u.kondisi.perut.top = -1;
+    u.kondisi.perut.capacity = 10;
+
     pt->arr[(*pt->jumlah)++] = u;
 }
+
 
 void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target) {
     ParsePenyakit *pp = (ParsePenyakit *)target;  // cast target ke struct kita
 
     Penyakit p;
     p.id = atoi(fields[0]);
+    stripNewline(fields[1]);
     strcpy(p.nama, fields[1]);
     p.suhu_tubuh_min = atof(fields[2]);
     p.suhu_tubuh_max = atof(fields[3]);
@@ -132,4 +145,23 @@ void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target) {
     p.trombosit_max = atoi(fields[21]);
 
     pp->arr[(*pp->jumlah)++] = p;
+}
+
+void handleObatRow(char fields[][MAX_COL_LEN], int count, void *target) {
+    ParseObat *po = (ParseObat *)target;
+
+    Obat o;
+    o.id = atoi(fields[0]);
+    stripNewline(fields[1]);
+    strcpy(o.nama, fields[1]);
+    po->arr[(*po->jumlah)++] = o;
+}
+
+void stripNewline(char *str) {
+    for (int i = 0; str[i]; i++) {
+        if (str[i] == '\r' || str[i] == '\n') {
+            str[i] = '\0';
+            break;
+        }
+    }
 }

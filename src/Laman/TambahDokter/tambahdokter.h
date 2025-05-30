@@ -1,7 +1,3 @@
-#ifndef TAMBAHDOKTER_H
-#define TAMBAHDOKTER_H
-#include "../../Model/model.h"
-#include "../../Utils/utils.h"
-int lamanTambahDokter();
+#pragma once
 
-#endif TAMBAHDOKTER_H
+int lamanTambahDokter();

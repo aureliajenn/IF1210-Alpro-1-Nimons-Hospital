@@ -1,53 +1,146 @@
-#include <stdio.h>
-#include <string.h>
-#include "../daftarcheckup/daftar_checkup.h"
+#include "main.h"
+
+void flush_stdin() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+int is_valid_int(const char *str) {
+    int i = 0;
+    // Bisa ada spasi di depan
+    while (isspace(str[i])) i++;
+
+    // Boleh ada tanda minus (tapi nanti dicek > 0)
+    if (str[i] == '-' || str[i] == '+') i++;
+
+    int digit_found = 0;
+    for (; str[i] != '\0' && str[i] != '\n'; i++) {
+        if (!isdigit(str[i]))
+            return 0;
+        digit_found = 1;
+    }
+    return digit_found;
+}
+
+int is_valid_float(const char *str) {
+    int i = 0;
+    int digit_found = 0;
+    int dot_found = 0;
+
+    while (isspace(str[i])) i++;
+
+    if (str[i] == '-' || str[i] == '+') i++;
+
+    for (; str[i] != '\0' && str[i] != '\n'; i++) {
+        if (str[i] == '.') {
+            if (dot_found) return 0; // lebih dari 1 titik
+            dot_found = 1;
+        } else if (!isdigit(str[i])) {
+            return 0;
+        } else {
+            digit_found = 1;
+        }
+    }
+    return digit_found;
+}
 
 void validateData(char *head, char *desc, int *data) {
-	printf("%s (%s): ", head, desc);
-	scanf("%d", data);
-	while (data < 0) {
-		for (int i = 0; i < strlen(head); i++) {
-			if (i > 0) {
-				printf("%c", toLowerCase(head[i]));
-			} else {
-				printf("%c", head[i]);
-			}
-		}
-		printf(" harus berupa angka positif!\n");
-		scanf("%d", data);
-	}
+    char input[100];
+    long val;
+    char *endptr;
+
+    while (1) {
+        printf("%s (%s): ", head, desc);
+        if (!fgets(input, sizeof(input), stdin)) {
+            // Error input
+            printf("Input error!\n");
+            continue;
+        }
+        if (!is_valid_int(input)) {
+            printf("%s harus berupa angka bulat positif!\n", head);
+            continue;
+        }
+        val = strtol(input, &endptr, 10);
+        if (val < 0) {
+            printf("%s harus berupa angka bulat positif!\n", head);
+            continue;
+        }
+        *data = (int)val;
+        break;
+    }
 }
 
 void validatefData(char *head, char *desc, float *data) {
-	printf("%s (%s): ", head, desc);
-	scanf("%d", data);
-	while (data < 0) {
-		for (int i = 0; i < strlen(head); i++) {
-			if (i > 0) {
-				printf("%c", toLowerCase(head[i]));
-			} else {
-				printf("%c", head[i]);
-			}
-		}
-		printf(" harus berupa angka positif!\n");
-		scanf("%d", data);
-	}
+    char input[100];
+    float val;
+
+    while (1) {
+        printf("%s (%s): ", head, desc);
+        if (!fgets(input, sizeof(input), stdin)) {
+            printf("Input error!\n");
+            continue;
+        }
+        if (!is_valid_float(input)) {
+            printf("%s harus berupa angka positif!\n", head);
+            continue;
+        }
+        val = strtof(input, NULL);
+        if (val < 0) {
+            printf("%s harus berupa angka positif!\n", head);
+            continue;
+        }
+        *data = val;
+        break;
+    }
 }
 
 void validate2Data(char *head, char *desc, int *data1, int *data2) {
-	printf("%s (%s): ", head, desc);
-	scanf("%d %d", data1, data2);
-	while (*data1 < 0 || *data2 < 0) {
-		for (int i = 0; i < strlen(head); i++) {
-			if (i > 0) {
-				printf("%c", toLowerCase(head[i]));
-			} else {
-				printf("%c", head[i]);
-			}
-		}
-		printf(" harus berupa angka positif!\n");
-		scanf("%d %d", data1, data2);
-	}
+    char input[100];
+    long val1, val2;
+    char *p1, *p2;
+
+    while (1) {
+        printf("%s (%s): ", head, desc);
+        if (!fgets(input, sizeof(input), stdin)) {
+            printf("Input error!\n");
+            continue;
+        }
+
+        // Split manual: cari spasi pertama
+        p1 = input;
+        while (*p1 && isspace(*p1)) p1++; // skip leading spaces
+
+        p2 = p1;
+        while (*p2 && !isspace(*p2)) p2++; // end of first number
+
+        if (*p2 == '\0' || *p2 == '\n') {
+            printf("%s harus berupa dua angka bulat positif dipisah spasi!\n", head);
+            continue;
+        }
+
+        // ganti spasi jadi \0 buat pisah string
+        *p2 = '\0';
+        p2++;
+        while (*p2 && isspace(*p2)) p2++; // skip spasi ke angka kedua
+
+        // Validasi keduanya
+        if (!is_valid_int(p1) || !is_valid_int(p2)) {
+            printf("%s harus berupa dua angka bulat positif dipisah spasi!\n", head);
+            continue;
+        }
+
+        val1 = strtol(p1, NULL, 10);
+        val2 = strtol(p2, NULL, 10);
+
+        if (val1 < 0 || val2 < 0) {
+            printf("%s harus berupa dua angka bulat positif dipisah spasi!\n", head);
+            continue;
+        }
+
+        *data1 = (int)val1;
+        *data2 = (int)val2;
+        break;
+    }
 }
 
 Map* getavailableDokter(Map* map) {
@@ -123,7 +216,7 @@ void daftar_checkup() {
     int sistol, diastol, bpm, gula, kolestrol, ldl, trombosit;
 
     printf("Silakan masukkan data check-up Anda:\n");
-
+    flush_stdin();
     validatefData("Suhu Tubuh", "Celcius", &suhu);
 	validate2Data("Tekanan Darah", "sistol/diastol, contoh 120 80", &sistol, &diastol);
 	validateData("Detak Jantung", "bpm", &bpm);
@@ -192,18 +285,21 @@ void daftar_checkup() {
     user->kondisi.kadar_kolesterol_ldl = ldl;
     user->kondisi.trombosit = trombosit;
 
-    users[user->identitas.id - 1].kondisi.suhu_tubuh = suhu;
-    users[user->identitas.id - 1].kondisi.tekanan_darah_sistolik = sistol;
-    users[user->identitas.id - 1].kondisi.tekanan_darah_diastolik = diastol;
-    users[user->identitas.id - 1].kondisi.detak_jantung = bpm;
-    users[user->identitas.id - 1].kondisi.saturasi_oksigen = oksigen;
-    users[user->identitas.id - 1].kondisi.kadar_gula_darah = gula;
-    users[user->identitas.id - 1].kondisi.berat_badan = berat;
-    users[user->identitas.id - 1].kondisi.tinggi_badan = tinggi;
-    users[user->identitas.id - 1].kondisi.kadar_kolesterol = kolestrol;
-    users[user->identitas.id - 1].kondisi.kadar_kolesterol_ldl = ldl;
-    users[user->identitas.id - 1].kondisi.trombosit = trombosit;
-
+    for(int i=0;i< jumlah_user;i++){
+        if(users[i].identitas.id == user->identitas.id){
+            users[i].kondisi.suhu_tubuh = suhu;
+            users[i].kondisi.tekanan_darah_sistolik = sistol;
+            users[i].kondisi.tekanan_darah_diastolik = diastol;
+            users[i].kondisi.detak_jantung = bpm;
+            users[i].kondisi.saturasi_oksigen = oksigen;
+            users[i].kondisi.kadar_gula_darah = gula;
+            users[i].kondisi.berat_badan = berat;
+            users[i].kondisi.tinggi_badan = tinggi;
+            users[i].kondisi.kadar_kolesterol = kolestrol;
+            users[i].kondisi.kadar_kolesterol_ldl = ldl;
+            users[i].kondisi.trombosit = trombosit;
+        }
+    }
 
     map->dokter[pilihan - 1]->queueLength++;
     if(map->dokter[pilihan - 1]->jumlahPasienDalamRuangan <= map->maxPasienDalamRuangan) {
