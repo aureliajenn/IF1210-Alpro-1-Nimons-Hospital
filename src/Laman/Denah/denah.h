@@ -30,14 +30,17 @@ typedef struct {
     int medicineCount;   // Jumlah informasi obat
 } Hospital;
 
-void dapatkanLabelRuangan(int indeks, char *label, int kolom);
+const char *dapatkanUsername(User *users, int userCount, int id, const char *role);
+
+void dapatkanLabelRuangan(int index, char *labelRuangan, int cols);
 
 int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit);
 
 void tampilkanDenahRumahSakit(Hospital *rumahSakit);
 
-void tampilkanDetailRuangan(Hospital *rumahSakit);
+void tampilkanDetailRuangan(Hospital *rumahSakit, char *kodeRuangan, User *users, int userCount);
 
 void tampilkanInventarisObat(Hospital *rumahSakit);
+
 
 void tampilkanDenahRS();
