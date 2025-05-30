@@ -1,23 +1,4 @@
-#include "src/Model/model.h"
-#include "src/Label/label.h"
-#include "src/DataParser/dataParser.h"
-#include "src/Laman/pasien.h"
-#include "src/Laman/manager.h"
-#include "src/Laman/dokter.h"
-#include "src/Utils/save.h"
-#include "src/Utils/load.h"
-#include "src/Laman/Denah/denah.h"
-#include "src/Auth/auth.h"
-#include "src/Laman/LihatUser/lihatuser.h"
-#include "src/Laman/CariUser/cariuser.h"
-#include "src/Laman/TambahDokter/tambahdokter.h"
-#include "src/Laman/daftarcheckup/daftar_checkup.h"
-#include "src/Laman/AntrianSaya/antriansaya.h"
-#include "src/Laman/Diagnosis/diagnosis.h"
-
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "main.h"
 
 void labelInput();
 void waitForEnter();
@@ -28,7 +9,9 @@ User *users = NULL;
 Penyakit *penyakits = NULL;
 Map *map = NULL;
 Hospital *rumahSakit = NULL;
+Obat *obats = NULL;
 
+int jumlah_obat = 0;
 int jumlah_user = 0;
 int jumlah_penyakit = 0;
 
@@ -38,7 +21,12 @@ PilihanManager pilihanM;
 PilihanDokter pilihanD;
 
 int isLoggedIn = 0;
-
+void debugPrintInventory(User u) {
+    printf("Inventory User ID %d (%s):\n", u.identitas.id, u.identitas.username);
+    for (int i = 0; i < u.kondisi.jumlahObat; i++) {
+        printf(" %d - %s\n",u.kondisi.jumlahObat, u.kondisi.inventory[i].nama);
+    }
+}
 int main(int argc, char *argv[])
 {
     user = malloc(sizeof(User));
@@ -70,11 +58,21 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    obats = malloc(MAX_OBAT * sizeof(Obat));
+    if (!obats)
+    {
+        perror("Gagal mengalokasikan array Obat");
+        free(user);
+        free(obats);
+        return 1;
+    }
+
     penyakits = malloc(MAX_USER * sizeof(Penyakit));
     if (!penyakits)
     {
         perror("Gagal mengalokasikan array penyakit");
         free(user);
+        free(obats);
         free(users);
         return 1;
     }
@@ -85,6 +83,7 @@ int main(int argc, char *argv[])
         printf("Usage : ./main <<nama_folder>>\n");
         free(user);
         free(users);
+        free(obats);
         free(penyakits);
         return 1;
     }
@@ -92,19 +91,16 @@ int main(int argc, char *argv[])
     const char *folder = argv[1];
     load(folder);
 
-    if (jumlah_user > 0)
-    {
-        User *temp = realloc(users, jumlah_user * sizeof(User));
-        if (temp)
-            users = temp;
-    }
+    for (int i = 0; i < jumlah_user; i++) {
+    debugPrintInventory(users[i]);
+}
 
     do
     {
       
         if (!isLoggedIn)
         {
-            clearScreen();
+            // clearScreen();
             labelInput();
             switch (pilihan)
             {
@@ -146,6 +142,11 @@ int main(int argc, char *argv[])
                     waitForEnter();
                     break;
                 case MINUMOBAT:
+                    clearScreen();
+                    printf("\n>>> %s\n\n", "MINUM OBAT");
+                    lamanMinumObat();
+                    waitForEnter();
+                    break;
                 case MINUMPENAWAR:
                     waitForEnter();
                     break;
@@ -254,12 +255,12 @@ int main(int argc, char *argv[])
     clearScreen();
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
-    if (user)
-        free(user);
-    if (users)
-        free(users);
-    if (penyakits)
-        free(penyakits);
+    if (user) free(user);
+    if (users) free(users);
+    if (penyakits) free(penyakits);
+    if (obats) free(obats);
+    if (map) free(map);
+    if (rumahSakit) free(rumahSakit);
 
     return 0;
 }

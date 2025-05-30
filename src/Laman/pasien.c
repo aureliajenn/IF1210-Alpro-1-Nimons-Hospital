@@ -1,4 +1,4 @@
-#include "pasien.h"
+#include "main.h"
 
 void lamanPasien()
 {

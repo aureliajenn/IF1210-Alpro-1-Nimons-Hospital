@@ -1,11 +1,3 @@
-// #ifndef DOKTER_H
-// #define DOKTER_H
+#pragma once
 
-// #include <stdio.h>
-// #include <string.h>
-// #include "../DataParser/dataParser.h"
-// #include "../Model/model.h"
-
-// void diagnosis();
-
-// #endif
+void diagnosis();

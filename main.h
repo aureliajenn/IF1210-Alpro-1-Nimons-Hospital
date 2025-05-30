@@ -1,0 +1,32 @@
+#pragma once
+
+#include "src/Auth/auth.h"
+#include "src/DataParser/dataParser.h"
+#include "src/Label/label.h"
+#include "src/Laman/AntrianSaya/antriansaya.h"
+#include "src/Laman/CariUser/cariuser.h"
+#include "src/Laman/daftarcheckup/daftar_checkup.h"
+#include "src/Laman/Denah/denah.h"
+#include "src/Laman/Diagnosis/diagnosis.h"
+#include "src/Laman/LihatUser/lihatuser.h"
+#include "src/Laman/MinumObat/minumobat.h"
+// #include "src/Laman/MinumPenawar/minumpenawar.h"
+#include "src/Laman/TambahDokter/tambahdokter.h"
+#include "src/Laman/dokter.h"
+#include "src/Laman/manager.h"
+#include "src/Laman/pasien.h"
+#include "src/Model/model.h"
+#include "src/Utils/ADT/map.h"
+#include "src/Utils/ADT/queue.h"
+#include "src/Utils/ADT/stack.h"
+#include "src/Utils/Boolean.h"
+#include "src/Utils/help.h"
+#include "src/Utils/save.h"
+#include "src/Utils/load.h"
+#include "src/Utils/utils.h"
+
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/stat.h>
+#include <ctype.h>

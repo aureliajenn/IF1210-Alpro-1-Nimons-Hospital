@@ -1,7 +1,4 @@
-#include "denah.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "main.h"
 
 const char *dapatkanUsername(User *users, int userCount, int id, const char *role)
 {

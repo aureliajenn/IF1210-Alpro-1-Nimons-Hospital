@@ -1,5 +1,4 @@
-#ifndef MODEL_H
-#define MODEL_H
+#pragma once
 
 #define MAX_USER 100
 #define MAX_LINE_LEN 1024
@@ -49,6 +48,17 @@ typedef struct
     char role[MAX_LINE_LEN];
 } Identitas;
 
+typedef struct {
+    int id;
+    char nama[64];
+} Obat;
+
+typedef struct {
+    Obat *items;
+    int top;
+    int capacity;
+} StackPerut;
+
 typedef struct
 {
     char riwayat_penyakit[MAX_LINE_LEN];
@@ -63,28 +73,16 @@ typedef struct
     int kadar_kolesterol;
     int kadar_kolesterol_ldl;
     int trombosit;
+    Obat inventory[MAX_OBAT];
+    int jumlahObat;
+    StackPerut perut;
 
 } KondisiPasien;
-
-
-typedef struct {
-    int id;
-    char nama[50];
-} Obat;
-
-typedef struct {
-    Obat *items;
-    int top;
-    int capacity;
-} StackPerut;
 
 typedef struct
 {
     Identitas identitas;
     KondisiPasien kondisi;
-    Obat inventory[MAX_OBAT];
-    int jumlahObat;
-    StackPerut perut;
 } User;
 
 typedef struct
@@ -113,5 +111,3 @@ typedef struct
     int trombosit_max;
 
 } Penyakit;
-
-#endif

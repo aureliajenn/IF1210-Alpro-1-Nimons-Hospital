@@ -1,12 +1,4 @@
-// File auth.h
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../Model/model.h"
-#include "../Utils/utils.h"
-
-#ifndef AUTH_H
-#define AUTH_H
+#pragma once
 
 int login();
 // Procedure untuk login
@@ -19,5 +11,3 @@ int registerpasien();
 
 void lupaPassword();
 // Procedur untuk user yang lupa password
-
-#endif

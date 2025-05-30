@@ -1,7 +1,6 @@
-#ifndef MINUMOBAT_H
-#define MINUMOBAT_
 #include "../../Model/model.h"
 #include "../../Utils/ADT/stack.h"
+#include "../../Utils/load.h"
 
 void tampilkanDaftarObat(Obat inventory[], int jumlahObat);
 /*Proses: Menampilkan daftar obat. */
@@ -20,4 +19,8 @@ void lamanMinumObat();
 /*            c. Jumlah obat dikurangi satu.*/
 /*            d. Daftar sisa obat ditampilkan jika masih ada.*/
 
-#endif
+void tambahObatDalamPerut(int idPasien, Obat obatBaru);
+
+void tambahObatInventory(int idPasien, Obat obatBaru);
+
+Obat cariObatById(int id);

@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "cariuser.h"
+#include "main.h"
 
 int lamanCariUser(int by)
 {

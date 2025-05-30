@@ -1,5 +1,4 @@
-#include "utils.h"
-#include <stdio.h>
+#include "main.h"
 
 int convertCharToInt(char c) {
     return c - '0'; 

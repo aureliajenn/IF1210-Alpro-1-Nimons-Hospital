@@ -1,37 +1,28 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "minumobat.h"
+#include "main.h"
 
-extern User *user; 
+#define MAX_OBAT 100
+
+extern User *user;
+extern Obat *obats;
+extern int jumlah_obat;
 
 void tampilkanDaftarObat(Obat inventory[], int jumlahObat) {
-    printf("\n==================== DAFTAR OBAT =================\n");
+    printf("==================== DAFTAR OBAT =================\n");
     for (int i = 0; i < jumlahObat; i++) {
         printf("%d. %s\n", i + 1, inventory[i].nama);
     }
-    printf("=================================================\n");
+    printf("=================================================\n\n");
 }
 
 void lamanMinumObat() {
-    if (strcmp(user->identitas.role, "pasien") != 0) {
-        printf("Hanya pasien yang bisa menggunakan fitur ini!\n");
-        return;
-    }
-
-    if (user->jumlahObat == 0) {
+    if (user->kondisi.jumlahObat == 0) {
         printf("Inventory obat kamu kosong!\n");
         return;
     }
 
-    Obat inventoryObat[user->jumlahObat];
-    for (int i = 0; i < user->jumlahObat; i++) {
-        inventoryObat[i].id = user->inventory[i].id;
-        strcpy(inventoryObat[i].nama, user->inventory[i].nama);
-    }
-    tampilkanDaftarObat(inventoryObat, user->jumlahObat);
+    tampilkanDaftarObat(user->kondisi.inventory, user->kondisi.jumlahObat);
 
-    printf("Pilih obat untuk diminum (1-%d): ", user->jumlahObat);
+    {printf("Pilih obat untuk diminum (1 s.d %d): ", user->kondisi.jumlahObat);}
     int pilihan;
     if (scanf("%d", &pilihan) != 1) {
         printf("Input tidak valid!\n");
@@ -39,27 +30,93 @@ void lamanMinumObat() {
         return;
     }
 
-    if (pilihan < 1 || pilihan > user->jumlahObat) {
+    if (pilihan < 1 || pilihan > user->kondisi.jumlahObat) {
         printf("Pilihan nomor tidak tersedia!\n");
         return;
     }
-    int idx = pilihan - 1;
 
-    if (!pushObat(user, inventoryObat[idx].id, inventoryObat[idx].nama)) {
+    // for(int i=0;i<user->kondisi.jumlahObat;i++){printf("%d %s\n\n",i,user->kondisi.inventory[i].nama);}
+
+    int idx = pilihan - 1;
+    Obat *obatTerpilih = &user->kondisi.inventory[idx];
+
+    if (!pushObat(user, obatTerpilih->id, obatTerpilih->nama)) {
         printf("Gagal menyimpan obat ke perut!\n");
         return;
     }
 
-    for (int i = idx; i < user->jumlahObat - 1; i++) {
-        user->inventory[i] = user->inventory[i + 1];
+    for (int i = idx; i < user->kondisi.jumlahObat - 1; i++) {
+        user->kondisi.inventory[i] = user->kondisi.inventory[i + 1];
     }
-    user->jumlahObat--;
-    printf("\nGLEKGLEKGLEK... %s berhasil diminum!!!\n", inventoryObat[idx].nama);
+    user->kondisi.jumlahObat--;
 
-    if (user->jumlahObat > 0) {
+    printf("\nGLEKGLEKGLEK... %s berhasil diminum!!!\n", obatTerpilih->nama);
+
+    if (user->kondisi.jumlahObat > 0) {
         printf("\nSisa obat di inventory:\n");
-        tampilkanDaftarObat(user->inventory, user->jumlahObat);
+        tampilkanDaftarObat(user->kondisi.inventory, user->kondisi.jumlahObat);
     } else {
         printf("\nInventory obat kamu sekarang kosong!\n");
     }
+}
+
+void tambahObatInventory(int idPasien, Obat obatBaru) {
+    User *user = getUserById(idPasien);
+    if (user == NULL) {
+        fprintf(stderr, "Pasien dengan ID %d tidak ditemukan.\n", idPasien);
+        return;
+    }
+    if (user->kondisi.jumlahObat >= MAX_OBAT) {
+        fprintf(stderr, "Inventory penuh. Tidak bisa menambahkan obat lagi.\n");
+        return;
+    }
+
+    user->kondisi.inventory[user->kondisi.jumlahObat++] = obatBaru;
+}
+
+void tambahObatDalamPerut(int idPasien, Obat obatBaru) {
+    User *user = getUserById(idPasien);
+    if (user == NULL) {
+        fprintf(stderr, "Pasien dengan ID %d tidak ditemukan.\n", idPasien);
+        return;
+    }
+
+    StackPerut *perut = &user->kondisi.perut;
+
+    // Alokasi awal stack
+    if (perut->items == NULL || perut->capacity == 0) {
+        perut->capacity = 4;
+        perut->items = malloc(perut->capacity * sizeof(Obat));
+        if (perut->items == NULL) {
+            perror("Gagal mengalokasikan memori untuk perut");
+            exit(EXIT_FAILURE);
+        }
+        perut->top = -1; // stack kosong awal
+    }
+
+    // Perbesar kapasitas jika penuh
+    if (perut->top + 1 >= perut->capacity) {
+        perut->capacity *= 2;
+        Obat *temp = realloc(perut->items, perut->capacity * sizeof(Obat));
+        if (temp == NULL) {
+            perror("Gagal memperluas kapasitas perut");
+            exit(EXIT_FAILURE);
+        }
+        perut->items = temp;
+    }
+
+    // Push ke atas stack
+    perut->items[++perut->top] = obatBaru;
+}
+
+Obat cariObatById(int id) {
+    for (int i = 0; i < jumlah_obat; i++) {
+        if (obats[i].id == id) {
+            return obats[i];
+        }
+    }
+    // Jika tidak ditemukan, return Obat kosong atau default
+    Obat kosong = {0};
+    strcpy(kosong.nama, "Obat Tidak Dikenal");
+    return kosong;
 }

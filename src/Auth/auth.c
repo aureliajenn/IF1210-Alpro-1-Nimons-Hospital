@@ -1,9 +1,4 @@
-#include "auth.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
+#include "main.h"
 
 int login()
 {
@@ -26,9 +21,8 @@ int login()
             if (strcmp(users[i].identitas.password, user->identitas.password) == 0)
             {
                 valid = 1;
-                strcpy(user->identitas.role, users[i].identitas.role);
+                user = &users[i];
                 strcpy(role, user->identitas.role);
-                user->identitas.id = users[i].identitas.id;
                 break;
             }
             else
@@ -59,7 +53,6 @@ void logout()
     extern User *user;
     if (user != NULL)
     {
-        free(user);
         user = NULL;
     }
 }

@@ -1,31 +1,28 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h> // Untuk cek folder
-#include "../Model/model.h"
-#include "../DataParser/dataParser.h"
-#include "../Utils/ADT/map.h"
-#include "../Laman/Denah/denah.h"
+#include "main.h"
 
 // Deklarasi global dari main.c
 extern User *users;
 extern Penyakit *penyakits;
-extern int jumlah_user;
-extern int jumlah_penyakit;
 extern Map *map;
 extern Hospital *rumahSakit;
+extern Obat *obats;
+extern int jumlah_user;
+extern int jumlah_penyakit;
+extern int jumlah_obat;
 
-
+#define MAX_LINE_LEN 256
+#define MAX_OBAT 100
 
 void load(const char *folder_name) {
-    char userpath[256], penyakitpath[256], configpath[256];
+    char userpath[MAX_LINE_LEN], penyakitpath[MAX_LINE_LEN], configpath[MAX_LINE_LEN], obatpath[MAX_LINE_LEN];
 
     sprintf(userpath, "data/%s/user.csv", folder_name);
     sprintf(penyakitpath, "data/%s/penyakit.csv", folder_name);
     sprintf(configpath, "data/%s/config.txt", folder_name);
+    sprintf(obatpath, "data/%s/obat.csv", folder_name);
     
     // Cek apakah folder ada
-    char folderpath[256];
+    char folderpath[MAX_LINE_LEN];
     sprintf(folderpath, "data/%s", folder_name);
 
     struct stat st;
@@ -39,25 +36,39 @@ void load(const char *folder_name) {
 
     ParseTarget pt = {users, &jumlah_user};
     ParsePenyakit pp = {penyakits, &jumlah_penyakit};
+    ParseObat po = {obats,&jumlah_obat};
 
     // Load file CSV ke array
     CSVtoArr(userpath, handleUserRow, &pt);
     CSVtoArr(penyakitpath, handlePenyakitRow, &pp);
+    CSVtoArr(obatpath,handleObatRow, &po);
 
-    // Realloc
-    User *temp_users = realloc(users, jumlah_user * sizeof(User));
-    if (temp_users == NULL) {
-        perror("Gagal realloc users");
-        free(users);
-        exit(1);
+    if (jumlah_user > 0)
+    {
+        User *temp = realloc(users, jumlah_user * sizeof(User));
+        if (temp)
+            users = temp;
     }
-    users = temp_users;
+
+    if (jumlah_penyakit > 0)
+    {
+        Penyakit *temp = realloc(penyakits, jumlah_penyakit * sizeof(Penyakit));
+        if (temp)
+            penyakits = temp;
+    }
+
+    if (jumlah_obat > 0)
+    {
+        Obat *temp = realloc(obats, jumlah_obat * sizeof(Obat));
+        if (temp) obats = temp;
+    }
+
     loadConfig(configpath);
+    // loadObat(obatpath);
     muatDataRumahSakit(configpath,rumahSakit);
-    printf("Loading...\n");
 }
 
-User *getUserById(int id) {
+User* getUserById(int id) {
     for (int i = 0; i < jumlah_user; i++) {
         if (users[i].identitas.id == id) {
             return &users[i];
@@ -65,7 +76,6 @@ User *getUserById(int id) {
     }
     return NULL;
 }
-
 
 void loadConfig(const char *configPath) {
     FILE *file = fopen(configPath, "r");
@@ -76,159 +86,202 @@ void loadConfig(const char *configPath) {
 
     char baris[MAX_LINE_LEN];
     int hitungBaris = 0;
-    int barisD;
-    int kolomD;
+    int totalRuangan = 0;
+    int pasienInventoryCount = 0;
+    int pasienPerutCount = 0;
+    int mode = 0; // 0: ruangan, 1: inventory, 2: perut
 
-     while (fgets(baris, MAX_LINE_LENGTH, file)) {
-        baris[strcspn(baris, "\n")] = 0; 
-        
+    while (fgets(baris, MAX_LINE_LEN, file)) {
+        baris[strcspn(baris, "\n")] = '\0';
         hitungBaris++;
-        
+
         if (hitungBaris == 1) {
-            char rowsStr[10], colsStr[10];
-            int i = 0;
-            
-            while (baris[i] >= '0' && baris[i] <= '9') {
-                rowsStr[i] = baris[i];
-                i++;
-            }
-            rowsStr[i] = '\0';  
-            barisD = convertStringToInt(rowsStr);
-            
-            i++;  
-            int j = 0;
-            while (baris[i] >= '0' && baris[i] <= '9') {
-                colsStr[j] = baris[i];
-                i++;
-                j++;
-            }
-            colsStr[j] = '\0';  
-            kolomD = convertStringToInt(colsStr);
+            int barisD = 0, kolomD = 0;
+            parseDuaAngka(baris, &barisD, &kolomD);
             map = createMap(barisD * kolomD);
             map->rows = barisD;
             map->cols = kolomD;
+            totalRuangan = barisD * kolomD;
         } else if (hitungBaris == 2) {
-            char maxPatientsInRoomStr[10]; char maxPatiensOutRoomStr[10];
-            int i = 0;
-            
-            while (baris[i] >= '0' && baris[i] <= '9') {
-                maxPatientsInRoomStr[i] = baris[i];
-                i++;
+            int maxIn, maxOut;
+            parseDuaAngka(baris, &maxIn, &maxOut);
+            map->maxPasienDalamRuangan = maxIn;
+            map->maxAntrianLuar = maxOut;
+        } else if (hitungBaris >= 3 && hitungBaris < 3 + totalRuangan) {
+            int nilai[100], count = parseAngka(baris, nilai);
+            Dokter *dokter = malloc(sizeof(Dokter));
+            dokter->ruangan = hitungBaris - 3;
+            dokter->queue = createQueue();
+            dokter->jumlahPasienDalamRuangan = 0;
+            dokter->jumlahPasienLuarRuangan = 0;
+            dokter->queueLength = 0;
+
+            if (count == 0 || nilai[0] == 0) {
+                dokter->id = 0;
+                insertDoctor(map, dokter);
+                continue;
             }
-            maxPatientsInRoomStr[i] = '\0';
-            int maxPatientsInRoom = convertStringToInt(maxPatientsInRoomStr);
-            map->maxPasienDalamRuangan = maxPatientsInRoom;
 
-            i++;  
-            int j = 0;
-            while (baris[i] >= '0' && baris[i] <= '9') {
-                maxPatiensOutRoomStr[j] = baris[i];
-                i++;
-                j++;
+            dokter->id = nilai[0];
+            for (int i = 1; i < count; i++) {
+                if (nilai[i] == 0) continue;
+                User *pasien = getUserById(nilai[i]);
+                if (pasien == NULL) continue;
+
+                Pasien p;
+                p.id = pasien->identitas.id;
+                strcpy(p.nama, pasien->identitas.username);
+                p.suhu_tubuh = pasien->kondisi.suhu_tubuh;
+                p.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
+                p.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
+                p.detak_jantung = pasien->kondisi.detak_jantung;
+                p.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
+                p.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
+                p.berat_badan = pasien->kondisi.berat_badan;
+                p.tinggi_badan = pasien->kondisi.tinggi_badan;
+                p.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
+                p.kadar_kolesterol_ldl = pasien->kondisi.kadar_kolesterol_ldl;
+                p.trombosit = pasien->kondisi.trombosit;
+
+                enqueue(dokter->queue, p);
+                if (dokter->jumlahPasienDalamRuangan < map->maxPasienDalamRuangan)
+                    dokter->jumlahPasienDalamRuangan++;
+                else
+                    dokter->jumlahPasienLuarRuangan++;
+
+                dokter->queueLength++;
             }
-            maxPatiensOutRoomStr[j] = '\0'; 
-            int maxPatientsOutRoom = convertStringToInt(maxPatiensOutRoomStr);
-            map->maxAntrianLuar = maxPatientsOutRoom;
-        } else if (hitungBaris <= 8) {
-            int nilai[MAX_PATIENTS + 1]; 
-            int hitungNilai = 0;
-            int i = 0;
-
-            while (baris[i] != '\0') {
-                if (baris[i] >= '0' && baris[i] <= '9') {
-                    char temp[10];
-                    int j = 0;
-                    while (baris[i] >= '0' && baris[i] <= '9') {
-                        temp[j] = baris[i];
-                        j++;
-                        i++;
-                    }
-                    temp[j] = '\0';  
-                    nilai[hitungNilai++] = convertStringToInt(temp);
-                } else {
-                    i++;
-                }
+            insertDoctor(map, dokter);
+        } else if (mode == 0) {
+            pasienInventoryCount = convertStringToInt(baris);
+            mode = 1;
+        } else if (mode == 1 && pasienInventoryCount > 0) {
+            int data[100];
+            int count = parseAngka(baris, data);
+            int idPasien = data[0];
+            for (int i = 1; i < count; i++) {
+                // printf("%d\n\n\n",data[i]);
+                Obat obat = cariObatById(data[i]);
+                // printf("%s\n\n\n",obat.nama);
+                tambahObatInventory(idPasien, obat);
             }
-            
-            if (hitungNilai >= 1) {
-                Dokter *dokter = malloc(sizeof(Dokter));
-                if (dokter == NULL) {
-                    perror("Gagal mengalokasikan memori untuk dokter");
-                    fclose(file);
-                    return;
-                }
-
-                dokter->id = nilai[0];
-                dokter->ruangan = hitungBaris - 3; 
-
-                int jumlahPasienDalamRuangan = 0;
-                int jumlahPasienLuarRuangan = 0;
-                int queueLength = 0;
-                dokter->queue = createQueue(); 
-
-
-                for (int i = 1; i < hitungNilai; i++) {
-                    if (nilai[i] > 0) { 
-                        if (jumlahPasienDalamRuangan < map->maxPasienDalamRuangan) {
-                            jumlahPasienDalamRuangan++; 
-                        } else if (jumlahPasienLuarRuangan < map->maxAntrianLuar) {
-                            jumlahPasienLuarRuangan++;  
-                        }
-                        queueLength++;  
-                        User *pasien = getUserById(nilai[i]);
-                        Pasien pasienData;
-                        pasienData.id = pasien->identitas.id;
-                        strcpy(pasienData.nama, pasien->identitas.username);
-                        pasienData.suhu_tubuh = pasien->kondisi.suhu_tubuh;
-                        pasienData.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
-                        pasienData.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
-                        pasienData.detak_jantung = pasien->kondisi.detak_jantung;
-                        pasienData.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
-                        pasienData.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
-                        pasienData.berat_badan = pasien->kondisi.berat_badan;
-                        pasienData.tinggi_badan = pasien->kondisi.tinggi_badan;
-                        pasienData.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
-                        pasienData.kadar_kolesterol_ldl = pasien->kondisi.kadar_kolesterol_ldl;
-                        pasienData.trombosit = pasien->kondisi.trombosit;
-
-                        enqueue(dokter->queue, pasienData);
-                    }
-                }
-
-                dokter->jumlahPasienDalamRuangan = jumlahPasienDalamRuangan;
-                dokter->jumlahPasienLuarRuangan = jumlahPasienLuarRuangan;
-                dokter->queueLength = queueLength;
-
-
-                if (dokter->id != 0) {
-                    insertDoctor(map, dokter);
-                }
+            pasienInventoryCount--;
+            if (pasienInventoryCount == 0)
+                mode = 2;
+        } else if (mode == 2) {
+            pasienPerutCount = convertStringToInt(baris);
+            mode = 3;
+        } else if (mode == 3 && pasienPerutCount > 0) {
+            int data[100];
+            int count = parseAngka(baris, data);
+            int idPasien = data[0];
+            for (int i = 1; i < count; i++) {
+                Obat obat = cariObatById(data[i]);
+                tambahObatDalamPerut(idPasien, obat);
             }
-        } else {
-            int nilai[MAX_PATIENTS];
-            int hitungNilai = 0;
-            int i = 0;
-            
-            while (baris[i] != '\0') {
-                if (baris[i] >= '0' && baris[i] <= '9') {
-                    char temp[10];
-                    int j = 0;
-                    while (baris[i] >= '0' && baris[i] <= '9') {
-                        temp[j] = baris[i];
-                        j++;
-                        i++;
-                    }
-                    temp[j] = '\0'; 
-                    nilai[hitungNilai++] = convertStringToInt(temp);
-                } else {
-                    i++;
-                }
-            }
-            
-          
+            pasienPerutCount--;
         }
     }
 
-
     fclose(file);
+}
+
+// Helper untuk dua angka (dipisahkan spasi)
+void parseDuaAngka(const char *str, int *a, int *b) {
+    int i = 0, j = 0;
+    char temp[10];
+
+    while (str[i] >= '0' && str[i] <= '9') {
+        temp[j++] = str[i++];
+    }
+    temp[j] = '\0';
+    *a = convertStringToInt(temp);
+
+    while (str[i] && (str[i] < '0' || str[i] > '9')) i++; // skip spasi
+
+    j = 0;
+    while (str[i] >= '0' && str[i] <= '9') {
+        temp[j++] = str[i++];
+    }
+    temp[j] = '\0';
+    *b = convertStringToInt(temp);
+}
+
+// Helper untuk parsing seluruh angka dalam 1 baris ke array
+int parseAngka(const char *str, int *hasil) {
+    int i = 0, j, count = 0;
+    char temp[10];
+
+    while (str[i] != '\0') {
+        while (str[i] != '\0' && (str[i] < '0' || str[i] > '9')) i++;
+        if (str[i] == '\0') break;
+
+        j = 0;
+        while (str[i] >= '0' && str[i] <= '9') {
+            temp[j++] = str[i++];
+        }
+        temp[j] = '\0';
+        hasil[count++] = convertStringToInt(temp);
+    }
+
+    return count;
+}
+
+// void loadObat(const char *filePath) {
+//     FILE *file = fopen(filePath, "r");
+//     if (!file) {
+//         perror("Gagal membuka file obat.txt");
+//         return;
+//     }
+
+//     char line[MAX_LINE_LEN];
+//     int isFirstLine = 1;
+
+//     while (fgets(line, MAX_LINE_LEN, file)) {
+//         line[strcspn(line, "\n")] = '\0'; // hapus newline
+
+//         if (isFirstLine) {
+//             isFirstLine = 0; // skip header
+//             continue;
+//         }
+
+//         int i = 0;
+//         // Ambil ID
+//         int id = 0;
+//         while (line[i] >= '0' && line[i] <= '9') {
+//             id = id * 10 + (line[i] - '0');
+//             i++;
+//         }
+
+//         // Skip semicolon
+//         if (line[i] != ';') continue;
+//         i++;
+
+//         // Ambil nama obat
+//         char nama[50];
+//         int j = 0;
+//         while (line[i] != '\0' && j < 49) {
+//             nama[j++] = line[i++];
+//         }
+//         nama[j] = '\0';
+
+//         // Masukkan ke obats global
+//         obats[jumlah_obat].id = id;
+//         strncpy(obats[jumlah_obat].nama, nama, sizeof(obats[0].nama) - 1);
+//         obats[jumlah_obat].nama[sizeof(obats[0].nama) - 1] = '\0';
+//         jumlah_obat++;
+
+//         if (jumlah_obat >= MAX_OBAT) break;
+//     }
+
+//     fclose(file);
+// }
+
+const char *getNamaObat(int id) {
+    for (int i = 0; i < jumlah_obat; i++) {
+        if (obats[i].id == id) {
+            return obats[i].nama;
+        }
+    }
+    return NULL;
 }

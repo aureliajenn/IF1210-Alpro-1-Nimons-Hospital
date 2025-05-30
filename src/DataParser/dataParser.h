@@ -1,9 +1,5 @@
-#ifndef DATAPARSER_H
-#define DATAPARSER_H
+#pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "../Model/model.h"
 
 #define MAX_USER 100
@@ -16,11 +12,15 @@ typedef struct {
     int *jumlah;
 } ParsePenyakit;
 
-
 typedef struct {
     User *arr;
     int *jumlah;
 } ParseTarget;
+
+typedef struct {
+    Obat *arr;
+    int *jumlah;
+} ParseObat;
 
 typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
 
@@ -34,4 +34,6 @@ void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target);
 
 void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target);
 
-#endif
+void handleObatRow(char fields[][MAX_COL_LEN], int count, void *target);
+
+void stripNewline(char *str);

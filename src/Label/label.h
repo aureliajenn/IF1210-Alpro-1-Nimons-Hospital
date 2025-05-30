@@ -1,4 +1,4 @@
-#include "../Model/model.h"
+#pragma once
 
 void labelRS();
 // Menampilkan label besar "RS K01-N" sebagai user interface
