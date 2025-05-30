@@ -17,7 +17,7 @@ void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target) {
     
     // HEADER
     if (count == -1) {
-        fprintf(file, "id;username;password;role;riwayat_penyakit;suhu_tubuh;tekanan_darah_sistolik;tekanan_darah_diastolik;detak_jantung;saturasi_oksigen;kadar_gula_darah;berat_badan;tinggi_badan;kadar_kolesterol;kadar_kolesterol_ldl;trombosit\n");
+        fprintf(file, "id;username;password;role;riwayat_penyakit;suhu_tubuh;tekanan_darah_sistolik;tekanan_darah_diastolik;detak_jantung;saturasi_oksigen;kadar_gula_darah;berat_badan;tinggi_badan;kadar_kolesterol;trombosit\n");
         
         extern User *users;
         extern int jumlah_user;
@@ -25,7 +25,7 @@ void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target) {
         for (int i = 0; i < jumlah_user; i++) {
             // Tulis setiap baris User
             
-            fprintf(file, "%d;%s;%s;%s;%s;%.2f;%d;%d;%d;%.2f;%d;%.2f;%d;%d;%d;%d\n",
+            fprintf(file, "%d;%s;%s;%s;%s;%.2f;%d;%d;%d;%.2f;%d;%.2f;%d;%d;%d\n",
             i+1,
             users[i].identitas.username,
             users[i].identitas.password,
@@ -40,7 +40,6 @@ void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target) {
             users[i].kondisi.berat_badan,
             users[i].kondisi.tinggi_badan,
             users[i].kondisi.kadar_kolesterol,
-            users[i].kondisi.kadar_kolesterol_ldl,
             users[i].kondisi.trombosit
             );
         }
@@ -102,8 +101,7 @@ void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target) {
     u.kondisi.berat_badan = atof(fields[11]);
     u.kondisi.tinggi_badan = atoi(fields[12]);
     u.kondisi.kadar_kolesterol = atoi(fields[13]);
-    u.kondisi.kadar_kolesterol_ldl = atoi(fields[14]);
-    u.kondisi.trombosit = atoi(fields[15]);
+    u.kondisi.trombosit = atoi(fields[14]);
 
     u.kondisi.jumlahObat = 0;  // kosong saat awal
 

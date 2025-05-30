@@ -2,7 +2,7 @@
 
 void printQueuePositions(Queue *q) {
     if (q == NULL || q->front == NULL) {
-        printf("Queue is empty or uninitialized!\n");
+        printf("Queue kosong atau belum di inisialisasi\n");
         return;
     }
 
@@ -49,6 +49,11 @@ int lamanDiagnosis()
         return 0;
     }
 
+    if (dokter->queue == NULL || dokter->queue->size == 0) {
+        printf("\nAntrian pasien kosong. Kembali ke menu.\n");
+        return 0;
+    }
+
     printQueuePositions(dokter->queue);
     int selectPatient;
     printf("Pilih pasien (1-%d):\n\n", dokter->queue->size);
@@ -78,7 +83,6 @@ int lamanDiagnosis()
            pasien.kondisi.berat_badan >= penyakits[i].berat_badan_min && pasien.kondisi.berat_badan <= penyakits[i].berat_badan_max &&
            pasien.kondisi.tinggi_badan >= penyakits[i].tinggi_badan_min && pasien.kondisi.tinggi_badan <= penyakits[i].tinggi_badan_max &&
            pasien.kondisi.kadar_kolesterol >= penyakits[i].kadar_kolesterol_min && pasien.kondisi.kadar_kolesterol <= penyakits[i].kadar_kolesterol_max &&
-           
            pasien.kondisi.trombosit >= penyakits[i].trombosit_min && pasien.kondisi.trombosit <= penyakits[i].trombosit_max)
         {
             printf("%s terdiagnosa penyakit: %s\n\n", pasien.identitas.username, penyakits[i].nama);

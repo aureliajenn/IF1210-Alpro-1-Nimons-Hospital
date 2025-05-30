@@ -3,7 +3,7 @@
 Queue* createQueue() {
     Queue *q = malloc(sizeof(Queue));
     if (q == NULL) {
-        perror("Failed to allocate memory for queue");
+        perror("Gagal alokasi queue");
         exit(1);
     }
     q->front = q->rear = NULL;
@@ -20,7 +20,7 @@ void enqueue(Queue *q, User p) {
 
     QueueNode *newNode = malloc(sizeof(QueueNode));
     if (newNode == NULL) {
-        perror("Failed to allocate memory for queue node");
+        perror("Gagal alokasi queue node");
         exit(1);
     }
     newNode->patient = p;
@@ -41,7 +41,7 @@ void enqueue(Queue *q, User p) {
 
 User dequeue(Queue *q) {
     if (isQueueEmpty(q)) {
-        perror("Queue is empty, cannot dequeue");
+        perror("Queue kosong, tidak bisa dequeue\n");
         exit(1);
     }
     
@@ -80,7 +80,7 @@ void clearQueue(Queue *q) {
 
 int getQueuePosition(Queue *q, int id) {
     if (q == NULL || q->front == NULL) {
-        printf("Queue is empty or uninitialized!\n");
+        printf("Queue kosong atau belum di inisialisasi\n");
         return -1; 
     }
     

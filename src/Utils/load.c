@@ -140,7 +140,6 @@ void loadConfig(const char *configPath) {
                 p.kondisi.berat_badan = pasien->kondisi.berat_badan;
                 p.kondisi.tinggi_badan = pasien->kondisi.tinggi_badan;
                 p.kondisi.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
-                p.kondisi.kadar_kolesterol_ldl = pasien->kondisi.kadar_kolesterol_ldl;
                 p.kondisi.trombosit = pasien->kondisi.trombosit;
 
                 enqueue(dokter->queue, p);

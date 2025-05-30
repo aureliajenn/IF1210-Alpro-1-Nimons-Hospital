@@ -57,51 +57,68 @@ void logout()
     }
 }
 
-int registerpasien()
-{
+int registerpasien() {
     extern User *user;
     extern User *users;
     extern int jumlah_user;
+
     int format, valid = 1;
 
-    if (user == NULL)
-        user = malloc(sizeof(User));
+    // Buat user baru sementara
+    User *newUser = malloc(sizeof(User));
+    if (!newUser) {
+        perror("Gagal mengalokasikan memori untuk user baru");
+        return 0;
+    }
 
-    //clearscreen();
-    cekFormatUsn(&format, user);
+    // Input username dan validasi format
+    cekFormatUsn(&format, newUser);
 
-    for (int i = 0; i < jumlah_user; i++)
-    {
-        if (strcasecmp(users[i].identitas.username, user->identitas.username) == 0)
-        {
+    // Cek apakah username sudah dipakai
+    for (int i = 0; i < jumlah_user; i++) {
+        if (strcasecmp(users[i].identitas.username, newUser->identitas.username) == 0) {
             valid = 0;
             break;
         }
     }
 
-    if (!valid)
-    {
-        //clearscreen();
-        printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.\n", user->identitas.username);
+    if (!valid) {
+        printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.\n", newUser->identitas.username);
         waitForEnter();
-        free(user);
-        user = NULL;
+        free(newUser);
         return 0;
     }
 
+    // Kalau valid, input password dan lanjut proses
+    printf("Password: ");
+    scanf("%s", newUser->identitas.password);
+
+    // Tentukan ID pasien baru
+    int highestId = 0;
+    for (int i = 0; i < jumlah_user; i++) {
+        if (users[i].identitas.id > highestId) {
+            highestId = users[i].identitas.id;
+        }
+    }
+    newUser->identitas.id = highestId + 1;
+    strcpy(newUser->identitas.role, "pasien");
+
+    // Inisialisasi kondisi kesehatan
+    newUser->kondisi.jumlahObat = 0;
+    newUser->kondisi.perut.top = -1;
+
+    // Reallocate array users
     users = realloc(users, (jumlah_user + 1) * sizeof(User));
-    if (!users)
-    {
+    if (!users) {
         perror("Gagal menambahkan pasien baru");
+        free(newUser);
         exit(1);
     }
 
-    printf("Password: ");
-    scanf("%s", user->identitas.password);
-    strcpy(users[jumlah_user].identitas.username, user->identitas.username);
-    strcpy(users[jumlah_user].identitas.password, user->identitas.password);
-    strcpy(users[jumlah_user].identitas.role, "PASIEN");
-    strcpy(user->identitas.role, "PASIEN");
+    // Copy newUser ke array users dan ke pointer global user
+    users[jumlah_user] = *newUser;
+    if (user != NULL) free(user);  // Bebaskan user lama jika ada
+    user = newUser; // Simpan pointer global user untuk sesi login
 
     jumlah_user++;
     printf("Pasien %s berhasil ditambahkan!\n", user->identitas.username);

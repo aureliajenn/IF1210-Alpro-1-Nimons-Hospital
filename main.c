@@ -21,12 +21,30 @@ PilihanManager pilihanM;
 PilihanDokter pilihanD;
 
 int isLoggedIn = 0;
+
 // void debugPrintInventory(User u) {
 //     printf("Inventory User ID %d (%s):\n", u.identitas.id, u.identitas.username);
 //     for (int i = 0; i < u.kondisi.jumlahObat; i++) {
 //         printf(" %d - %s\n",u.kondisi.jumlahObat, u.kondisi.inventory[i].nama);
 //     }
 // }
+
+// void debugKondisiPasien(User *pasien) {
+//     printf("Debug kondisi pasien '%s':\n", pasien->identitas.username);
+//     printf("  Riwayat penyakit   : %s\n", pasien->kondisi.riwayat_penyakit);
+//     printf("  Suhu tubuh         : %.1f\n", pasien->kondisi.suhu_tubuh);
+//     printf("  Tekanan darah sistolik  : %d\n", pasien->kondisi.tekanan_darah_sistolik);
+//     printf("  Tekanan darah diastolik : %d\n", pasien->kondisi.tekanan_darah_diastolik);
+//     printf("  Detak jantung      : %d\n", pasien->kondisi.detak_jantung);
+//     printf("  Saturasi oksigen   : %.1f\n", pasien->kondisi.saturasi_oksigen);
+//     printf("  Kadar gula darah   : %d\n", pasien->kondisi.kadar_gula_darah);
+//     printf("  Berat badan        : %.1f\n", pasien->kondisi.berat_badan);
+//     printf("  Tinggi badan       : %d\n", pasien->kondisi.tinggi_badan);
+//     printf("  Kadar kolesterol   : %d\n", pasien->kondisi.kadar_kolesterol);
+//     printf("  Trombosit          : %d\n", pasien->kondisi.trombosit);
+//     printf("  Jumlah obat        : %d\n", pasien->kondisi.jumlahObat);
+// }
+
 int main(int argc, char *argv[])
 {
     user = malloc(sizeof(User));
@@ -92,7 +110,7 @@ int main(int argc, char *argv[])
     load(folder);
 
 //     for (int i = 0; i < jumlah_user; i++) {
-//     debugPrintInventory(users[i]);
+//     debugKondisiPasien(&users[i]);
 // }
 
     do
@@ -249,7 +267,7 @@ int main(int argc, char *argv[])
             char folder_name[MAX_LINE_LEN];
             printf("Masukkan nama folder penyimpanan (misal: RSMitraKasih): ");
             scanf("%s", folder_name);
-            save(folder_name);
+            save(folder_name,folder);
         }
     } while (c != 'y' && c != 'n' && c != 'Y' && c != 'N');
 

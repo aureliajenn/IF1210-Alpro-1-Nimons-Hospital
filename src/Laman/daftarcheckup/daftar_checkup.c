@@ -245,7 +245,7 @@ void daftar_checkup() {
     }
 
     float suhu, oksigen, berat, tinggi;
-    int sistol, diastol, bpm, gula, kolestrol, ldl, trombosit;
+    int sistol, diastol, bpm, gula, kolestrol, trombosit;
 
     printf("Silakan masukkan data check-up Anda:\n");
     validatefData("Suhu Tubuh", "Celcius", &suhu);
@@ -256,7 +256,6 @@ void daftar_checkup() {
     validatefData("Berat Badan", "kg", &berat);
     validatefData("Tinggi Badan", "cm", &tinggi);
     validateData("Kadar Kolestrol", "mg/dL", &kolestrol);
-    validateData("Kadar Kolestrol LDL", "mg/dL", &ldl);
     validateData("Trombosit", "ribu/mikroL", &trombosit);
 
     printf("\nBerikut adalah daftar dokter yang tersedia:\n");
@@ -331,7 +330,6 @@ void daftar_checkup() {
     user->kondisi.berat_badan = berat;
     user->kondisi.tinggi_badan = tinggi;
     user->kondisi.kadar_kolesterol = kolestrol;
-    user->kondisi.kadar_kolesterol_ldl = ldl;
     user->kondisi.trombosit = trombosit;
 
     // Update juga ke array users, dan arahkan user ke elemen yang valid
