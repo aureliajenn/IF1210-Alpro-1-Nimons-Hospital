@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
                     break;
                 case DENAHRUMAHSAKIT:
                     //clearscreen();
-                    tampilkanDenahRS();
+                    tampilkanDenahRumahSakit(rumahSakit);
                     waitForEnter();
                     break;
                 case LOGOUTP:
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
                 case DENAHRUMAHSAKITMANAGER:
                     //clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
-                    tampilkanDenahRS();
+                    tampilkanDenahRumahSakit(rumahSakit);
                     waitForEnter();
                     break;
                 case LIHATUSER:
