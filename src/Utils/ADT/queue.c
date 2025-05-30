@@ -11,7 +11,7 @@ Queue* createQueue() {
     return q;
 }
 
-void enqueue(Queue *q, Pasien p) {
+void enqueue(Queue *q, User p) {
     if (q == NULL) {
         printf("Queue tidak diinisialisasi!\n");
         return;
@@ -39,14 +39,14 @@ void enqueue(Queue *q, Pasien p) {
 }
 
 
-Pasien dequeue(Queue *q) {
+User dequeue(Queue *q) {
     if (isQueueEmpty(q)) {
         perror("Queue is empty, cannot dequeue");
         exit(1);
     }
     
     QueueNode *temp = q->front;
-    Pasien dequeuedPatient = temp->patient;
+    User dequeuedPatient = temp->patient;
     q->front = q->front->next;
     if (q->front == NULL) {
         q->rear = NULL;
@@ -63,10 +63,10 @@ int isQueueEmpty(Queue *q) {
 void printQueue(Queue *q) {
     QueueNode *current = q->front;
     while (current != NULL) {
-        printf("id pasien: %d, Nama: %s, Suhu Tubuh: %f, Sistolik: %d, Diastolik: %d, Detak Jantung: %d\n",
-               current->patient.id, current->patient.nama, current->patient.suhu_tubuh,
-               current->patient.tekanan_darah_sistolik, current->patient.tekanan_darah_diastolik,
-               current->patient.detak_jantung);
+        printf("id User: %d, Nama: %s, Suhu Tubuh: %f, Sistolik: %d, Diastolik: %d, Detak Jantung: %d\n",
+               current->patient.identitas.id, current->patient.identitas.username, current->patient.kondisi.suhu_tubuh,
+               current->patient.kondisi.tekanan_darah_sistolik, current->patient.kondisi.tekanan_darah_diastolik,
+               current->patient.kondisi.detak_jantung);
         current = current->next;
     }
 }
@@ -88,7 +88,7 @@ int getQueuePosition(Queue *q, int id) {
     int position = 1;
     
     while (current != NULL) {
-        if (current->patient.id == id) {
+        if (current->patient.identitas.id == id) {
             return position; 
         }
         current = current->next;

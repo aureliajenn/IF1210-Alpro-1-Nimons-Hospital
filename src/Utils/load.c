@@ -90,7 +90,7 @@ void loadConfig(const char *configPath) {
     int pasienInventoryCount = 0;
     int pasienPerutCount = 0;
     int mode = 0; // 0: ruangan, 1: inventory, 2: perut
-
+    
     while (fgets(baris, MAX_LINE_LEN, file)) {
         baris[strcspn(baris, "\n")] = '\0';
         hitungBaris++;
@@ -128,20 +128,20 @@ void loadConfig(const char *configPath) {
                 User *pasien = getUserById(nilai[i]);
                 if (pasien == NULL) continue;
 
-                Pasien p;
-                p.id = pasien->identitas.id;
-                strcpy(p.nama, pasien->identitas.username);
-                p.suhu_tubuh = pasien->kondisi.suhu_tubuh;
-                p.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
-                p.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
-                p.detak_jantung = pasien->kondisi.detak_jantung;
-                p.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
-                p.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
-                p.berat_badan = pasien->kondisi.berat_badan;
-                p.tinggi_badan = pasien->kondisi.tinggi_badan;
-                p.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
-                p.kadar_kolesterol_ldl = pasien->kondisi.kadar_kolesterol_ldl;
-                p.trombosit = pasien->kondisi.trombosit;
+                User p;
+                p.identitas.id = pasien->identitas.id;
+                strcpy(p.identitas.username, pasien->identitas.username);
+                p.kondisi.suhu_tubuh = pasien->kondisi.suhu_tubuh;
+                p.kondisi.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
+                p.kondisi.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
+                p.kondisi.detak_jantung = pasien->kondisi.detak_jantung;
+                p.kondisi.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
+                p.kondisi.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
+                p.kondisi.berat_badan = pasien->kondisi.berat_badan;
+                p.kondisi.tinggi_badan = pasien->kondisi.tinggi_badan;
+                p.kondisi.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
+                p.kondisi.kadar_kolesterol_ldl = pasien->kondisi.kadar_kolesterol_ldl;
+                p.kondisi.trombosit = pasien->kondisi.trombosit;
 
                 enqueue(dokter->queue, p);
                 if (dokter->jumlahPasienDalamRuangan < map->maxPasienDalamRuangan)

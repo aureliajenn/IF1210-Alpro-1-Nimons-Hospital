@@ -1,4 +1,37 @@
 #include "main.h"
+#include <ctype.h>
+
+int parse_int(const char *str, int *out) {
+    int i = 0;
+    int val = 0;
+    int digit_found = 0;
+
+    // Skip spasi
+    while (str[i] && isspace(str[i])) i++;
+
+    // Cek optional tanda + atau -
+    int sign = 1;
+    if (str[i] == '-') {
+        sign = -1;
+        i++;
+    } else if (str[i] == '+') {
+        i++;
+    }
+
+    // Parse digit satu-satu
+    for (; str[i] != '\0' && str[i] != '\n'; i++) {
+        if (!isdigit(str[i])) {
+            return 0; // invalid char selain digit
+        }
+        digit_found = 1;
+        val = val * 10 + (str[i] - '0');
+    }
+
+    if (!digit_found) return 0;
+
+    *out = val * sign;
+    return 1;
+}
 
 void flush_stdin() {
     int c;
@@ -188,7 +221,7 @@ int isSudahNgantri(Map *map, User *user) {
 
             while (current != NULL) {
                 
-                if (current->patient.id == user->identitas.id) {
+                if (current->patient.identitas.id == user->identitas.id) {
                     printf("Anda sudah terdaftar dalam antrian!\n");
                     return 1; 
                 }
@@ -200,44 +233,43 @@ int isSudahNgantri(Map *map, User *user) {
     return 0; 
 }
 
-
-
 void daftar_checkup() {
     extern Map *map;
     extern int jumlah_user;
     extern User *users;
     extern User *user;
+    extern Hospital *rumahSakit;
 
-  if(isSudahNgantri(map, user)==1) {
+    if (isSudahNgantri(map, user) == 1) {
         return;
     }
-  
+
     float suhu, oksigen, berat, tinggi;
     int sistol, diastol, bpm, gula, kolestrol, ldl, trombosit;
 
     printf("Silakan masukkan data check-up Anda:\n");
-    flush_stdin();
     validatefData("Suhu Tubuh", "Celcius", &suhu);
-	validate2Data("Tekanan Darah", "sistol/diastol, contoh 120 80", &sistol, &diastol);
-	validateData("Detak Jantung", "bpm", &bpm);
-	validatefData("Saturasi Oksigen", "%%", &oksigen);
-	validateData("Kadar Gula Darah", "mg/dL", &gula);
-	validatefData("Berat Badan", "kg", &berat);
-	validatefData("Tinggi Badan", "cm", &tinggi);
-	validateData("Kadar Kolestrol", "mg/dL", &kolestrol);
-	validateData("Kadar Kolestrol LDL", "mg/dL", &ldl);
-	validateData("Trombosit", "ribu/mikroL", &trombosit);
+    validate2Data("Tekanan Darah", "sistol/diastol, contoh 120 80", &sistol, &diastol);
+    validateData("Detak Jantung", "bpm", &bpm);
+    validatefData("Saturasi Oksigen", "%%", &oksigen);
+    validateData("Kadar Gula Darah", "mg/dL", &gula);
+    validatefData("Berat Badan", "kg", &berat);
+    validatefData("Tinggi Badan", "cm", &tinggi);
+    validateData("Kadar Kolestrol", "mg/dL", &kolestrol);
+    validateData("Kadar Kolestrol LDL", "mg/dL", &ldl);
+    validateData("Trombosit", "ribu/mikroL", &trombosit);
 
     printf("\nBerikut adalah daftar dokter yang tersedia:\n");
 
-    Map* dokter_list = getavailableDokter(map);
+    Map *dokter_list = getavailableDokter(map);
+
     for (int i = 0; i < dokter_list->size; i++) {
         int dokterId = dokter_list->dokter[i]->id;
-        
         char *dokterName = "DOKTER TIDAK DITEMUKAN";
+
         for (int j = 0; j < jumlah_user; j++) {
             if (strcmpIgnoreCase(users[j].identitas.role, "dokter") == 0 && users[j].identitas.id == dokterId) {
-                dokterName = users[j].identitas.username; 
+                dokterName = users[j].identitas.username;
                 break;
             }
         }
@@ -245,34 +277,51 @@ void daftar_checkup() {
         char labelRuangan[5];
         dapatkanLabelRuangan(dokter_list->dokter[i]->ruangan, labelRuangan, map->cols);
 
-        printf("%d. dr. %s - Ruangan %s (Antrian: %d orang)\n", i+1, dokterName, labelRuangan, dokter_list->dokter[i]->jumlahPasienLuarRuangan);
+        printf("%d. dr. %s - Ruangan %s (Antrian: %d orang)\n", i + 1, dokterName, labelRuangan,
+               dokter_list->dokter[i]->jumlahPasienDalamRuangan + dokter_list->dokter[i]->jumlahPasienLuarRuangan);
     }
-   
 
+    char line[100];
     int pilihan;
+
     do {
         printf("Pilih dokter (1-%d): ", dokter_list->size);
-        scanf("%d", &pilihan);
-    } while (pilihan < 1 || pilihan > dokter_list->size);
 
-    Pasien pasien;
-    pasien.id = user->identitas.id;
-    strncpy(pasien.nama, user->identitas.username, sizeof(pasien.nama) - 1);
-    pasien.nama[sizeof(pasien.nama) - 1] = '\0';
-    
-    
-    pasien.suhu_tubuh = suhu;
-    pasien.tekanan_darah_sistolik = sistol;
-    pasien.tekanan_darah_diastolik = diastol;
-    pasien.detak_jantung = bpm;
-    pasien.saturasi_oksigen = oksigen;
-    pasien.kadar_gula_darah = gula;
-    pasien.berat_badan = berat;
-    pasien.tinggi_badan = tinggi;
-    pasien.kadar_kolesterol = kolestrol;
-    pasien.kadar_kolesterol_ldl = ldl;
-    pasien.trombosit = trombosit;
+        if (!fgets(line, sizeof(line), stdin)) {
+            // Input error, ulangi
+            continue;
+        }
 
+        if (!parse_int(line, &pilihan)) {
+            printf("Input tidak valid, harus angka!\n");
+            continue;
+        }
+
+        if (pilihan < 1 || pilihan > dokter_list->size) {
+            printf("Pilihan di luar rentang!\n");
+            continue;
+        }
+
+        break;
+    } while (1);
+
+
+    int dokterIdTerpilih = dokter_list->dokter[pilihan - 1]->id;
+    User *dokterValid = NULL;
+
+    for (int j = 0; j < jumlah_user; j++) {
+        if (strcmpIgnoreCase(users[j].identitas.role, "dokter") == 0 && users[j].identitas.id == dokterIdTerpilih) {
+            dokterValid = &users[j];
+            break;
+        }
+    }
+
+    if (dokterValid == NULL) {
+        printf("Dokter tidak ditemukan di sistem. Pendaftaran dibatalkan.\n");
+        return;
+    }
+
+    // Isi data kondisi pasien
     user->kondisi.suhu_tubuh = suhu;
     user->kondisi.tekanan_darah_sistolik = sistol;
     user->kondisi.tekanan_darah_diastolik = diastol;
@@ -285,45 +334,47 @@ void daftar_checkup() {
     user->kondisi.kadar_kolesterol_ldl = ldl;
     user->kondisi.trombosit = trombosit;
 
-    for(int i=0;i< jumlah_user;i++){
-        if(users[i].identitas.id == user->identitas.id){
-            users[i].kondisi.suhu_tubuh = suhu;
-            users[i].kondisi.tekanan_darah_sistolik = sistol;
-            users[i].kondisi.tekanan_darah_diastolik = diastol;
-            users[i].kondisi.detak_jantung = bpm;
-            users[i].kondisi.saturasi_oksigen = oksigen;
-            users[i].kondisi.kadar_gula_darah = gula;
-            users[i].kondisi.berat_badan = berat;
-            users[i].kondisi.tinggi_badan = tinggi;
-            users[i].kondisi.kadar_kolesterol = kolestrol;
-            users[i].kondisi.kadar_kolesterol_ldl = ldl;
-            users[i].kondisi.trombosit = trombosit;
-        }
-    }
-
-    map->dokter[pilihan - 1]->queueLength++;
-    if(map->dokter[pilihan - 1]->jumlahPasienDalamRuangan <= map->maxPasienDalamRuangan) {
-        map->dokter[pilihan - 1]->jumlahPasienDalamRuangan++;
-    } else {
-        map->dokter[pilihan - 1]->jumlahPasienLuarRuangan++;
-    }
-
-    enqueue(map->dokter[pilihan - 1]->queue, pasien);
-
-    char *dokterName = "DOKTER TIDAK DITEMUKAN";
-    for (int j = 0; j < jumlah_user; j++) {
-        if (strcmpIgnoreCase(users[j].identitas.role, "dokter") == 0 && users[j].identitas.id == dokter_list->dokter[pilihan - 1]->id) {
-            dokterName = users[j].identitas.username; 
+    // Update juga ke array users, dan arahkan user ke elemen yang valid
+    for (int i = 0; i < jumlah_user; i++) {
+        if (users[i].identitas.id == user->identitas.id) {
+            users[i] = *user;
             break;
         }
     }
 
-    char labelRuangan[5];
-    dapatkanLabelRuangan(dokter_list->dokter[pilihan -1]->ruangan, labelRuangan, map->cols);
+    // Update antrian dokter
+    Dokter *dokterTerpilih = map->dokter[pilihan - 1];
+    dokterTerpilih->queueLength++;
 
-    
+    if (dokterTerpilih->jumlahPasienDalamRuangan <= map->maxPasienDalamRuangan) {
+        dokterTerpilih->jumlahPasienDalamRuangan++;
+    } else {
+        dokterTerpilih->jumlahPasienLuarRuangan++;
+    }
+
+    enqueue(dokterTerpilih->queue, *user);
+
+    // Update Hospital Room
+    int ruangan = dokterTerpilih->ruangan;
+    int pasienId = user->identitas.id;
+
+    for (int i = 0; i < rumahSakit->roomCount; i++) {
+        if (rumahSakit->rooms[i].roomIndex == ruangan) {
+            Room *room = &rumahSakit->rooms[i];
+            if (room->patientCount < MAX_PATIENTS) {
+                room->patients[room->patientCount++] = pasienId;
+            } else {
+                printf("Ruangan %d penuh, tidak bisa update Hospital.\n", ruangan);
+            }
+            break;
+        }
+    }
+
+    // Gunakan nama dari dokterValid karena sudah valid
+    char labelRuangan[5];
+    dapatkanLabelRuangan(dokterTerpilih->ruangan, labelRuangan, map->cols);
+
     printf("\nPendaftaran check-up berhasil!\n");
-    printf("Anda terdaftar pada antrian dokter: %s, di ruangan: %s\n", dokterName, labelRuangan);
-   
-    printf("Posisi antrian Anda: %d\n", map->dokter[pilihan - 1]->queue->size);
+    printf("Anda terdaftar pada antrian dokter: %s, di ruangan: %s\n", dokterValid->identitas.username, labelRuangan);
+    printf("Posisi antrian Anda: %d\n", dokterTerpilih->queue->size);
 }

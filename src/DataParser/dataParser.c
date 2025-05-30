@@ -53,7 +53,7 @@ void CSVtoArr(const char *filename, CSVRowHandler handler, void *target) {
         perror("Gagal membuka file");
         exit(1);
     }
-
+    
     char line[MAX_LINE_LEN];
     fgets(line, sizeof(line), file); // skip header
 

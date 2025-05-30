@@ -21,12 +21,12 @@ PilihanManager pilihanM;
 PilihanDokter pilihanD;
 
 int isLoggedIn = 0;
-void debugPrintInventory(User u) {
-    printf("Inventory User ID %d (%s):\n", u.identitas.id, u.identitas.username);
-    for (int i = 0; i < u.kondisi.jumlahObat; i++) {
-        printf(" %d - %s\n",u.kondisi.jumlahObat, u.kondisi.inventory[i].nama);
-    }
-}
+// void debugPrintInventory(User u) {
+//     printf("Inventory User ID %d (%s):\n", u.identitas.id, u.identitas.username);
+//     for (int i = 0; i < u.kondisi.jumlahObat; i++) {
+//         printf(" %d - %s\n",u.kondisi.jumlahObat, u.kondisi.inventory[i].nama);
+//     }
+// }
 int main(int argc, char *argv[])
 {
     user = malloc(sizeof(User));
@@ -91,16 +91,16 @@ int main(int argc, char *argv[])
     const char *folder = argv[1];
     load(folder);
 
-    for (int i = 0; i < jumlah_user; i++) {
-    debugPrintInventory(users[i]);
-}
+//     for (int i = 0; i < jumlah_user; i++) {
+//     debugPrintInventory(users[i]);
+// }
 
     do
     {
       
         if (!isLoggedIn)
         {
-            // clearScreen();
+            //clearscreen();
             labelInput();
             switch (pilihan)
             {
@@ -124,25 +124,26 @@ int main(int argc, char *argv[])
 
             if (strcasecmp(user->identitas.role, "PASIEN") == 0)
             {
-                clearScreen();
+                //clearscreen();
                 lamanPasien();
 
                 switch (pilihanP)
                 {
                 case DAFTARCHECKUP:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "DAFTAR CHECKUP");
+                    flush_stdin();
                     daftar_checkup();
                     waitForEnter();
                     break;
                 case ANTRIANSAYA:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "ANTRIAN SAYA");
                     lamanLihatAntrianSaya();
                     waitForEnter();
                     break;
                 case MINUMOBAT:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "MINUM OBAT");
                     lamanMinumObat();
                     waitForEnter();
@@ -151,7 +152,7 @@ int main(int argc, char *argv[])
                     waitForEnter();
                     break;
                 case DENAHRUMAHSAKIT:
-                    clearScreen();
+                    //clearscreen();
                     tampilkanDenahRS();
                     waitForEnter();
                     break;
@@ -164,31 +165,31 @@ int main(int argc, char *argv[])
             }
             else if (strcasecmp(user->identitas.role, "MANAGER") == 0)
             {
-                clearScreen();
+                //clearscreen();
                 lamanManager();
 
                 switch (pilihanM)
                 {
                 case DENAHRUMAHSAKITMANAGER:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
                     tampilkanDenahRS();
                     waitForEnter();
                     break;
                 case LIHATUSER:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "LIHAT USER");
                     lamanLihatUser();
                     waitForEnter();
                     break;
                 case CARIUSER:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "CARI USER");
                     lamanCariUser(-1);
                     waitForEnter();
                     break;
                 case TAMBAHDOKTER:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "TAMBAH DOKTER");
                     lamanTambahDokter();
                     waitForEnter();
@@ -202,13 +203,13 @@ int main(int argc, char *argv[])
             }
             else if (strcasecmp(user->identitas.role, "DOKTER") == 0)
             {
-                clearScreen();
+                //clearscreen();
                 lamanDokter();
 
                 switch (pilihanD)
                 {
                 case DIAGNOSIS:
-                    clearScreen();
+                    //clearscreen();
                     printf("\n>>> %s\n\n", "DIAGNOSIS");
                     lamanDiagnosis();
                     waitForEnter();
@@ -237,7 +238,7 @@ int main(int argc, char *argv[])
 
     } while (pilihan != EXIT);
 
-    clearScreen();
+    //clearscreen();
     char c;
     do
     {
@@ -252,7 +253,7 @@ int main(int argc, char *argv[])
         }
     } while (c != 'y' && c != 'n' && c != 'Y' && c != 'N');
 
-    clearScreen();
+    //clearscreen();
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
     if (user) free(user);
@@ -280,5 +281,5 @@ void waitForEnter()
     printf("\nTekan Enter untuk kembali ke menu...");
     cleanInputBuffer();
     getchar();
-    clearScreen();
+    //clearscreen();
 }

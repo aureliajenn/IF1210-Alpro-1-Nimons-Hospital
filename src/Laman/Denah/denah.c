@@ -162,14 +162,25 @@ void tampilkanDetailRuangan(Hospital *rumahSakit) {
             printf("Dokter ID %d, ", rumahSakit->rooms[i].doctorId);
         }
         
-        if (rumahSakit->rooms[i].patientCount == 0) {
+        int foundPasien = 0;
+        for (int j = 0; j < rumahSakit->rooms[i].patientCount; j++) {
+            if (rumahSakit->rooms[i].patients[j] > 0) {
+                foundPasien = 1;
+                break;
+            }
+        }
+
+        if (!foundPasien) {
             printf("Tidak ada pasien\n");
         } else {
             printf("Pasien: ");
+            int printed = 0;
             for (int j = 0; j < rumahSakit->rooms[i].patientCount; j++) {
-                printf("%d", rumahSakit->rooms[i].patients[j]);
-                if (j < rumahSakit->rooms[i].patientCount - 1) {
-                    printf(", ");
+                int id = rumahSakit->rooms[i].patients[j];
+                if (id > 0) {
+                    if (printed > 0) printf(", ");
+                    printf("%d", id);
+                    printed++;
                 }
             }
             printf("\n");

@@ -8,7 +8,7 @@ int login()
     int valid = 0, format;
     char nama[MAX_LINE_LEN], role[MAX_LINE_LEN];
 
-    clearScreen();
+    //clearscreen();
     cekFormatUsn(&format, user);
     strcpy(nama, user->identitas.username);
     printf("Password: ");
@@ -27,7 +27,7 @@ int login()
             }
             else
             {
-                clearScreen();
+                //clearscreen();
                 printf("\nUsername atau password salah untuk pengguna %s!\n", nama);
                 waitForEnter();
                 return 0;
@@ -37,7 +37,7 @@ int login()
 
     if (!valid)
     {
-        clearScreen();
+        //clearscreen();
         printf("\nTidak ada pengguna dengan username %s!\n", nama);
         waitForEnter();
         return 0;
@@ -67,7 +67,7 @@ int registerpasien()
     if (user == NULL)
         user = malloc(sizeof(User));
 
-    clearScreen();
+    //clearscreen();
     cekFormatUsn(&format, user);
 
     for (int i = 0; i < jumlah_user; i++)
@@ -81,7 +81,7 @@ int registerpasien()
 
     if (!valid)
     {
-        clearScreen();
+        //clearscreen();
         printf("Registrasi gagal! Pasien dengan nama %s sudah terdaftar.\n", user->identitas.username);
         waitForEnter();
         free(user);
@@ -137,31 +137,39 @@ void lupaPassword()
 
     char username[MAX_LINE_LEN];
     char newPassword[MAX_LINE_LEN];
-    char kodeUnik[MAX_LINE_LEN];
+    char inputKodeUnik[MAX_LINE_LEN];
+    char expectedKodeUnik[MAX_LINE_LEN];
     int found = 0;
 
-    clearScreen();
-    printf(">>>Lupa Password\n\n");
+    //clearscreen();
+    printf(">>> Lupa Password\n\n");
 
     printf("Masukkan username Anda: ");
     scanf("%s", username);
 
-    runLengthEncode(username, kodeUnik);
-    printf("Kode Unik: %s\n", kodeUnik);
-
     for (int i = 0; i < jumlah_user; i++)
     {
-        char validKodeUnik[MAX_LINE_LEN];
-        runLengthEncode(users[i].identitas.username, validKodeUnik);
-
         if (strcasecmp(users[i].identitas.username, username) == 0)
         {
             found = 1;
-            printf("Username ditemukan.\n");
-            printf("Masukkan password baru: ");
-            scanf("%s", newPassword);
-            strcpy(users[i].identitas.password, newPassword);
-            printf("Password berhasil diubah untuk %s.\n", username);
+            // Buat kode unik dari username yang ditemukan
+            runLengthEncode(users[i].identitas.username, expectedKodeUnik);
+
+            printf("Masukkan kode unik Anda (berdasarkan username): ");
+            scanf("%s", inputKodeUnik);
+
+            if (strcmp(inputKodeUnik, expectedKodeUnik) == 0)
+            {
+                printf("Kode unik benar.\n");
+                printf("Masukkan password baru: ");
+                scanf("%s", newPassword);
+                strcpy(users[i].identitas.password, newPassword);
+                printf("Password berhasil diubah untuk %s.\n", username);
+            }
+            else
+            {
+                printf("Kode unik salah! Tidak bisa mengganti password.\n");
+            }
             return;
         }
     }
@@ -169,6 +177,5 @@ void lupaPassword()
     if (!found)
     {
         printf("Username tidak ditemukan!\n");
-        waitForEnter();
     }
 }

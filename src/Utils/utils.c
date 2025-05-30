@@ -23,13 +23,13 @@ int convertStringToInt(const char *str) {
     return result;
 }
 
-void clearScreen(){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
+// void //clearscreen(){
+//     #ifdef _WIN32
+//         system("cls");
+//     #else
+//         system("clear");
+//     #endif
+// }
 
 char toLowerCase(char c) {
     if (c >= 'A' && c <= 'Z') {

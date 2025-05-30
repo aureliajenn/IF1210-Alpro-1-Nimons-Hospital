@@ -83,7 +83,7 @@ int lamanLihatUser()
     free(copy); 
 
     if (selectSearchUser == 1) {
-        clearScreen();
+        //clearscreen();
         return lamanCariUser(by);
     } else {
         return 1;
