@@ -65,7 +65,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                 i++;
             }
             rowsStr[i] = '\0';
-            rumahSakit->rows = convertStringToInt(rowsStr);
+            rumahSakit->rows = atoi(rowsStr);
 
             i++;
             int j = 0;
@@ -76,7 +76,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                 j++;
             }
             colsStr[j] = '\0';
-            rumahSakit->cols = convertStringToInt(colsStr);
+            rumahSakit->cols = atoi(colsStr);
         }
         else if (hitungBaris == 2)
         {
@@ -89,7 +89,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                 i++;
             }
             maxPatientsStr[i] = '\0';
-            rumahSakit->maxPatientsPerRoom = convertStringToInt(maxPatientsStr);
+            rumahSakit->maxPatientsPerRoom = atoi(maxPatientsStr);
         }
         else if (hitungBaris <= 8)
         {
@@ -110,7 +110,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                         i++;
                     }
                     temp[j] = '\0';
-                    nilai[hitungNilai++] = convertStringToInt(temp);
+                    nilai[hitungNilai++] = atoi(temp);
                 }
                 else
                 {
@@ -152,7 +152,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                         i++;
                     }
                     temp[j] = '\0';
-                    nilai[hitungNilai++] = convertStringToInt(temp);
+                    nilai[hitungNilai++] = atoi(temp);
                 }
                 else
                 {
@@ -284,4 +284,13 @@ void tampilkanInventarisObat(Hospital *rumahSakit)
             printf("\n");
         }
     }
+}
+
+void dapatkanLabelRuangan(int index, char *labelRuangan, int cols)
+{
+    // Misal: indeks ke-0 = A1, indeks ke-1 = A2, dst.
+    int row = index / cols;
+    int col = index % cols + 1;
+    labelRuangan[0] = 'A' + row;
+    sprintf(labelRuangan + 1, "%d", col);
 }

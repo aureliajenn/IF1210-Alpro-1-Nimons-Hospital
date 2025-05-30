@@ -38,7 +38,7 @@ typedef struct {
 
 const char *dapatkanUsername(User *users, int userCount, int id, const char *role);
 
-void dapatkanLabelRuangan(int indeks, char *label, int kolom);
+void dapatkanLabelRuangan(int index, char *labelRuangan, int cols);
 
 int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit);
 
