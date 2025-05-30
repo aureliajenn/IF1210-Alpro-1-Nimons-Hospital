@@ -62,7 +62,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                 i++;
             }
             rowsStr[i] = '\0';
-            rumahSakit->rows = atoi(rowsStr);
+            rumahSakit->rows = convertStringToInt(rowsStr);
 
             i++;
             int j = 0;
@@ -73,7 +73,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                 j++;
             }
             colsStr[j] = '\0';
-            rumahSakit->cols = atoi(colsStr);
+            rumahSakit->cols = convertStringToInt(colsStr);
         }
         else if (hitungBaris == 2)
         {
@@ -86,7 +86,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                 i++;
             }
             maxPatientsStr[i] = '\0';
-            rumahSakit->maxPatientsPerRoom = atoi(maxPatientsStr);
+            rumahSakit->maxPatientsPerRoom = convertStringToInt(maxPatientsStr);
         }
         else if (hitungBaris <= 8)
         {
@@ -107,7 +107,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                         i++;
                     }
                     temp[j] = '\0';
-                    nilai[hitungNilai++] = atoi(temp);
+                    nilai[hitungNilai++] = convertStringToInt(temp);
                 }
                 else
                 {
@@ -149,7 +149,7 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
                         i++;
                     }
                     temp[j] = '\0';
-                    nilai[hitungNilai++] = atoi(temp);
+                    nilai[hitungNilai++] = convertStringToInt(temp);
                 }
                 else
                 {
