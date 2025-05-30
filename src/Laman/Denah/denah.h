@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../Model/model.h"
 
 #define MAX_LINE_LENGTH 100
 #define MAX_ROOMS 20
@@ -35,17 +36,16 @@ typedef struct {
     int medicineCount;   // Jumlah informasi obat
 } Hospital;
 
+const char *dapatkanUsername(User *users, int userCount, int id, const char *role);
+
 void dapatkanLabelRuangan(int indeks, char *label, int kolom);
 
 int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit);
 
 void tampilkanDenahRumahSakit(Hospital *rumahSakit);
 
-void tampilkanDetailRuangan(Hospital *rumahSakit);
+void tampilkanDetailRuangan(Hospital *rumahSakit, char *kodeRuangan, User *users, int userCount);
 
 void tampilkanInventarisObat(Hospital *rumahSakit);
 
-void tampilkanDenahRS();
-
-
-#endif // DENAH_H
+#endif
