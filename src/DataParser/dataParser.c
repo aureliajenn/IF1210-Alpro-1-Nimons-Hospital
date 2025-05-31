@@ -121,6 +121,16 @@ void handleObatRow(char fields[][MAX_COL_LEN], int count, void *target) {
     po->arr[(*po->jumlah)++] = o;
 }
 
+void handleObatPenyakitRow(char fields[][MAX_COL_LEN], int count, void *target) {
+    ParseObatPenyakit *pop = (ParseObatPenyakit *)target;
+
+    ObatPenyakit op;
+    op.obat_id = atoi(fields[0]);
+    op.penyakit_id = atoi(fields[1]);
+    op.urutan_minum = atoi(fields[2]);
+    pop->arr[(*pop->jumlah)++] = op;
+}
+
 void stripNewline(char *str) {
     for (int i = 0; str[i]; i++) {
         if (str[i] == '\r' || str[i] == '\n') {

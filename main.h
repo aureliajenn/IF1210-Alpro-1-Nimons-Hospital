@@ -10,6 +10,7 @@
 #include "src/Laman/Diagnosis/diagnosis.h"
 #include "src/Laman/LihatUser/lihatuser.h"
 #include "src/Laman/MinumObat/minumobat.h"
+#include "src/Laman/Ngobatin/ngobatin.h"
 // #include "src/Laman/MinumPenawar/minumpenawar.h"
 #include "src/Laman/TambahDokter/tambahdokter.h"
 #include "src/Laman/dokter.h"
