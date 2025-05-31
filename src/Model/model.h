@@ -54,6 +54,12 @@ typedef struct {
 } Obat;
 
 typedef struct {
+    int obat_id;
+    int penyakit_id;
+    int urutan_minum;
+} ObatPenyakit;
+
+typedef struct {
     Obat *items;
     int top;
     int capacity;

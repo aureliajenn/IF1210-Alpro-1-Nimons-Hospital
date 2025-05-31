@@ -10,10 +10,12 @@ Penyakit *penyakits = NULL;
 Map *map = NULL;
 Hospital *rumahSakit = NULL;
 Obat *obats = NULL;
+ObatPenyakit *obat_penyakits = NULL;
 
 int jumlah_obat = 0;
 int jumlah_user = 0;
 int jumlah_penyakit = 0;
+int jumlah_obat_penyakit = 0;
 
 Pilihan pilihan;
 PilihanPasien pilihanP;

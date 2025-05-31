@@ -6,9 +6,11 @@ extern Penyakit *penyakits;
 extern Map *map;
 extern Hospital *rumahSakit;
 extern Obat *obats;
+extern ObatPenyakit *obat_penyakits;
 extern int jumlah_user;
 extern int jumlah_penyakit;
 extern int jumlah_obat;
+extern int jumlah_obat_penyakit;
 
 #define MAX_LINE_LEN 256
 #define MAX_OBAT 100
@@ -33,10 +35,12 @@ void load(const char *folder_name) {
     // Reset jumlah
     jumlah_user = 0;
     jumlah_penyakit = 0;
+    jumlah_obat_penyakit = 0;
 
     ParseTarget pt = {users, &jumlah_user};
     ParsePenyakit pp = {penyakits, &jumlah_penyakit};
     ParseObat po = {obats,&jumlah_obat};
+    ParseObatPenyakit pop = {obats,&jumlah_obat_penyakit};
 
     // Load file CSV ke array
     CSVtoArr(userpath, handleUserRow, &pt);
@@ -61,6 +65,12 @@ void load(const char *folder_name) {
     {
         Obat *temp = realloc(obats, jumlah_obat * sizeof(Obat));
         if (temp) obats = temp;
+    }
+
+    if (jumlah_obat_penyakit > 0)
+    {
+        ObatPenyakit *temp = realloc(obat_penyakits, jumlah_obat_penyakit * sizeof(ObatPenyakit));
+        if (temp) obat_penyakits = temp;
     }
 
     loadConfig(configpath);
@@ -276,6 +286,8 @@ int parseAngka(const char *str, int *hasil) {
 //     fclose(file);
 // }
 
+// void loadObatPenyakit(const char *filePath) {            //loader ObatPenyakit belum ada
+// }
 const char *getNamaObat(int id) {
     for (int i = 0; i < jumlah_obat; i++) {
         if (obats[i].id == id) {
