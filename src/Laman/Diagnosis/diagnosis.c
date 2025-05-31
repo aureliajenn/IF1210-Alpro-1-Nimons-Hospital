@@ -82,6 +82,7 @@ int lamanDiagnosis()
            pasien.trombosit >= penyakits[i].trombosit_min && pasien.trombosit <= penyakits[i].trombosit_max)
         {
             printf("%s terdiagnosa penyakit: %s\n\n", pasien.nama, penyakits[i].nama);
+			strcpy(current->patient.riwayat_penyakit, penyakits[i].nama);
             found =1;
             dequeue(dokter->queue);
             dokter->queueLength--;
