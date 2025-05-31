@@ -1,5 +1,4 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#pragma once
 
 typedef struct Pasien {
     int id;
@@ -37,5 +36,3 @@ int isQueueEmpty(Queue *q);
 void printQueue(Queue *q);
 void clearQueue(Queue *q);
 int getQueuePosition(Queue *q, int id);
-
-#endif

@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "save.h"
-#include "../Auth/auth.h"
-#include "../DataParser/dataParser.h"
+#include "main.h"
 
 void make_folder(const char* path) {
     char command[256];

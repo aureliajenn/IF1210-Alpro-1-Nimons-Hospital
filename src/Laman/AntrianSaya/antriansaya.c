@@ -1,21 +1,41 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "antriansaya.h"
+#include "main.h"
 
-
-int lamanLihatAntrianSaya()
-{
+int lamanLihatAntrianSaya() {
     extern User *user;
     extern Map *map;
+    extern Hospital rumahSakit; 
     int found = 0;
     extern User *users;
     extern int jumlah_user;
 
-    if (map == NULL)
-    {
+    if (map == NULL) {
         printf("Map tidak ditemukan!\n");
         return 0;
+    }
+
+    for (int i = 0; i < rumahSakit.roomCount; i++) {
+        for (int j = 0; j < rumahSakit.rooms[i].patientCount; j++) {
+            if (rumahSakit.rooms[i].patients[j] == user->identitas.id) {
+                char labelRuangan[5];
+                dapatkanLabelRuangan(rumahSakit.rooms[i].roomIndex, labelRuangan, rumahSakit.cols);
+                
+                char *dokterName = "DOKTER TIDAK DITEMUKAN";
+                if (rumahSakit.rooms[i].doctorId != 0) {
+                    for (int k = 0; k < jumlah_user; k++) {
+                        if (users[k].identitas.id == rumahSakit.rooms[i].doctorId && 
+                            strcmpIgnoreCase(users[k].identitas.role, "dokter") == 0) {
+                            dokterName = users[k].identitas.username;
+                            break;
+                        }
+                    }
+                }
+
+                printf("Anda sedang berada di dalam ruangan dokter!\n");
+                printf("Ruangan: %s\n", labelRuangan);
+                printf("Dokter: %s\n", dokterName);
+                return 1;
+            }
+        }
     }
 
     for (int i = 0; i < map->size; i++)
@@ -53,7 +73,8 @@ int lamanLihatAntrianSaya()
 
     if (!found)
     {
-        printf("Anda belum terdaftar dalam antrian check-up!\nSilakan daftar terlebih dahulu dengan command DAFTAR_CHECKUP.\n");
+        printf("Anda belum terdaftar dalam antrian check-up!\n");
+        printf("Silakan Daftar Check-Up terlebih dahulu.\n");
     }
 
     return 1;

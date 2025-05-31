@@ -1,6 +1,3 @@
-#ifndef CARIUSER_H
-#define CARIUSER_H
-#include "../../Model/model.h"
-int lamanCariUser(int by);
+#pragma once
 
-#endif CARIUSER_H
+int lamanCariUser(int by);

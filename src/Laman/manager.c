@@ -1,4 +1,4 @@
-#include "manager.h"
+#include "main.h"
 
 void lamanManager()
 {

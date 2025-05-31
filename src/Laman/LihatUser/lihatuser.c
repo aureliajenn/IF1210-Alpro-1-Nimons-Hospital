@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "lihatuser.h"
-#include "../CariUser/cariuser.h"
+#include "main.h"
 
 int lamanLihatUser()
 {

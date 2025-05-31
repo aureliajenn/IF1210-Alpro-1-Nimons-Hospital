@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "diagnosis.h"
+#include "main.h"
 
 void printQueuePositions(Queue *q) {
     if (q == NULL || q->front == NULL) {

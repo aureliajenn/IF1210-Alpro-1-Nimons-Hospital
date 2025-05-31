@@ -1,3 +1,3 @@
-#include "../Model/model.h"
+#pragma once
 
 void lamanManager();

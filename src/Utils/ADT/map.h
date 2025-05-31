@@ -1,8 +1,6 @@
-#ifndef MAP_H
-#define MAP_H
+#pragma once
 
-#include "Queue.h"
-#include "../Model/model.h"
+#include "queue.h"
 
 typedef struct Dokter {
     int id;
@@ -29,5 +27,3 @@ void insertDoctor(Map *map, Dokter *doctor);
 Dokter* getDoctor(Map *map,  int id);
 void printMap(Map *map);
 void clearMap(Map *map);
-
-#endif

@@ -1,9 +1,4 @@
-#include "auth.h"
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-
+#include "main.h"
 
 int login()
 {
@@ -13,13 +8,9 @@ int login()
     int valid = 0, format;
     char nama[MAX_LINE_LEN], role[MAX_LINE_LEN];
 
-    if (user == NULL)
-        user = malloc(sizeof(User));
-
     clearScreen();
     cekFormatUsn(&format, user);
     strcpy(nama, user->identitas.username);
-
     printf("Password: ");
     scanf("%s", user->identitas.password);
 
@@ -30,9 +21,8 @@ int login()
             if (strcmp(users[i].identitas.password, user->identitas.password) == 0)
             {
                 valid = 1;
-                strcpy(user->identitas.role, users[i].identitas.role);
+                user = &users[i];
                 strcpy(role, user->identitas.role);
-                user->identitas.id = users[i].identitas.id;
                 break;
             }
             else
@@ -63,7 +53,6 @@ void logout()
     extern User *user;
     if (user != NULL)
     {
-        free(user);
         user = NULL;
     }
 }

@@ -1,12 +1,13 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include "ngobatin.h"
+#include "main.h"
 
 int lamanNgobatin(){
     extern User *user;
-    // extern Map *obatpenyakit;    // blm ada
-    // extern int jumlah_obatpenyakit;    // blm ada
+    extern ObatPenyakit *obat_penyakits;
+    extern Penyakit *penyakits;
+    extern Penyakit *obats;
+    extern int jumlah_obat_penyakit;
+    extern int jumlah_penyakit;
+    extern int jumlah_obat;
     extern Map *map;
 
     if (user == NULL || user->identitas.role == NULL)
@@ -21,11 +22,11 @@ int lamanNgobatin(){
         return 0;
     }
 
-    // if (obatpenyakit == NULL || jumlah_obatpenyakit == 0)   //blm ada
-    // {
-    //     printf("Data obat-penyakit tidak ditemukan!\n");
-    //     return 0;
-    // }
+    if (obat_penyakits == NULL || jumlah_obat_penyakit == 0)
+    {
+        printf("Data obat-penyakit tidak ditemukan!\n");
+        return 0;
+    }
 
     Dokter *dokter = getDoctor(map, user->identitas.id);
     if (dokter == NULL)
@@ -42,16 +43,32 @@ int lamanNgobatin(){
         printf("Pasien %s tidak memiliki riwayat penyakit.\n", pasien.nama);
         return 0;
     }
-    // for (int i = 0; i < jumlah_obatpenyakit; i++){
-    //     if (strcmp(pasien.riwayat_penyakit, obatpenyakit->penyakit[i]) == 0){        //blm ada
-    //         printf("Obat yang harus diberikan:\n");
-    //         int j = 0;
-    //         while(obatpenyakit->obat[i][j] != NULL){
-    //             printf("%d. %s\n", j+1, obatpenyakit->obat[i][j]);
-    //             j++;
-    //         }
-    //     }
-    // }
-    // printf("Obat dari penyakit %s tidak ditemukan\n", pasien.riwayat_penyakit);
-    return 1;
+    for (int i = 0; i < jumlah_penyakit; i++){
+        if (strcmp(pasien.riwayat_penyakit, penyakits[i].nama) == 0){
+            printf("Obat yang harus diberikan:\n");
+            int urutan = 1;
+            int found = 1;
+            while (found){
+                found = 0;
+                for (int j = 0; j < jumlah_obat_penyakit; j++){
+                    if (penyakits[i].id == obat_penyakits[j].penyakit_id && urutan == obat_penyakits[i].urutan_minum){
+                        found = 1;
+                        char nama_obat[MAX_LINE_LENGTH];
+                        for (int k = 0; k < jumlah_obat; k++){
+                            if (obat_penyakits[i].obat_id == obats[k].id){
+                            strcpy(nama_obat, obats[k].nama);
+                            break;
+                            }
+                        }
+                        printf("%d. %s\n", urutan, nama_obat);
+                        urutan++;
+                        break;
+                    }
+                }
+            }
+            return 1;
+        }
+    }
+    printf("Obat dari penyakit %s tidak ditemukan\n", pasien.riwayat_penyakit);
+    return 0;
 }

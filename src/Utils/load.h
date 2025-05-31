@@ -1,8 +1,10 @@
-#ifndef LOAD_H
-#define LOAD_H
-#include "../Utils/map.h"
+#pragma once
 
 void load(const char *folder_name);
-Map *loadConfig(const char *configPath);
+void loadConfig(const char *configPath);
+// void loadObat(const char *filePath);
+const char *getNamaObat(int id);
 
-#endif
+void parseDuaAngka(const char *str, int *a, int *b) ;
+int parseAngka(const char *str, int *hasil) ;
+User* getUserById(int id) ;
