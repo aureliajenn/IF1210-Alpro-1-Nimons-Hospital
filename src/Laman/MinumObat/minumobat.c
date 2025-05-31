@@ -62,6 +62,7 @@ void lamanMinumObat() {
 
 void tambahObatInventory(int idPasien, Obat obatBaru) {
     User *user = getUserById(idPasien);
+    
     if (user == NULL) {
         fprintf(stderr, "Pasien dengan ID %d tidak ditemukan.\n", idPasien);
         return;

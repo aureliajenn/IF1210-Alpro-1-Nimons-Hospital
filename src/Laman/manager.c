@@ -9,7 +9,7 @@ void lamanManager()
 
     while (!valid)
     {
-        clearScreen();
+        //clearscreen();
         labelUser();
         printf("\nSelamat datang %s! Ada yang bisa saya bantu?\n\n", user->identitas.username);
         labelMenuManager();
@@ -71,8 +71,4 @@ void lamanManager()
             getchar();
         }
     }
-
-    char *opsi[] = {"", "DENAH RUMAH SAKIT", "LIHAT USER", "CARI USER"};
-    if (pilihanM != LOGOUTM)
-        printf("\n>>> %s\n\n", opsi[pilihanM]);
 }

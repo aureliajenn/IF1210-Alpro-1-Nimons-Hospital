@@ -9,7 +9,7 @@ void lamanPasien()
 
     while (!valid)
     {
-        clearScreen();
+        //clearscreen();
         labelUser();
         printf("\nSelamat pagi %s! Ada keluhan apa?\n\n", user->identitas.username);
         labelMenuPasien();
@@ -82,8 +82,4 @@ void lamanPasien()
             getchar();
         }
     }
-
-    char *opsi[] = {"", "DAFTAR CHECK-UP", "ANTRIAN SAYA", "MINUM OBAT", "MINUM PENAWAR", "DENAH RUMAH SAKIT"};
-    if (pilihanP != LOGOUTP)
-        printf("\n>>> %s\n\n", opsi[pilihanP]);
 }

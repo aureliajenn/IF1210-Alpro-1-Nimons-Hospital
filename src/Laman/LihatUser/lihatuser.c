@@ -69,7 +69,7 @@ int lamanLihatUser()
                copy[i].identitas.id,
                copy[i].identitas.username,
                copy[i].identitas.role,
-               strcmp(copy[i].identitas.role, "PASIEN") == 0 ? copy[i].kondisi.riwayat_penyakit : "-");
+                (strcmpIgnoreCase(copy[i].identitas.role, "PASIEN") == 0 && strlen(copy[i].kondisi.riwayat_penyakit) > 0) ? copy[i].kondisi.riwayat_penyakit : "-");
     }
 
     printf("+------------+---------------------+------------+--------------------+\n");
@@ -83,7 +83,7 @@ int lamanLihatUser()
     free(copy); 
 
     if (selectSearchUser == 1) {
-        clearScreen();
+        //clearscreen();
         return lamanCariUser(by);
     } else {
         return 1;
