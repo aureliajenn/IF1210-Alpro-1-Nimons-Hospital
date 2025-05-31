@@ -88,6 +88,7 @@ int lamanDiagnosis()
         {
             printf("%s terdiagnosa penyakit: %s\n\n", pasien.identitas.username, penyakits[i].nama);
             strcpy(pasien.kondisi.riwayat_penyakit,penyakits[i].nama);
+
             found =1;
             updateUsers(pasien);
             dequeue(dokter->queue);
