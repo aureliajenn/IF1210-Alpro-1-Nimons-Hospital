@@ -54,6 +54,12 @@ typedef struct {
 } Obat;
 
 typedef struct {
+    int obat_id;
+    int penyakit_id;
+    int urutan_minum;
+} ObatPenyakit;
+
+typedef struct {
     Obat *items;
     int top;
     int capacity;
@@ -71,7 +77,6 @@ typedef struct
     float berat_badan;
     int tinggi_badan;
     int kadar_kolesterol;
-    int kadar_kolesterol_ldl;
     int trombosit;
     Obat inventory[MAX_OBAT];
     int jumlahObat;

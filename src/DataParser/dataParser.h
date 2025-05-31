@@ -22,17 +22,22 @@ typedef struct {
     int *jumlah;
 } ParseObat;
 
+typedef struct {
+    ObatPenyakit *arr;
+    int *jumlah;
+} ParseObatPenyakit;
+
 typedef void (*CSVRowHandler)(char fields[][MAX_COL_LEN],int count,void *target);
 
 void ArrtoCSV(const char *filename, CSVRowHandler handler, void *target);
-
-void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target); 
 
 void CSVtoArr(const char *filename, CSVRowHandler handler, void *target);
 
 void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target);
 
 void handlePenyakitRow(char fields[][MAX_COL_LEN], int count, void *target);
+
+void handleObatPenyakitRow(char fields[][MAX_COL_LEN], int count, void *target);
 
 void handleObatRow(char fields[][MAX_COL_LEN], int count, void *target);
 

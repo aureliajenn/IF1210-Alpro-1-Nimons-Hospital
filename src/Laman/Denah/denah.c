@@ -116,19 +116,21 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
             }
 
             if (hitungNilai >= 1)
-            {
-                Room *ruangan = &rumahSakit->rooms[rumahSakit->roomCount];
-                ruangan->roomIndex = hitungBaris - 3;
-                ruangan->doctorId = nilai[0];
-                ruangan->patientCount = hitungNilai - 1;
+{
+    Room *ruangan = &rumahSakit->rooms[rumahSakit->roomCount];
+    ruangan->roomIndex = hitungBaris - 3;
+    ruangan->doctorId = nilai[0];
+    ruangan->patientCount = 0;
 
-                for (int i = 0; i < ruangan->patientCount; i++)
-                {
-                    ruangan->patients[i] = nilai[i + 1];
-                }
+    for (int i = 1; i < hitungNilai; i++) {
+        if (nilai[i] > 0) {
+            ruangan->patients[ruangan->patientCount++] = nilai[i];
+        }
+    }
 
-                rumahSakit->roomCount++;
-            }
+    rumahSakit->roomCount++;
+}
+
         }
         else
         {
@@ -218,10 +220,37 @@ void tampilkanDetailRuangan(Hospital *rumahSakit, char *kodeRuangan, User *users
     {
         char labelRuangan[5];
         dapatkanLabelRuangan(rumahSakit->rooms[i].roomIndex, labelRuangan, rumahSakit->cols);
-        if (strcmp(labelRuangan, kodeRuangan) == 0)
-        {
-            targetIndex = i;
-            break;
+        
+        printf("Ruangan %s: ", labelRuangan);
+        
+        if (rumahSakit->rooms[i].doctorId == 0) {
+            printf("Tidak ada dokter, ");
+        } else {
+            printf("Dokter ID %d, ", rumahSakit->rooms[i].doctorId);
+        }
+        
+        int foundPasien = 0;
+        for (int j = 0; j < rumahSakit->rooms[i].patientCount; j++) {
+            if (rumahSakit->rooms[i].patients[j] > 0) {
+                foundPasien = 1;
+                break;
+            }
+        }
+
+        if (!foundPasien) {
+            printf("Tidak ada pasien\n");
+        } else {
+            printf("Pasien: ");
+            int printed = 0;
+            for (int j = 0; j < rumahSakit->rooms[i].patientCount; j++) {
+                int id = rumahSakit->rooms[i].patients[j];
+                if (id > 0) {
+                    if (printed > 0) printf(", ");
+                    printf("%d", id);
+                    printed++;
+                }
+            }
+            printf("\n");
         }
     }
 

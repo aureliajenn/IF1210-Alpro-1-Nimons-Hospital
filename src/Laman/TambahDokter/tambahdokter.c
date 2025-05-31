@@ -45,7 +45,9 @@ int lamanTambahDokter() {
     // Tambahkan dokter baru ke array
     strcpy(users[jumlah_user].identitas.username, temp_user->identitas.username);
     strcpy(users[jumlah_user].identitas.password, temp_user->identitas.password);
-    strcpy(users[jumlah_user].identitas.role, "DOKTER");
+    strcpy(users[jumlah_user].identitas.role, "dokter");
+    int idBaru = idTertinggi() + 1 ;
+    users[jumlah_user].identitas.id = idBaru;
     
     jumlah_user++;
     printf("Dokter %s berhasil ditambahkan!\n", temp_user->identitas.username);

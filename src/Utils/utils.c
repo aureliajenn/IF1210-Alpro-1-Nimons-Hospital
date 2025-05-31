@@ -3,11 +3,6 @@
 int convertCharToInt(char c) {
     return c - '0'; 
 }
-void dapatkanLabelRuangan(int indeks, char *label, int kolom) {
-    char baris = 'A' + (indeks / kolom);
-    int kol = (indeks % kolom) + 1;
-    sprintf(label, "%c%d", baris, kol);
-}
 
 int convertStringToInt(const char *str) {
     int result = 0;
@@ -23,13 +18,13 @@ int convertStringToInt(const char *str) {
     return result;
 }
 
-void clearScreen(){
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
+// void //clearscreen(){
+//     #ifdef _WIN32
+//         system("cls");
+//     #else
+//         system("clear");
+//     #endif
+// }
 
 char toLowerCase(char c) {
     if (c >= 'A' && c <= 'Z') {

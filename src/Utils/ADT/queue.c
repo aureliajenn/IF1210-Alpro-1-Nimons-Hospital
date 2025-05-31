@@ -3,7 +3,7 @@
 Queue* createQueue() {
     Queue *q = malloc(sizeof(Queue));
     if (q == NULL) {
-        perror("Failed to allocate memory for queue");
+        perror("Gagal alokasi queue");
         exit(1);
     }
     q->front = q->rear = NULL;
@@ -11,7 +11,7 @@ Queue* createQueue() {
     return q;
 }
 
-void enqueue(Queue *q, Pasien p) {
+void enqueue(Queue *q, User p) {
     if (q == NULL) {
         printf("Queue tidak diinisialisasi!\n");
         return;
@@ -20,7 +20,7 @@ void enqueue(Queue *q, Pasien p) {
 
     QueueNode *newNode = malloc(sizeof(QueueNode));
     if (newNode == NULL) {
-        perror("Failed to allocate memory for queue node");
+        perror("Gagal alokasi queue node");
         exit(1);
     }
     newNode->patient = p;
@@ -39,14 +39,14 @@ void enqueue(Queue *q, Pasien p) {
 }
 
 
-Pasien dequeue(Queue *q) {
+User dequeue(Queue *q) {
     if (isQueueEmpty(q)) {
-        perror("Queue is empty, cannot dequeue");
+        perror("Queue kosong, tidak bisa dequeue\n");
         exit(1);
     }
     
     QueueNode *temp = q->front;
-    Pasien dequeuedPatient = temp->patient;
+    User dequeuedPatient = temp->patient;
     q->front = q->front->next;
     if (q->front == NULL) {
         q->rear = NULL;
@@ -63,10 +63,10 @@ int isQueueEmpty(Queue *q) {
 void printQueue(Queue *q) {
     QueueNode *current = q->front;
     while (current != NULL) {
-        printf("id pasien: %d, Nama: %s, Suhu Tubuh: %f, Sistolik: %d, Diastolik: %d, Detak Jantung: %d\n",
-               current->patient.id, current->patient.nama, current->patient.suhu_tubuh,
-               current->patient.tekanan_darah_sistolik, current->patient.tekanan_darah_diastolik,
-               current->patient.detak_jantung);
+        printf("id User: %d, Nama: %s, Suhu Tubuh: %f, Sistolik: %d, Diastolik: %d, Detak Jantung: %d\n",
+               current->patient.identitas.id, current->patient.identitas.username, current->patient.kondisi.suhu_tubuh,
+               current->patient.kondisi.tekanan_darah_sistolik, current->patient.kondisi.tekanan_darah_diastolik,
+               current->patient.kondisi.detak_jantung);
         current = current->next;
     }
 }
@@ -80,7 +80,7 @@ void clearQueue(Queue *q) {
 
 int getQueuePosition(Queue *q, int id) {
     if (q == NULL || q->front == NULL) {
-        printf("Queue is empty or uninitialized!\n");
+        printf("Queue kosong atau belum di inisialisasi\n");
         return -1; 
     }
     
@@ -88,7 +88,7 @@ int getQueuePosition(Queue *q, int id) {
     int position = 1;
     
     while (current != NULL) {
-        if (current->patient.id == id) {
+        if (current->patient.identitas.id == id) {
             return position; 
         }
         current = current->next;

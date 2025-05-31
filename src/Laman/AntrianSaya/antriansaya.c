@@ -46,7 +46,7 @@ int lamanLihatAntrianSaya() {
 
             while (current != NULL)
             {
-                if (current->patient.id == user->identitas.id)
+                if (current->patient.identitas.id == user->identitas.id)
                 {
                     char *dokterName = "DOKTER TIDAK DITEMUKAN";
                     for (int j = 0; j < jumlah_user; j++) {

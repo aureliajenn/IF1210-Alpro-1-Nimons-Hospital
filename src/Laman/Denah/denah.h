@@ -41,6 +41,3 @@ void tampilkanDenahRumahSakit(Hospital *rumahSakit);
 void tampilkanDetailRuangan(Hospital *rumahSakit, char *kodeRuangan, User *users, int userCount);
 
 void tampilkanInventarisObat(Hospital *rumahSakit);
-
-
-void tampilkanDenahRS();

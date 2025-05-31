@@ -53,36 +53,30 @@ void queryAndPrintUserTable(int by, char searchTerm[MAX_LINE_LEN], User *users, 
     int found = 0;
 
     if (by == 1) {
-        // Binary Search by ID (ID bertipe int)
+        // Linear Search by ID
         int searchId = atoi(searchTerm);
-        int left = 0, right = jumlah_user - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            int cmp = users[mid].identitas.id - searchId;
-            if (cmp == 0) {
-                if (strcmpIgnoreCase(role, "ALL") == 0 || strcmpIgnoreCase(users[mid].identitas.role, role) == 0) {
-                    printf("Menampilkan pengguna dengan ID %d:\n", searchId);
-                    printf("+------------+---------------------+------------+--------------------+\n");
-                    printf("| %-10s | %-19s | %-10s | %-18s |\n", "ID", "Nama", "Role", "Penyakit");
-                    printf("+------------+---------------------+------------+--------------------+\n");
-                    printf("| %-10d | %-19s | %-10s | %-18s |\n",
-                        users[mid].identitas.id,
-                        users[mid].identitas.username,
-                        users[mid].identitas.role,
-                        strcmpIgnoreCase(users[mid].identitas.role, "PASIEN") == 0 ? users[mid].kondisi.riwayat_penyakit : "-");
-                    printf("+------------+---------------------+------------+--------------------+\n");
-                    found = 1;
-                }
-                break;
-            } else if (cmp < 0) {
-                left = mid + 1;
-            } else {
-                right = mid - 1;
+        for (int i = 0; i < jumlah_user; i++) {
+            if (users[i].identitas.id == searchId &&
+                (strcmpIgnoreCase(role, "ALL") == 0 || strcmpIgnoreCase(users[i].identitas.role, role) == 0)) {
+                
+                printf("Menampilkan pengguna dengan ID %d:\n", searchId);
+                printf("+------------+---------------------+------------+--------------------+\n");
+                printf("| %-10s | %-19s | %-10s | %-18s |\n", "ID", "Nama", "Role", "Penyakit");
+                printf("+------------+---------------------+------------+--------------------+\n");
+                printf("| %-10d | %-19s | %-10s | %-18s |\n",
+                    users[i].identitas.id,
+                    users[i].identitas.username,
+                    users[i].identitas.role,
+                    (strcmpIgnoreCase(users[i].identitas.role, "PASIEN") == 0 && strlen(users[i].kondisi.riwayat_penyakit) > 0) ? users[i].kondisi.riwayat_penyakit : "-");
+                printf("+------------+---------------------+------------+--------------------+\n");
+                found = 1;
+                break; // Karena ID unik
             }
         }
         if (!found) {
             printf("User dengan ID %d dan role %s tidak ditemukan.\n", searchId, role);
         }
+
     } else if (by == 2) {
         for (int i = 0; i < jumlah_user; i++) {
             if (strcmpIgnoreCase(users[i].identitas.username, searchTerm) == 0 &&
@@ -97,7 +91,7 @@ void queryAndPrintUserTable(int by, char searchTerm[MAX_LINE_LEN], User *users, 
                     users[i].identitas.id,
                     users[i].identitas.username,
                     users[i].identitas.role,
-                    strcmpIgnoreCase(users[i].identitas.role, "PASIEN") == 0 ? users[i].kondisi.riwayat_penyakit : "-");
+                    (strcmpIgnoreCase(users[i].identitas.role, "PASIEN") == 0 && strlen(users[i].kondisi.riwayat_penyakit) > 0) ? users[i].kondisi.riwayat_penyakit : "-");
                 found = 1;
             }
         }
@@ -106,6 +100,7 @@ void queryAndPrintUserTable(int by, char searchTerm[MAX_LINE_LEN], User *users, 
         } else {
             printf("User dengan Nama %s dan role %s tidak ditemukan.\n", searchTerm, role);
         }
+
     } else if (by == 3) {
         for (int i = 0; i < jumlah_user; i++) {
             if (strcmpIgnoreCase(users[i].kondisi.riwayat_penyakit, searchTerm) == 0 &&
@@ -120,7 +115,7 @@ void queryAndPrintUserTable(int by, char searchTerm[MAX_LINE_LEN], User *users, 
                     users[i].identitas.id,
                     users[i].identitas.username,
                     users[i].identitas.role,
-                    strcmpIgnoreCase(users[i].identitas.role, "PASIEN") == 0 ? users[i].kondisi.riwayat_penyakit : "-");
+                    (strcmpIgnoreCase(users[i].identitas.role, "PASIEN") == 0 && strlen(users[i].kondisi.riwayat_penyakit) > 0) ? users[i].kondisi.riwayat_penyakit : "-");
                 found = 1;
             }
         }

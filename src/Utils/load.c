@@ -6,9 +6,11 @@ extern Penyakit *penyakits;
 extern Map *map;
 extern Hospital *rumahSakit;
 extern Obat *obats;
+extern ObatPenyakit *obat_penyakits;
 extern int jumlah_user;
 extern int jumlah_penyakit;
 extern int jumlah_obat;
+extern int jumlah_obat_penyakit;
 
 #define MAX_LINE_LEN 256
 #define MAX_OBAT 100
@@ -33,10 +35,12 @@ void load(const char *folder_name) {
     // Reset jumlah
     jumlah_user = 0;
     jumlah_penyakit = 0;
+    jumlah_obat_penyakit = 0;
 
     ParseTarget pt = {users, &jumlah_user};
     ParsePenyakit pp = {penyakits, &jumlah_penyakit};
     ParseObat po = {obats,&jumlah_obat};
+    ParseObatPenyakit pop = {obats,&jumlah_obat_penyakit};
 
     // Load file CSV ke array
     CSVtoArr(userpath, handleUserRow, &pt);
@@ -61,6 +65,12 @@ void load(const char *folder_name) {
     {
         Obat *temp = realloc(obats, jumlah_obat * sizeof(Obat));
         if (temp) obats = temp;
+    }
+
+    if (jumlah_obat_penyakit > 0)
+    {
+        ObatPenyakit *temp = realloc(obat_penyakits, jumlah_obat_penyakit * sizeof(ObatPenyakit));
+        if (temp) obat_penyakits = temp;
     }
 
     loadConfig(configpath);
@@ -90,7 +100,7 @@ void loadConfig(const char *configPath) {
     int pasienInventoryCount = 0;
     int pasienPerutCount = 0;
     int mode = 0; // 0: ruangan, 1: inventory, 2: perut
-
+    
     while (fgets(baris, MAX_LINE_LEN, file)) {
         baris[strcspn(baris, "\n")] = '\0';
         hitungBaris++;
@@ -128,20 +138,19 @@ void loadConfig(const char *configPath) {
                 User *pasien = getUserById(nilai[i]);
                 if (pasien == NULL) continue;
 
-                Pasien p;
-                p.id = pasien->identitas.id;
-                strcpy(p.nama, pasien->identitas.username);
-                p.suhu_tubuh = pasien->kondisi.suhu_tubuh;
-                p.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
-                p.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
-                p.detak_jantung = pasien->kondisi.detak_jantung;
-                p.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
-                p.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
-                p.berat_badan = pasien->kondisi.berat_badan;
-                p.tinggi_badan = pasien->kondisi.tinggi_badan;
-                p.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
-                p.kadar_kolesterol_ldl = pasien->kondisi.kadar_kolesterol_ldl;
-                p.trombosit = pasien->kondisi.trombosit;
+                User p;
+                p.identitas.id = pasien->identitas.id;
+                strcpy(p.identitas.username, pasien->identitas.username);
+                p.kondisi.suhu_tubuh = pasien->kondisi.suhu_tubuh;
+                p.kondisi.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
+                p.kondisi.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
+                p.kondisi.detak_jantung = pasien->kondisi.detak_jantung;
+                p.kondisi.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
+                p.kondisi.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
+                p.kondisi.berat_badan = pasien->kondisi.berat_badan;
+                p.kondisi.tinggi_badan = pasien->kondisi.tinggi_badan;
+                p.kondisi.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
+                p.kondisi.trombosit = pasien->kondisi.trombosit;
 
                 enqueue(dokter->queue, p);
                 if (dokter->jumlahPasienDalamRuangan < map->maxPasienDalamRuangan)
@@ -277,6 +286,8 @@ int parseAngka(const char *str, int *hasil) {
 //     fclose(file);
 // }
 
+// void loadObatPenyakit(const char *filePath) {            //loader ObatPenyakit belum ada
+// }
 const char *getNamaObat(int id) {
     for (int i = 0; i < jumlah_obat; i++) {
         if (obats[i].id == id) {
@@ -284,4 +295,36 @@ const char *getNamaObat(int id) {
         }
     }
     return NULL;
+}
+
+void hapusElemenArray(int array[], int *length, int index) {
+    if (index < 0 || index >= *length) {
+        printf("Indeks tidak valid\n");
+        return;
+    }
+
+    // Geser elemen ke kiri mulai dari index
+    for (int i = index; i < *length - 1; i++) {
+        array[i] = array[i + 1];
+    }
+
+    (*length)--; // Kurangi panjang array
+}
+
+void updateUsers(User user){
+    for(int i=0 ; i < jumlah_user ; i++){
+        if(user.identitas.id==users[i].identitas.id){
+            users[i]=user;
+            break;
+        }
+    }
+}
+
+
+int idTertinggi(){
+    int highestId=0;
+    for (int i=0;i<jumlah_user;i++){
+        if(users[i].identitas.id>highestId) highestId = users[i].identitas.id;
+    }
+    return highestId;
 }
