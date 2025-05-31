@@ -71,9 +71,5 @@ void lamanDokter(){
                 getchar(); // tunggu enter
         }
     }
-
-    char *opsi[] = {"", "DIAGNOSIS", "NGOBATIN"};
-    if (pilihanD != LOGOUTD)
-        printf("\n>>> %s\n\n", opsi[pilihanD]);
 }
 

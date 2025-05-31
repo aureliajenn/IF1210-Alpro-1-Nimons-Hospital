@@ -116,19 +116,21 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit)
             }
 
             if (hitungNilai >= 1)
-            {
-                Room *ruangan = &rumahSakit->rooms[rumahSakit->roomCount];
-                ruangan->roomIndex = hitungBaris - 3;
-                ruangan->doctorId = nilai[0];
-                ruangan->patientCount = hitungNilai - 1;
+{
+    Room *ruangan = &rumahSakit->rooms[rumahSakit->roomCount];
+    ruangan->roomIndex = hitungBaris - 3;
+    ruangan->doctorId = nilai[0];
+    ruangan->patientCount = 0;
 
-                for (int i = 0; i < ruangan->patientCount; i++)
-                {
-                    ruangan->patients[i] = nilai[i + 1];
-                }
+    for (int i = 1; i < hitungNilai; i++) {
+        if (nilai[i] > 0) {
+            ruangan->patients[ruangan->patientCount++] = nilai[i];
+        }
+    }
 
-                rumahSakit->roomCount++;
-            }
+    rumahSakit->roomCount++;
+}
+
         }
         else
         {

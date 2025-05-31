@@ -22,6 +22,7 @@ int lamanDiagnosis()
     extern Penyakit *penyakits;
     extern int jumlah_penyakit;
     extern Map *map;
+    extern Hospital *rumahSakit;
 
     if (user == NULL || user->identitas.role == NULL)
     {
@@ -65,7 +66,7 @@ int lamanDiagnosis()
         current = current->next;
     }
 
-    User pasien = current->patient;
+    User pasien = *getUserById(current->patient.identitas.id);
     printf("Diagnosa untuk pasien %s:\n", pasien.identitas.username);
     printf("[AUTO DIAGNOSE 2.0] Mendiagnosis...\n");
     printf("Hasil diagnosa:\n\n");
@@ -86,7 +87,9 @@ int lamanDiagnosis()
            pasien.kondisi.trombosit >= penyakits[i].trombosit_min && pasien.kondisi.trombosit <= penyakits[i].trombosit_max)
         {
             printf("%s terdiagnosa penyakit: %s\n\n", pasien.identitas.username, penyakits[i].nama);
+            strcpy(pasien.kondisi.riwayat_penyakit,penyakits[i].nama);
             found =1;
+            updateUsers(pasien);
             dequeue(dokter->queue);
             dokter->queueLength--;
             if (dokter->jumlahPasienDalamRuangan > 0)
@@ -97,6 +100,17 @@ int lamanDiagnosis()
             {
                 dokter->jumlahPasienLuarRuangan--;
             }
+            for(int i=0;i<rumahSakit->roomCount;i++){
+                if(rumahSakit->rooms[i].doctorId==dokter->id){
+                    for(int j=0;j<rumahSakit->rooms[i].patientCount;j++){
+                        if(rumahSakit->rooms[i].patients[j] == pasien.identitas.id){
+                            hapusElemenArray(rumahSakit->rooms[i].patients,&(rumahSakit->rooms[i].patientCount),j);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
             printf("Pasien %s telah keluar dari antrian.\n", pasien.identitas.username);
             break;
         }
@@ -104,10 +118,30 @@ int lamanDiagnosis()
 
     if (!found)
     {
+        dequeue(dokter->queue);
+        dokter->queueLength--;
+        if (dokter->jumlahPasienDalamRuangan > 0)
+        {
+            dokter->jumlahPasienDalamRuangan--;
+        }
+        else
+        {
+            dokter->jumlahPasienLuarRuangan--;
+        }
+        for(int i=0;i<rumahSakit->roomCount;i++){
+            if(rumahSakit->rooms[i].doctorId==dokter->id){
+                for(int j=0;j<rumahSakit->rooms[i].patientCount;j++){
+                    if(rumahSakit->rooms[i].patients[j] == pasien.identitas.id){
+                        hapusElemenArray(rumahSakit->rooms[i].patients,&(rumahSakit->rooms[i].patientCount),j);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
         printf("Tidak ada penyakit yang terdiagnosa untuk pasien %s.\n", pasien.identitas.username);
+        printf("Pasien %s telah keluar dari antrian.\n", pasien.identitas.username);
     }
-
-
 
     return 1;
 }

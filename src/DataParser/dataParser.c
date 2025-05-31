@@ -12,40 +12,6 @@ void ArrtoCSV(const char *filename, CSVRowHandler handler, void *target){
     fclose(file);
 }
 
-void writeUsersToFile(char fields[][MAX_COL_LEN], int count, void *target) {
-    FILE *file = (FILE *)target;
-    
-    // HEADER
-    if (count == -1) {
-        fprintf(file, "id;username;password;role;riwayat_penyakit;suhu_tubuh;tekanan_darah_sistolik;tekanan_darah_diastolik;detak_jantung;saturasi_oksigen;kadar_gula_darah;berat_badan;tinggi_badan;kadar_kolesterol;trombosit\n");
-        
-        extern User *users;
-        extern int jumlah_user;
-
-        for (int i = 0; i < jumlah_user; i++) {
-            // Tulis setiap baris User
-            
-            fprintf(file, "%d;%s;%s;%s;%s;%.2f;%d;%d;%d;%.2f;%d;%.2f;%d;%d;%d\n",
-            i+1,
-            users[i].identitas.username,
-            users[i].identitas.password,
-            users[i].identitas.role,
-            users[i].kondisi.riwayat_penyakit,
-            users[i].kondisi.suhu_tubuh,
-            users[i].kondisi.tekanan_darah_sistolik,
-            users[i].kondisi.tekanan_darah_diastolik,
-            users[i].kondisi.detak_jantung,
-            users[i].kondisi.saturasi_oksigen,
-            users[i].kondisi.kadar_gula_darah,
-            users[i].kondisi.berat_badan,
-            users[i].kondisi.tinggi_badan,
-            users[i].kondisi.kadar_kolesterol,
-            users[i].kondisi.trombosit
-            );
-        }
-    }
-}
-
 void CSVtoArr(const char *filename, CSVRowHandler handler, void *target) {
     FILE *file = fopen(filename, "r");
     if (!file) {

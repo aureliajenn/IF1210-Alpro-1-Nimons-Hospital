@@ -71,8 +71,4 @@ void lamanManager()
             getchar();
         }
     }
-
-    char *opsi[] = {"", "DENAH RUMAH SAKIT", "LIHAT USER", "CARI USER"};
-    if (pilihanM != LOGOUTM)
-        printf("\n>>> %s\n\n", opsi[pilihanM]);
 }

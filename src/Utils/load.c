@@ -284,3 +284,35 @@ const char *getNamaObat(int id) {
     }
     return NULL;
 }
+
+void hapusElemenArray(int array[], int *length, int index) {
+    if (index < 0 || index >= *length) {
+        printf("Indeks tidak valid\n");
+        return;
+    }
+
+    // Geser elemen ke kiri mulai dari index
+    for (int i = index; i < *length - 1; i++) {
+        array[i] = array[i + 1];
+    }
+
+    (*length)--; // Kurangi panjang array
+}
+
+void updateUsers(User user){
+    for(int i=0 ; i < jumlah_user ; i++){
+        if(user.identitas.id==users[i].identitas.id){
+            users[i]=user;
+            break;
+        }
+    }
+}
+
+
+int idTertinggi(){
+    int highestId=0;
+    for (int i=0;i<jumlah_user;i++){
+        if(users[i].identitas.id>highestId) highestId = users[i].identitas.id;
+    }
+    return highestId;
+}

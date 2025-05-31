@@ -131,9 +131,13 @@ void save(const char folder_name[],const char folder_asal[]) {
     fprintf(config, "%d", r.doctorId); // ID dokter
     
     // Tulis pasien dalam ruangan
-    for (int j = 0; j < r.patientCount; j++) {
+    if(r.patientCount==0){
+        fprintf(config, " 0");
+    }else
+    {for (int j = 0; j < r.patientCount; j++) {
+        if(r.patients[j]==0)continue;
         fprintf(config, " %d", r.patients[j]);
-    }
+    }}
 
     fprintf(config, "\n");
     }
@@ -143,7 +147,7 @@ void save(const char folder_name[],const char folder_asal[]) {
     int jumlahInventory = hitungPasienPunyaInventory(users, jumlah_user);
     fprintf(config, "%d\n", jumlahInventory);
     for (int i = 0; i < jumlah_user; i++) {
-        if (users[i].kondisi.jumlahObat > 0) {
+        if (users[i].kondisi.jumlahObat > 0 && strcasecmp(users[i].identitas.role,"pasien")==0) {
             fprintf(config, "%d", users[i].identitas.id);
             for (int j = 0; j < users[i].kondisi.jumlahObat; j++) {
                 fprintf(config, " %d", users[i].kondisi.inventory[j].id);
@@ -157,7 +161,7 @@ void save(const char folder_name[],const char folder_asal[]) {
     int jumlahPerut = hitungPasienPunyaObatDalamPerut(users, jumlah_user);
     fprintf(config, "%d\n", jumlahPerut);
     for (int i = 0; i < jumlah_user; i++) {
-        if (users[i].kondisi.perut.top >= 0) {
+        if (users[i].kondisi.perut.top >= 0 && strcasecmp(users[i].identitas.role,"pasien")==0) {
             fprintf(config, "%d", users[i].identitas.id);
             for (int j = 0; j <= users[i].kondisi.perut.top; j++) {
                 fprintf(config, " %d", users[i].kondisi.perut.items[j].id);
@@ -185,5 +189,5 @@ void save(const char folder_name[],const char folder_asal[]) {
     }
 
     printf("Berhasil menyalin file statis ke %s!\n", folder_name);
-    printf("Berhasil menyimpan config.txt ke %s!\n", folder_asal);
+    printf("Berhasil menyimpan config.txt ke %s!\n", folder_name);
 }

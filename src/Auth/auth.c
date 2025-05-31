@@ -93,14 +93,8 @@ int registerpasien() {
     printf("Password: ");
     scanf("%s", newUser->identitas.password);
 
-    // Tentukan ID pasien baru
-    int highestId = 0;
-    for (int i = 0; i < jumlah_user; i++) {
-        if (users[i].identitas.id > highestId) {
-            highestId = users[i].identitas.id;
-        }
-    }
-    newUser->identitas.id = highestId + 1;
+    int highest = idTertinggi();
+    newUser->identitas.id = highest + 1;
     strcpy(newUser->identitas.role, "pasien");
 
     // Inisialisasi kondisi kesehatan

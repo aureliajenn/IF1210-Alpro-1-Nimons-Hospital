@@ -82,8 +82,4 @@ void lamanPasien()
             getchar();
         }
     }
-
-    char *opsi[] = {"", "DAFTAR CHECK-UP", "ANTRIAN SAYA", "MINUM OBAT", "MINUM PENAWAR", "DENAH RUMAH SAKIT"};
-    if (pilihanP != LOGOUTP)
-        printf("\n>>> %s\n\n", opsi[pilihanP]);
 }
