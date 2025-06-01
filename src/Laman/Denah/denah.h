@@ -4,6 +4,8 @@
 #define MAX_ROOMS 20
 #define MAX_PATIENTS 10
 
+#include "map.h"
+
 // Struktur untuk menyimpan informasi ruangan
 typedef struct {
     int roomIndex;       // A1, A2, dll. (0-indexed)
@@ -38,6 +40,10 @@ int muatDataRumahSakit(const char *namaFile, Hospital *rumahSakit);
 
 void tampilkanDenahRumahSakit(Hospital *rumahSakit);
 
-void tampilkanDetailRuangan(Hospital *rumahSakit, char *kodeRuangan, User *users, int userCount);
+void tampilkanDetailRuangan(Hospital *rumahSakit, Map *map,char *kodeRuangan, User *users, int userCount);
+
+void tampilkanDenahDanMintaDetail(Hospital *rumahSakit,Map *map, User *users, int userCount);
 
 void tampilkanInventarisObat(Hospital *rumahSakit);
+
+void tampilkanSemuaAntrianUntukManajer(Hospital *rumahSakit, Map *map, User *users, int userCount);

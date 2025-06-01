@@ -29,7 +29,7 @@ void copy_file(const char *src, const char *dest) {
 int hitungPasienPunyaInventory(User* users, int jumlah_user) {
     int count = 0;
     for (int i = 0; i < jumlah_user; i++) {
-        if (users[i].kondisi.jumlahObat > 0) {
+        if (users[i].kondisi.jumlahObat > 0 && strcasecmp(users[i].identitas.role, "pasien") == 0) {
             count++;
         }
     }
@@ -39,7 +39,7 @@ int hitungPasienPunyaInventory(User* users, int jumlah_user) {
 int hitungPasienPunyaObatDalamPerut(User* users, int jumlah_user) {
     int count = 0;
     for (int i = 0; i < jumlah_user; i++) {
-        if (users[i].kondisi.perut.top >= 0) {
+        if (users[i].kondisi.perut.top >= 0 && strcasecmp(users[i].identitas.role, "pasien") == 0) {
             count++;
         }
     }

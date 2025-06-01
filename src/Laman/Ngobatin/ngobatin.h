@@ -1,8 +1,3 @@
-// #ifndef NGOBATIN_H
-// #define NGOBATIN_H
-// #include "../../Model/model.h"
-// #include "../../Utils/ADT/map.h"
+#pragma once
 
-// int lamanNgobatin();
-
-// #endif
+int lamanNgobatin();

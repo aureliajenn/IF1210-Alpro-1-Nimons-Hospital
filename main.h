@@ -11,7 +11,7 @@
 #include "src/Laman/LihatUser/lihatuser.h"
 #include "src/Laman/MinumObat/minumobat.h"
 #include "src/Laman/Ngobatin/ngobatin.h"
-// #include "src/Laman/MinumPenawar/minumpenawar.h"
+#include "src/Laman/PulangDok/pulangdok.h"
 #include "src/Laman/TambahDokter/tambahdokter.h"
 #include "src/Laman/dokter.h"
 #include "src/Laman/manager.h"
@@ -20,7 +20,6 @@
 #include "src/Utils/ADT/map.h"
 #include "src/Utils/ADT/queue.h"
 #include "src/Utils/ADT/stack.h"
-#include "src/Utils/Boolean.h"
 #include "src/Utils/help.h"
 #include "src/Utils/save.h"
 #include "src/Utils/load.h"
@@ -31,3 +30,4 @@
 #include <stdio.h>
 #include <sys/stat.h>
 #include <ctype.h>
+#include <stdbool.h>

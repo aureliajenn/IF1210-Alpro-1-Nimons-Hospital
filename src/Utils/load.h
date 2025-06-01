@@ -8,5 +8,6 @@ const char *getNamaObat(int id);
 void parseDuaAngka(const char *str, int *a, int *b) ;
 int parseAngka(const char *str, int *hasil) ;
 User* getUserById(int id) ;
-void updateUsers(User user);
 void hapusElemenArray(int array[], int *length, int index) ;
+int idTertinggi();
+int loadObatPenyakit(const char *filename, ObatPenyakit *data, int maxCount) ;

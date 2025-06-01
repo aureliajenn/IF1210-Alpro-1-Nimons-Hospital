@@ -1,7 +1,7 @@
 #pragma once
 
 typedef struct QueueNode {
-    User patient;
+    User *patient;
     struct QueueNode *next;
 } QueueNode;
 
@@ -13,7 +13,7 @@ typedef struct Queue {
 
 // Function prototypes for queue operations
 Queue* createQueue();
-void enqueue(Queue *q, User p);
+void enqueue(Queue *q, User *p);
 User dequeue(Queue *q);
 int isQueueEmpty(Queue *q);
 void printQueue(Queue *q);

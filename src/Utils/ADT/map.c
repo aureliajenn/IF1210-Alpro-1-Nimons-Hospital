@@ -37,12 +37,13 @@ Map* createMap(int capacity) {
 }
 
 
-void insertDoctor(Map *map, Dokter *doctor) {
+int insertDoctor(Map *map, Dokter *doctor) {
     if (map->size >= map->capacity) {
         printf("Map is full, cannot insert more doctors.\n");
-        return;
+        return 0; // gagal
     }
     map->dokter[map->size++] = doctor;
+    return 1; // sukses
 }
 
 Dokter* getDoctor(Map *map, int id) {
@@ -52,6 +53,30 @@ Dokter* getDoctor(Map *map, int id) {
         }
     }
     return NULL;
+}
+
+
+bool queueContains(Queue *q, int patientId) {
+    if (!q) return false;
+
+    QueueNode *current = q->front;
+    while (current != NULL) {
+        if (current->patient->identitas.id == patientId) {
+            return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+
+Dokter* getDoctorByIdPatient(Map *map, int patientId) {
+    for (int i = 0; i < map->size; i++) {
+        Dokter *dokter = map->dokter[i];
+        if (queueContains(dokter->queue, patientId) || queueContains(dokter->queueNg, patientId)) {
+            return dokter;
+        }
+    }
+    return NULL; // Pasien tidak ditemukan di antrian dokter mana pun
 }
 
 void printMap(Map *map) {

@@ -87,12 +87,23 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    obat_penyakits = malloc(MAX_OBAT * sizeof(ObatPenyakit));
+    if (!obat_penyakits)
+    {
+        perror("Gagal mengalokasikan array Obat Penyakit");
+        free(user);
+        free(obats);
+        free(obat_penyakits);
+        return 1;
+    }
+
     penyakits = malloc(MAX_USER * sizeof(Penyakit));
     if (!penyakits)
     {
         perror("Gagal mengalokasikan array penyakit");
         free(user);
         free(obats);
+        free(obat_penyakits);
         free(users);
         return 1;
     }
@@ -104,6 +115,7 @@ int main(int argc, char *argv[])
         free(user);
         free(users);
         free(obats);
+        free(obat_penyakits);
         free(penyakits);
         return 1;
     }
@@ -120,7 +132,7 @@ int main(int argc, char *argv[])
       
         if (!isLoggedIn)
         {
-            //clearscreen();
+            clearscreen();
             labelInput();
             switch (pilihan)
             {
@@ -144,36 +156,45 @@ int main(int argc, char *argv[])
 
             if (strcasecmp(user->identitas.role, "PASIEN") == 0)
             {
-                //clearscreen();
+                clearscreen();
                 lamanPasien();
 
                 switch (pilihanP)
                 {
                 case DAFTARCHECKUP:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DAFTAR CHECKUP");
                     flush_stdin();
                     daftar_checkup();
                     waitForEnter();
                     break;
                 case ANTRIANSAYA:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "ANTRIAN SAYA");
                     lamanLihatAntrianSaya();
                     waitForEnter();
                     break;
                 case MINUMOBAT:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "MINUM OBAT");
                     lamanMinumObat();
                     waitForEnter();
                     break;
                 case MINUMPENAWAR:
+                    printf("\n>>> %s\n\n", "MINUM PENAWAR");
+                    minum_penawar(user);
                     waitForEnter();
                     break;
                 case DENAHRUMAHSAKIT:
-                    //clearscreen();
-                    tampilkanDenahRumahSakit(rumahSakit);
+                    clearscreen();
+                    printf("\n>>> %s\n\n", "DENAH RUMAHSAKIT");
+                    tampilkanDenahDanMintaDetail(rumahSakit,map,users,jumlah_user);
+                    waitForEnter();
+                    break;
+                case PULANGDOK:
+                    clearscreen();
+                    printf("\n>>> %s\n\n", "PULANG DOK");
+                    pulangDok();
                     waitForEnter();
                     break;
                 case LOGOUTP:
@@ -185,31 +206,31 @@ int main(int argc, char *argv[])
             }
             else if (strcasecmp(user->identitas.role, "MANAGER") == 0)
             {
-                //clearscreen();
+                clearscreen();
                 lamanManager();
 
                 switch (pilihanM)
                 {
                 case DENAHRUMAHSAKITMANAGER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
-                    tampilkanDenahRumahSakit(rumahSakit);
+                    tampilkanSemuaAntrianUntukManajer(rumahSakit,map,users,jumlah_user);
                     waitForEnter();
                     break;
                 case LIHATUSER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "LIHAT USER");
                     lamanLihatUser();
                     waitForEnter();
                     break;
                 case CARIUSER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "CARI USER");
                     lamanCariUser(-1);
                     waitForEnter();
                     break;
                 case TAMBAHDOKTER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "TAMBAH DOKTER");
                     lamanTambahDokter();
                     waitForEnter();
@@ -223,18 +244,19 @@ int main(int argc, char *argv[])
             }
             else if (strcasecmp(user->identitas.role, "DOKTER") == 0)
             {
-                //clearscreen();
+                clearscreen();
                 lamanDokter();
 
                 switch (pilihanD)
                 {
                 case DIAGNOSIS:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DIAGNOSIS");
                     lamanDiagnosis();
                     waitForEnter();
                     break;
                 case NGOBATIN:
+                    lamanNgobatin();
                     waitForEnter();
                     break;
                 case LOGOUTD:
@@ -258,7 +280,7 @@ int main(int argc, char *argv[])
 
     } while (pilihan != EXIT);
 
-    //clearscreen();
+    clearscreen();
     char c;
     do
     {
@@ -273,7 +295,7 @@ int main(int argc, char *argv[])
         }
     } while (c != 'y' && c != 'n' && c != 'Y' && c != 'N');
 
-    //clearscreen();
+    clearscreen();
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
     if (user) free(user);
@@ -282,6 +304,7 @@ int main(int argc, char *argv[])
     if (obats) free(obats);
     if (map) free(map);
     if (rumahSakit) free(rumahSakit);
+    if (obat_penyakits) free(obat_penyakits);
 
     return 0;
 }
@@ -301,5 +324,5 @@ void waitForEnter()
     printf("\nTekan Enter untuk kembali ke menu...");
     cleanInputBuffer();
     getchar();
-    //clearscreen();
+    clearscreen();
 }

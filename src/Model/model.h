@@ -21,6 +21,7 @@ typedef enum
     MINUMOBAT,
     MINUMPENAWAR,
     DENAHRUMAHSAKIT,
+    PULANGDOK,
     LOGOUTP
 } PilihanPasien;
 
@@ -81,6 +82,7 @@ typedef struct
     Obat inventory[MAX_OBAT];
     int jumlahObat;
     StackPerut perut;
+    int sudahDiagnosis,sudahDiobati;
 
 } KondisiPasien;
 

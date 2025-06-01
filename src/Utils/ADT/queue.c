@@ -11,7 +11,7 @@ Queue* createQueue() {
     return q;
 }
 
-void enqueue(Queue *q, User p) {
+void enqueue(Queue *q, User *p) {
     if (q == NULL) {
         printf("Queue tidak diinisialisasi!\n");
         return;
@@ -46,7 +46,7 @@ User dequeue(Queue *q) {
     }
     
     QueueNode *temp = q->front;
-    User dequeuedPatient = temp->patient;
+    User dequeuedPatient = *temp->patient;
     q->front = q->front->next;
     if (q->front == NULL) {
         q->rear = NULL;
@@ -64,9 +64,9 @@ void printQueue(Queue *q) {
     QueueNode *current = q->front;
     while (current != NULL) {
         printf("id User: %d, Nama: %s, Suhu Tubuh: %f, Sistolik: %d, Diastolik: %d, Detak Jantung: %d\n",
-               current->patient.identitas.id, current->patient.identitas.username, current->patient.kondisi.suhu_tubuh,
-               current->patient.kondisi.tekanan_darah_sistolik, current->patient.kondisi.tekanan_darah_diastolik,
-               current->patient.kondisi.detak_jantung);
+               current->patient->identitas.id, current->patient->identitas.username, current->patient->kondisi.suhu_tubuh,
+               current->patient->kondisi.tekanan_darah_sistolik, current->patient->kondisi.tekanan_darah_diastolik,
+               current->patient->kondisi.detak_jantung);
         current = current->next;
     }
 }
@@ -88,7 +88,7 @@ int getQueuePosition(Queue *q, int id) {
     int position = 1;
     
     while (current != NULL) {
-        if (current->patient.identitas.id == id) {
+        if (current->patient->identitas.id == id) {
             return position; 
         }
         current = current->next;

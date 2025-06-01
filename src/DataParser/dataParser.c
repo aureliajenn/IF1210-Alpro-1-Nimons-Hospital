@@ -75,6 +75,8 @@ void handleUserRow(char fields[][MAX_COL_LEN], int count, void *target) {
     u.kondisi.perut.items = malloc(10 * sizeof(Obat)); // alokasi awal
     u.kondisi.perut.top = -1;
     u.kondisi.perut.capacity = 10;
+    u.kondisi.sudahDiobati = 0;
+    u.kondisi.sudahDiagnosis = (strlen(u.kondisi.riwayat_penyakit) > 0) ? 1 : 0;
 
     pt->arr[(*pt->jumlah)++] = u;
 }

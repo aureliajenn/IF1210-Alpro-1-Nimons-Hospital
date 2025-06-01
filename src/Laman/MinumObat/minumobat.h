@@ -24,3 +24,5 @@ void tambahObatDalamPerut(int idPasien, Obat obatBaru);
 void tambahObatInventory(int idPasien, Obat obatBaru);
 
 Obat cariObatById(int id);
+
+void minum_penawar(User* currentUser) ;

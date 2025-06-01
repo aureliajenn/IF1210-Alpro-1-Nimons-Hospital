@@ -221,7 +221,7 @@ int isSudahNgantri(Map *map, User *user) {
 
             while (current != NULL) {
                 
-                if (current->patient.identitas.id == user->identitas.id) {
+                if (current->patient->identitas.id == user->identitas.id) {
                     printf("Anda sudah terdaftar dalam antrian!\n");
                     return 1; 
                 }
@@ -350,7 +350,7 @@ void daftar_checkup() {
         dokterTerpilih->jumlahPasienLuarRuangan++;
     }
 
-    enqueue(dokterTerpilih->queue, *user);
+    enqueue(dokterTerpilih->queue, user);
 
     // Update Hospital Room
     int ruangan = dokterTerpilih->ruangan;

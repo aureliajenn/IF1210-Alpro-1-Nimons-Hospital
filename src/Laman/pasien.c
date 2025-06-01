@@ -9,11 +9,11 @@ void lamanPasien()
 
     while (!valid)
     {
-        //clearscreen();
+        clearscreen();
         labelUser();
         printf("\nSelamat pagi %s! Ada keluhan apa?\n\n", user->identitas.username);
         labelMenuPasien();
-        printf(">>> Masukkan pilihan (1-6): ");
+        printf(">>> Masukkan pilihan (1-7): ");
 
         int ret = scanf("%d", &input);
 
@@ -21,17 +21,17 @@ void lamanPasien()
         {
             while (getchar() != '\n')
                 ; // flush input buffer
-            printf("\nInput tidak valid! Masukkan angka antara 1-5.");
+            printf("\nInput tidak valid! Masukkan angka antara 1-7.");
             printf("\nSilahkan enter untuk mengulang!\n");
             getchar(); // tunggu enter
             continue;
         }
-        else if (input != 1 && input != 2 && input != 3 && input != 4 && input != 5 && input != 6)
+        else if (input != 1 && input != 2 && input != 3 && input != 4 && input != 5 && input != 6 && input != 7)
         {
             // input bukan angka
             while (getchar() != '\n')
                 ; // flush input buffer
-            printf("\nInput tidak valid! Masukkan angka antara 1-5.");
+            printf("\nInput tidak valid! Masukkan angka antara 1-7.");
             printf("\nSilahkan enter untuk mengulang!\n");
             getchar(); // tunggu enter
             continue;
@@ -44,10 +44,11 @@ void lamanPasien()
         case 3:
         case 4:
         case 5:
+        case 6:
             pilihanP = input;
             valid = 1;
             break;
-        case 6:
+        case 7:
         {
             char c;
             int confirmLogout = 0;

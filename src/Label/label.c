@@ -34,7 +34,8 @@ void labelMenuPasien(){
     printf("3. Minum Obat\n");
     printf("4. Minum Penawar\n");
     printf("5. Lihat Denah Rumah Sakit\n");
-    printf("6. Logout\n");
+    printf("6. Pulang dok\n");
+    printf("7. Logout\n");
     printf("\n");
 }
 

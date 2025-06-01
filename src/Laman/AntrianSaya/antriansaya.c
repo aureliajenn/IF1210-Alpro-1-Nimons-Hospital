@@ -3,79 +3,78 @@
 int lamanLihatAntrianSaya() {
     extern User *user;
     extern Map *map;
-    extern Hospital rumahSakit; 
-    int found = 0;
+    extern Hospital rumahSakit;
     extern User *users;
     extern int jumlah_user;
 
-    if (map == NULL) {
-        printf("Map tidak ditemukan!\n");
-        return 0;
-    }
-
-    for (int i = 0; i < rumahSakit.roomCount; i++) {
-        for (int j = 0; j < rumahSakit.rooms[i].patientCount; j++) {
-            if (rumahSakit.rooms[i].patients[j] == user->identitas.id) {
-                char labelRuangan[5];
-                dapatkanLabelRuangan(rumahSakit.rooms[i].roomIndex, labelRuangan, rumahSakit.cols);
-                
-                char *dokterName = "DOKTER TIDAK DITEMUKAN";
-                if (rumahSakit.rooms[i].doctorId != 0) {
-                    for (int k = 0; k < jumlah_user; k++) {
-                        if (users[k].identitas.id == rumahSakit.rooms[i].doctorId && 
-                            strcmpIgnoreCase(users[k].identitas.role, "dokter") == 0) {
-                            dokterName = users[k].identitas.username;
-                            break;
-                        }
-                    }
-                }
-
-                printf("Anda sedang berada di dalam ruangan dokter!\n");
-                printf("Ruangan: %s\n", labelRuangan);
-                printf("Dokter: %s\n", dokterName);
-                return 1;
-            }
+    // Ambil dokter yang menangani pasien ini
+    Dokter *dokter = getDoctorByIdPatient(map, user->identitas.id);
+    if (dokter == NULL) {
+        if(user->kondisi.sudahDiagnosis==0){
+            printf("\nAnda belum terdaftar dalam antrian check-up!\n");
+            printf("Silakan daftar check-up terlebih dahulu.\n");
+            return 1;
+        }else{
+            printf("Kamu sudah di diagnosis\n");
+            return 1;
         }
     }
 
-    for (int i = 0; i < map->size; i++)
-    {
-        if (map->dokter[i]->queue != NULL)
-        {
-            QueueNode *current = map->dokter[i]->queue->front;
-
-            while (current != NULL)
-            {
-                if (current->patient.identitas.id == user->identitas.id)
-                {
-                    char *dokterName = "DOKTER TIDAK DITEMUKAN";
-                    for (int j = 0; j < jumlah_user; j++) {
-                        if (strcmpIgnoreCase(users[j].identitas.role, "dokter") == 0 && users[j].identitas.id == map->dokter[i]->id) {
-                            dokterName = users[j].identitas.username; 
-                            break;
-                        }
-                    }
-
-                    char labelRuangan[5];
-                    dapatkanLabelRuangan(map->dokter[i]->ruangan, labelRuangan, map->cols);
-                    printf("STATUS ANTRIAN ANDA:\n");
-                    printf("NAMA: %s\n", user->identitas.username);
-                    printf("DOKTER: %s\n", dokterName);
-                    printf("RUANGAN: %s\n",labelRuangan);
-                    printf("POSISI ANTRIAN: %d dari %d\n", getQueuePosition(map->dokter[i]->queue, user->identitas.id), map->dokter[i]->queueLength);
-                    found = 1;
-                    break;
-                }
-                current = current->next;
-            }
+    // Cek apakah pasien sudah berada di dalam ruangan
+    if(user->kondisi.sudahDiagnosis==0){
+        int posisi = getQueuePosition(dokter->queue, user->identitas.id);
+        if (posisi > 0 && posisi <= map->maxPasienDalamRuangan) {
+            printf("\nAnda sedang berada di dalam ruangan dokter!\n");
+            return 1;
         }
+
+        // Jika tidak di ruangan, cek di antrian diagnosis
+        if (queueContains(dokter->queue, user->identitas.id)) {
+            int position = getQueuePosition(dokter->queue, user->identitas.id);
+            char labelRuangan[5];
+            dapatkanLabelRuangan(dokter->ruangan, labelRuangan, map->cols);
+            const char *dokterName = dapatkanUsername(users, jumlah_user, dokter->id, "dokter");
+
+            printf("\nStatus antrian Anda:\n");
+            printf("Jenis antrian: Diagnosis\n");
+            printf("Dokter: %s\n", dokterName);
+            printf("Ruangan: %s\n", labelRuangan);
+            printf("Posisi antrian: %d dari %d\n", position-map->maxPasienDalamRuangan, dokter->queueLength-map->maxPasienDalamRuangan);
+            return 1;
+        }
+        printf("Kamu belum di diagnosis\n");
+        return 1;
     }
 
-    if (!found)
-    {
-        printf("Anda belum terdaftar dalam antrian check-up!\n");
-        printf("Silakan Daftar Check-Up terlebih dahulu.\n");
+    if(user->kondisi.sudahDiagnosis==1){
+    // Cek apakah pasien sudah berada di dalam ruangan
+    int posisiNg = getQueuePosition(dokter->queueNg, user->identitas.id);
+    if (posisiNg > 0 && posisiNg <= map->maxPasienDalamRuangan) {
+        printf("\nAnda sedang berada di dalam ruangan dokter!\n");
+        return 1;
     }
 
+    // Cek di antrian pengobatan
+    if (queueContains(dokter->queueNg, user->identitas.id)) {
+        // Asumsikan posisi juga bisa dihitung dengan getQueuePosition
+        int position = getQueuePosition(dokter->queueNg, user->identitas.id);
+        char labelRuangan[5];
+        dapatkanLabelRuangan(dokter->ruangan, labelRuangan, map->cols);
+        const char *dokterName = dapatkanUsername(users, jumlah_user, dokter->id, "dokter");
+
+        printf("\nStatus antrian Anda:\n");
+        printf("Jenis antrian: Pengobatan\n");
+        printf("Dokter: %s\n", dokterName);
+        printf("Ruangan: %s\n", labelRuangan);
+        printf("Posisi antrian: %d dari %d\n", position-map->maxPasienDalamRuangan, dokter->queueLengthNg-map->maxPasienDalamRuangan);
+        return 1;
+        }
+    printf("Kamu sudah di diagnosis\n");
+    return 1;
+    }
+
+    // Pasien tidak ditemukan di antrian manapun
+    printf("Anda belum terdaftar dalam antrian check-up!\n");
+    printf("Silakan daftar check-up terlebih dahulu.\n");
     return 1;
 }

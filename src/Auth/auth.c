@@ -8,7 +8,7 @@ int login()
     int valid = 0, format;
     char nama[MAX_LINE_LEN], role[MAX_LINE_LEN];
 
-    //clearscreen();
+    clearscreen();
     cekFormatUsn(&format, user);
     strcpy(nama, user->identitas.username);
     printf("Password: ");
@@ -27,7 +27,7 @@ int login()
             }
             else
             {
-                //clearscreen();
+                clearscreen();
                 printf("\nUsername atau password salah untuk pengguna %s!\n", nama);
                 waitForEnter();
                 return 0;
@@ -37,7 +37,7 @@ int login()
 
     if (!valid)
     {
-        //clearscreen();
+        clearscreen();
         printf("\nTidak ada pengguna dengan username %s!\n", nama);
         waitForEnter();
         return 0;
@@ -100,6 +100,8 @@ int registerpasien() {
     // Inisialisasi kondisi kesehatan
     newUser->kondisi.jumlahObat = 0;
     newUser->kondisi.perut.top = -1;
+    newUser->kondisi.sudahDiagnosis = 0;
+    newUser->kondisi.sudahDiobati = 0;
 
     // Reallocate array users
     users = realloc(users, (jumlah_user + 1) * sizeof(User));
@@ -152,7 +154,7 @@ void lupaPassword()
     char expectedKodeUnik[MAX_LINE_LEN];
     int found = 0;
 
-    //clearscreen();
+    clearscreen();
     printf(">>> Lupa Password\n\n");
 
     printf("Masukkan username Anda: ");

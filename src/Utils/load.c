@@ -16,10 +16,11 @@ extern int jumlah_obat_penyakit;
 #define MAX_OBAT 100
 
 void load(const char *folder_name) {
-    char userpath[MAX_LINE_LEN], penyakitpath[MAX_LINE_LEN], configpath[MAX_LINE_LEN], obatpath[MAX_LINE_LEN];
+    char userpath[MAX_LINE_LEN], penyakitpath[MAX_LINE_LEN], configpath[MAX_LINE_LEN], obatpath[MAX_LINE_LEN], obatpenyakitpath[MAX_LINE_LEN];
 
     sprintf(userpath, "data/%s/user.csv", folder_name);
     sprintf(penyakitpath, "data/%s/penyakit.csv", folder_name);
+    sprintf(obatpenyakitpath, "data/%s/obat_penyakit.csv", folder_name);
     sprintf(configpath, "data/%s/config.txt", folder_name);
     sprintf(obatpath, "data/%s/obat.csv", folder_name);
     
@@ -67,14 +68,15 @@ void load(const char *folder_name) {
         if (temp) obats = temp;
     }
 
+    loadConfig(configpath);
+    jumlah_obat_penyakit = loadObatPenyakit(obatpenyakitpath,obat_penyakits,MAX_OBAT);
+
     if (jumlah_obat_penyakit > 0)
     {
         ObatPenyakit *temp = realloc(obat_penyakits, jumlah_obat_penyakit * sizeof(ObatPenyakit));
         if (temp) obat_penyakits = temp;
     }
 
-    loadConfig(configpath);
-    // loadObat(obatpath);
     muatDataRumahSakit(configpath,rumahSakit);
 }
 
@@ -122,13 +124,13 @@ void loadConfig(const char *configPath) {
             Dokter *dokter = malloc(sizeof(Dokter));
             dokter->ruangan = hitungBaris - 3;
             dokter->queue = createQueue();
+            dokter->queueNg = createQueue();
             dokter->jumlahPasienDalamRuangan = 0;
             dokter->jumlahPasienLuarRuangan = 0;
             dokter->queueLength = 0;
+            dokter->queueLengthNg = 0;
 
             if (count == 0 || nilai[0] == 0) {
-                dokter->id = 0;
-                insertDoctor(map, dokter);
                 continue;
             }
 
@@ -138,21 +140,8 @@ void loadConfig(const char *configPath) {
                 User *pasien = getUserById(nilai[i]);
                 if (pasien == NULL) continue;
 
-                User p;
-                p.identitas.id = pasien->identitas.id;
-                strcpy(p.identitas.username, pasien->identitas.username);
-                p.kondisi.suhu_tubuh = pasien->kondisi.suhu_tubuh;
-                p.kondisi.tekanan_darah_sistolik = pasien->kondisi.tekanan_darah_sistolik;
-                p.kondisi.tekanan_darah_diastolik = pasien->kondisi.tekanan_darah_diastolik;
-                p.kondisi.detak_jantung = pasien->kondisi.detak_jantung;
-                p.kondisi.saturasi_oksigen = pasien->kondisi.saturasi_oksigen;
-                p.kondisi.kadar_gula_darah = pasien->kondisi.kadar_gula_darah;
-                p.kondisi.berat_badan = pasien->kondisi.berat_badan;
-                p.kondisi.tinggi_badan = pasien->kondisi.tinggi_badan;
-                p.kondisi.kadar_kolesterol = pasien->kondisi.kadar_kolesterol;
-                p.kondisi.trombosit = pasien->kondisi.trombosit;
-
-                enqueue(dokter->queue, p);
+                enqueue(dokter->queue, pasien);
+                
                 if (dokter->jumlahPasienDalamRuangan < map->maxPasienDalamRuangan)
                     dokter->jumlahPasienDalamRuangan++;
                 else
@@ -169,10 +158,10 @@ void loadConfig(const char *configPath) {
             int count = parseAngka(baris, data);
             int idPasien = data[0];
             for (int i = 1; i < count; i++) {
-                // printf("%d\n\n\n",data[i]);
                 Obat obat = cariObatById(data[i]);
-                // printf("%s\n\n\n",obat.nama);
                 tambahObatInventory(idPasien, obat);
+                User *pasien = getUserById(idPasien);
+                pasien->kondisi.sudahDiobati=1;
             }
             pasienInventoryCount--;
             if (pasienInventoryCount == 0)
@@ -187,6 +176,8 @@ void loadConfig(const char *configPath) {
             for (int i = 1; i < count; i++) {
                 Obat obat = cariObatById(data[i]);
                 tambahObatDalamPerut(idPasien, obat);
+                User *pasien = getUserById(idPasien);
+                pasien->kondisi.sudahDiobati=1;
             }
             pasienPerutCount--;
         }
@@ -236,58 +227,6 @@ int parseAngka(const char *str, int *hasil) {
     return count;
 }
 
-// void loadObat(const char *filePath) {
-//     FILE *file = fopen(filePath, "r");
-//     if (!file) {
-//         perror("Gagal membuka file obat.txt");
-//         return;
-//     }
-
-//     char line[MAX_LINE_LEN];
-//     int isFirstLine = 1;
-
-//     while (fgets(line, MAX_LINE_LEN, file)) {
-//         line[strcspn(line, "\n")] = '\0'; // hapus newline
-
-//         if (isFirstLine) {
-//             isFirstLine = 0; // skip header
-//             continue;
-//         }
-
-//         int i = 0;
-//         // Ambil ID
-//         int id = 0;
-//         while (line[i] >= '0' && line[i] <= '9') {
-//             id = id * 10 + (line[i] - '0');
-//             i++;
-//         }
-
-//         // Skip semicolon
-//         if (line[i] != ';') continue;
-//         i++;
-
-//         // Ambil nama obat
-//         char nama[50];
-//         int j = 0;
-//         while (line[i] != '\0' && j < 49) {
-//             nama[j++] = line[i++];
-//         }
-//         nama[j] = '\0';
-
-//         // Masukkan ke obats global
-//         obats[jumlah_obat].id = id;
-//         strncpy(obats[jumlah_obat].nama, nama, sizeof(obats[0].nama) - 1);
-//         obats[jumlah_obat].nama[sizeof(obats[0].nama) - 1] = '\0';
-//         jumlah_obat++;
-
-//         if (jumlah_obat >= MAX_OBAT) break;
-//     }
-
-//     fclose(file);
-// }
-
-// void loadObatPenyakit(const char *filePath) {            //loader ObatPenyakit belum ada
-// }
 const char *getNamaObat(int id) {
     for (int i = 0; i < jumlah_obat; i++) {
         if (obats[i].id == id) {
@@ -311,20 +250,33 @@ void hapusElemenArray(int array[], int *length, int index) {
     (*length)--; // Kurangi panjang array
 }
 
-void updateUsers(User user){
-    for(int i=0 ; i < jumlah_user ; i++){
-        if(user.identitas.id==users[i].identitas.id){
-            users[i]=user;
-            break;
-        }
-    }
-}
-
-
 int idTertinggi(){
     int highestId=0;
     for (int i=0;i<jumlah_user;i++){
         if(users[i].identitas.id>highestId) highestId = users[i].identitas.id;
     }
     return highestId;
+}
+
+int loadObatPenyakit(const char *filename, ObatPenyakit *data, int maxCount) {
+    FILE *file = fopen(filename, "r");
+    if (!file) {
+        perror("Gagal membuka file obat_penyakit.csv");
+        return 0;
+    }
+
+    char buffer[256];
+    fgets(buffer, sizeof(buffer), file);  // Skip header
+
+    int count = 0;
+    while (count < maxCount &&
+           fscanf(file, "%d;%d;%d\n",
+                  &data[count].obat_id,
+                  &data[count].penyakit_id,
+                  &data[count].urutan_minum) == 3) {
+        count++;
+    }
+
+    fclose(file);
+    return count; // jumlah data yang berhasil dibaca
 }
