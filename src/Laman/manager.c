@@ -32,10 +32,11 @@ void lamanManager()
         case 2:
         case 3:
         case 4:
+        case 5:
             pilihanM = input;
             valid = 1;
             break;
-        case 5:
+        case 6:
         {
             char c;
             int confirmLogout = 0;

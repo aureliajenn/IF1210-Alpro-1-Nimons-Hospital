@@ -1,9 +1,24 @@
 #include "main.h"
 
 void labelRS(){
-    printf("=====================================\n");
-    printf("           RUMAH SAKIT K01-N         \n");
-    printf("=====================================\n");
+printf("   _      _      _      _      _      _      _      _      _      _      _      _      _      _      _   \n");
+printf(" _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_ \n");
+printf("(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)\n");
+printf(" (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_) \n");
+printf("   _                                                                                                 _   \n");
+printf(" _( )_      _____                       _        _____       _    _ _     _  _____  __ _   _       _( )_ \n");
+printf("(_ o _)    |  __ \\                     | |      / ____|     | |  (_) |   | |/ / _ \\/_ | \\ | |     (_ o _)\n");
+printf(" (_,_)     | |__) |   _ _ __ ___   __ _| |__   | (___   __ _| | ___| |_  | ' / | | || |  \\| |      (_,_) \n");
+printf("   _       |  _  / | | | '_ ` _ \\ / _` | '_ \\   \\___ \\ / _` | |/ / | __| |  <| | | || | . ` |        _   \n");
+printf(" _( )_     | | \\ \\ |_| | | | | | | (_| | | | |  ____) | (_| |   <| | |_  | . \\ |_| || | |\\  |      _( )_ \n");
+printf("(_ o _)    |_|  \\_\\__,_|_| |_| |_|\\__,_|_| |_| |_____/ \\__,_|_|\\_\\_|\\__| |_|\\_\\___/ |_|_| \\_|     (_ o _)\n");
+printf(" (_,_)                                                                                             (_,_) \n");
+printf("   _      _      _      _      _      _      _      _      _      _      _      _      _      _      _   \n");
+printf(" _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_  _( )_ \n");
+printf("(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)(_ o _)\n");
+printf(" (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_)  (_,_) \n");
+printf("\n");
+
 }
 
 void labelUser(){
@@ -33,25 +48,27 @@ void labelMenuPasien(){
     printf("2. Antrian Saya\n");
     printf("3. Minum Obat\n");
     printf("4. Minum Penawar\n");
-    printf("5. Lihat Denah Rumah Sakit\n");
+    printf("5. Denah Rumah Sakit\n");
     printf("6. Pulang dok\n");
     printf("7. Logout\n");
     printf("\n");
 }
 
 void labelMenuManager(){
-    printf("1. Lihat Denah Rumah Sakit\n");
+    printf("1. Lihat Antrian\n");
     printf("2. Lihat User\n");
     printf("3. Cari User\n");
     printf("4. Tambah User Dokter\n");
-    printf("5. Logout\n");
+    printf("5. Denah Rumah Sakit\n");
+    printf("6. Logout\n");
     printf("\n");
 }
 
 void labelMenuDokter(){
     printf("1. Diagnosis\n");
     printf("2. Ngobatin\n");
-    printf("3. Logout\n");
+    printf("3. Denah Rumah Sakit\n");
+    printf("4. Logout\n");
     printf("\n");
 }
 
