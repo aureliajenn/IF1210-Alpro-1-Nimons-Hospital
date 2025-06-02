@@ -39,7 +39,8 @@ void labelMenu(){
 void labelDokter(){
     printf("1. Diagnosis\n");
     printf("2. Ngobatin\n");
-    printf("3. Logout\n");
+    printf("3. Denah Rumah Sakit\n");
+    printf("4. Logout\n");
     printf("\n");
 }
 

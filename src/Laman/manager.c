@@ -13,7 +13,7 @@ void lamanManager()
         labelUser();
         printf("\nSelamat datang %s! Ada yang bisa saya bantu?\n\n", user->identitas.username);
         labelMenuManager();
-        printf(">>> Masukkan pilihan (1-5): ");
+        printf(">>> Masukkan pilihan (1-6): ");
 
         int ret = scanf("%d", &input);
 

@@ -11,21 +11,21 @@ void lamanDokter(){
         labelUser();
         printf("\nSelamat pagi %s! Siap untuk bekerja?\n\n",user->identitas.username);
         labelDokter();
-        printf(">>> Masukkan pilihan (1-3): ");
+        printf(">>> Masukkan pilihan (1-4): ");
         
         int ret = scanf("%d", &input);
 
         if(ret != 1){
             while(getchar() != '\n'); // flush input buffer
-            printf("\nInput tidak valid! Masukkan angka antara 1-3.");
+            printf("\nInput tidak valid! Masukkan angka antara 1-4.");
             printf("\nSilahkan enter untuk mengulang!\n");
             getchar(); // tunggu enter
             continue;
         }
-        else if (input != 1 && input != 2 && input != 3){
+        else if (input != 1 && input != 2 && input != 3 && input != 4){
             // input bukan angka
             while(getchar() != '\n'); // flush input buffer
-            printf("\nInput tidak valid! Masukkan angka antara 1-3.");
+            printf("\nInput tidak valid! Masukkan angka antara 1-4.");
             printf("\nSilahkan enter untuk mengulang!\n");
             getchar(); // tunggu enter
             continue;
