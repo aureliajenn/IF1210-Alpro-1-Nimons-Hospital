@@ -27,10 +27,11 @@ typedef enum
 
 typedef enum
 {
-    DENAHRUMAHSAKITMANAGER = 1,
+    LIHATANTRIAN = 1,
     LIHATUSER,
     CARIUSER,
     TAMBAHDOKTER,
+    DENAHRUMAHSAKITM,
     LOGOUTM,
 } PilihanManager;
 
@@ -38,6 +39,7 @@ typedef enum
 {
     DIAGNOSIS = 1,
     NGOBATIN,
+    DENAHRUMAHSAKITD,
     LOGOUTD
 } PilihanDokter;
 

@@ -32,11 +32,13 @@ void lamanDokter(){
         }
 
         switch (input) {
-            case 1: case 2:
+            case 1: 
+            case 2: 
+            case 3:
                 pilihanD = input;
                 valid = 1;
                 break;
-            case 3:
+            case 4:
                 {
                     char c;
                     int confirmLogout = 0;
