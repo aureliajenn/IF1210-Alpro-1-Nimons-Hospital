@@ -7,7 +7,7 @@ void lamanDokter(){
     int valid = 0;
 
     while (!valid) {
-        //clearscreen();
+        clearscreen();
         labelUser();
         printf("\nSelamat pagi %s! Siap untuk bekerja?\n\n",user->identitas.username);
         labelDokter();

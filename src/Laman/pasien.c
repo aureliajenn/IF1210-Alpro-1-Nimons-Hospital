@@ -9,7 +9,7 @@ void lamanPasien()
 
     while (!valid)
     {
-        //clearscreen();
+        clearscreen();
         labelUser();
         printf("\nSelamat pagi %s! Ada keluhan apa?\n\n", user->identitas.username);
         labelMenuPasien();

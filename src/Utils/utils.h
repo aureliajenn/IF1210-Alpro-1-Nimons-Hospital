@@ -1,6 +1,6 @@
 #pragma once
 
-// void //clearscreen();
+void clearscreen();
 
 void help();
 void cekFormatUsn(int *format, User *user);
