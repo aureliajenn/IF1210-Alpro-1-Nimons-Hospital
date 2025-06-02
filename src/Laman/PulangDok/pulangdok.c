@@ -94,7 +94,10 @@ void pulangDok() {
         }
         printf("\n\nUrutan obat yang kamu minum:\n");
         for (int i = 0; i <= user->kondisi.perut.top; ++i) {
-            printf("%s", user->kondisi.perut.items[i].nama);
+			if (user->kondisi.perut.items[i].id != urutanObat[i].obat_id) {
+				printf("\033[1;31m");
+			}
+            printf("%s\033[m", user->kondisi.perut.items[i].nama);
             if (i < user->kondisi.perut.top) printf(" -> ");
         }
         printf("\n\nSilahkan kunjungi dokter untuk meminta penawar yang sesuai !\n");
