@@ -9,7 +9,7 @@ void lamanManager()
 
     while (!valid)
     {
-        clearscreen();
+        //clearscreen();
         labelUser();
         printf("\nSelamat datang %s! Ada yang bisa saya bantu?\n\n", user->identitas.username);
         labelMenuManager();

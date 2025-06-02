@@ -55,6 +55,9 @@ int lamanTambahDokter() {
     }
     dokterBaru->id = idBaru;
     dokterBaru->ruangan = -1;  // default belum ada ruangan
+    dokterBaru->queue = createQueue();
+    dokterBaru->queueLength=0;
+    dokterBaru->queueLengthNg=0;
 
     // *** Masukkan dokter ke map ***
     if (!insertDoctor(map, dokterBaru)) {
