@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
       
         if (!isLoggedIn)
         {
-            //clearscreen();
+            clearscreen();
             labelInput();
             switch (pilihan)
             {
@@ -156,26 +156,26 @@ int main(int argc, char *argv[])
 
             if (strcasecmp(user->identitas.role, "PASIEN") == 0)
             {
-                //clearscreen();
+                clearscreen();
                 lamanPasien();
 
                 switch (pilihanP)
                 {
                 case DAFTARCHECKUP:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DAFTAR CHECKUP");
                     flush_stdin();
                     daftar_checkup();
                     waitForEnter();
                     break;
                 case ANTRIANSAYA:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "ANTRIAN SAYA");
                     lamanLihatAntrianSaya();
                     waitForEnter();
                     break;
                 case MINUMOBAT:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "MINUM OBAT");
                     lamanMinumObat();
                     waitForEnter();
@@ -186,13 +186,13 @@ int main(int argc, char *argv[])
                     waitForEnter();
                     break;
                 case DENAHRUMAHSAKIT:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAHSAKIT");
                     tampilkanDenahDanMintaDetail(rumahSakit,map,users,jumlah_user);
                     waitForEnter();
                     break;
                 case PULANGDOK:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "PULANG DOK");
                     pulangDok();
                     waitForEnter();
@@ -206,37 +206,37 @@ int main(int argc, char *argv[])
             }
             else if (strcasecmp(user->identitas.role, "MANAGER") == 0)
             {
-                //clearscreen();
+                clearscreen();
                 lamanManager();
 
                 switch (pilihanM)
                 {
                 case LIHATANTRIAN:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAH SAKIT");
                     tampilkanSemuaAntrianUntukManajer(rumahSakit,map,users,jumlah_user);
                     waitForEnter();
                     break;
                 case LIHATUSER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "LIHAT USER");
                     lamanLihatUser();
                     waitForEnter();
                     break;
                 case CARIUSER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "CARI USER");
                     lamanCariUser(-1);
                     waitForEnter();
                     break;
                 case TAMBAHDOKTER:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "TAMBAH DOKTER");
                     lamanTambahDokter();
                     waitForEnter();
                     break;
                 case DENAHRUMAHSAKITM:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAHSAKIT");
                     tampilkanDenahDanMintaDetail(rumahSakit,map,users,jumlah_user);
                     waitForEnter();
@@ -250,13 +250,13 @@ int main(int argc, char *argv[])
             }
             else if (strcasecmp(user->identitas.role, "DOKTER") == 0)
             {
-                //clearscreen();
+                clearscreen();
                 lamanDokter();
 
                 switch (pilihanD)
                 {
                 case DIAGNOSIS:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DIAGNOSIS");
                     lamanDiagnosis();
                     waitForEnter();
@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
                     waitForEnter();
                     break;
                 case DENAHRUMAHSAKITD:
-                    //clearscreen();
+                    clearscreen();
                     printf("\n>>> %s\n\n", "DENAH RUMAHSAKIT");
                     tampilkanDenahDanMintaDetail(rumahSakit,map,users,jumlah_user);
                     waitForEnter();
@@ -292,7 +292,7 @@ int main(int argc, char *argv[])
 
     } while (pilihan != EXIT);
 
-    //clearscreen();
+    clearscreen();
     char c;
     do
     {
@@ -307,7 +307,7 @@ int main(int argc, char *argv[])
         }
     } while (c != 'y' && c != 'n' && c != 'Y' && c != 'N');
 
-    //clearscreen();
+    clearscreen();
     printf("\nTerima kasih telah menggunakan sistem! <3\n\n");
 
     if (user) free(user);
@@ -336,5 +336,5 @@ void waitForEnter()
     printf("\nTekan Enter untuk kembali ke menu...");
     cleanInputBuffer();
     getchar();
-    //clearscreen();
+    clearscreen();
 }

@@ -280,6 +280,7 @@ void tampilkanDenahDanMintaDetail(Hospital *rumahSakit,Map *map , User *users, i
 
     while (1)
     {
+        clearscreen(); 
         // Tampilkan denah rumah sakit
         printf("\n===== DENAH RUMAH SAKIT =====\n");
         tampilkanDenahRumahSakit(rumahSakit);
@@ -350,6 +351,7 @@ void tampilkanSemuaAntrianUntukManajer(Hospital *rumahSakit, Map *map, User *use
 
 void tampilkanInventarisObat(Hospital *rumahSakit)
 {
+    clearscreen(); 
     printf("\nInventaris Obat Pasien:\n");
     for (int i = 0; i < rumahSakit->medicineCount; i++)
     {

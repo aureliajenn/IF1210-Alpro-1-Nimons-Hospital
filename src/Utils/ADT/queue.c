@@ -80,7 +80,6 @@ void clearQueue(Queue *q) {
 
 int getQueuePosition(Queue *q, int id) {
     if (q == NULL || q->front == NULL) {
-        printf("Queue kosong atau belum di inisialisasi\n");
         return -1; 
     }
     
