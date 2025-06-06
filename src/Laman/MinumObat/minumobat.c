@@ -47,7 +47,7 @@ void lamanMinumObat() {
         user->kondisi.jumlahObat--;
 
         // Masukkan ke stack perut
-        if (!pushObat(user, obatTerpilih.id, obatTerpilih.nama)) {
+        if (!tambahObatDalamPerut(user->identitas.id,obatTerpilih)) {
             printf("Gagal menyimpan obat ke perut!\n");
             return;
         }
@@ -76,11 +76,11 @@ void tambahObatInventory(int idPasien, Obat obatBaru) {
     printf("Obat %s berhasil ditambahkan ke inventory pasien %s\n",obatBaru.nama, user->identitas.username);
 }
 
-void tambahObatDalamPerut(int idPasien, Obat obatBaru) {
+int tambahObatDalamPerut(int idPasien, Obat obatBaru) {
     User *user = getUserById(idPasien);
     if (user == NULL) {
         fprintf(stderr, "Pasien dengan ID %d tidak ditemukan.\n", idPasien);
-        return;
+        return 0;
     }
 
     StackPerut *perut = &user->kondisi.perut;
@@ -109,6 +109,7 @@ void tambahObatDalamPerut(int idPasien, Obat obatBaru) {
 
     // Push ke atas stack
     perut->items[++perut->top] = obatBaru;
+    return 1;
 }
 
 Obat cariObatById(int id) {

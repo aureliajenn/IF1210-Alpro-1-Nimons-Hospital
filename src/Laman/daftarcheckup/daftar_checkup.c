@@ -240,7 +240,8 @@ void daftar_checkup() {
     extern User *user;
     extern Hospital *rumahSakit;
 
-    if (isSudahNgantri(map, user) == 1) {
+    if (isSudahNgantri(map, user) == 1 || user->kondisi.sudahDiagnosis==1) {
+        printf("Kamu tidak bisa diagnosis!\n");
         return;
     }
 
@@ -301,9 +302,15 @@ void daftar_checkup() {
             continue;
         }
 
+        Dokter *dokterTerpilih = map->dokter[pilihan - 1];
+
+        if(dokterTerpilih->queueLengthNg+dokterTerpilih->queueLength>=map->maxPasienDalamRuangan+map->maxAntrianLuar){
+            printf("Ruangan sudah penuh!\n\n");
+            continue;
+        }
+
         break;
     } while (1);
-
 
     int dokterIdTerpilih = dokter_list->dokter[pilihan - 1]->id;
     User *dokterValid = NULL;

@@ -115,9 +115,8 @@ int lamanDiagnosis()
 
     if (!found)
     {
-        pasien->kondisi.sudahDiagnosis = 1;
-
         // Hapus pasien dari antrian
+        resetKondisiPasien(pasien);
         dequeue(dokter->queue);
         dokter->queueLength--;
         if (dokter->jumlahPasienDalamRuangan > 0)
@@ -139,7 +138,7 @@ int lamanDiagnosis()
         }
 
         printf("Tidak ada penyakit yang terdiagnosa untuk pasien %s.\n", pasien->identitas.username);
-        printf("Pasien %s telah keluar dari antrian.\n", pasien->identitas.username);
+        printf("Pasien %s telah pulang dari Rumah Sakit\n", pasien->identitas.username);
     }
 
     return 1;
