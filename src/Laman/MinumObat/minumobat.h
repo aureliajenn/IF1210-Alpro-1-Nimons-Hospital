@@ -19,7 +19,7 @@ void lamanMinumObat();
 /*            c. Jumlah obat dikurangi satu.*/
 /*            d. Daftar sisa obat ditampilkan jika masih ada.*/
 
-void tambahObatDalamPerut(int idPasien, Obat obatBaru);
+int tambahObatDalamPerut(int idPasien, Obat obatBaru);
 
 void tambahObatInventory(int idPasien, Obat obatBaru);
 

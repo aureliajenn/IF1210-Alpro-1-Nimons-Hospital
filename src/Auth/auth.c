@@ -135,8 +135,12 @@ void runLengthEncode(char *input, char *output)
         }
         else
         {
-            output[index++] = input[i - 1];
-            output[index++] = count + '0';
+            if(count==1){
+                output[index++] = input[i - 1];
+            }else{
+                output[index++] = count + '0';
+                output[index++] = input[i - 1];
+            }
             count = 1;
         }
     }
@@ -167,7 +171,6 @@ void lupaPassword()
             found = 1;
             // Buat kode unik dari username yang ditemukan
             runLengthEncode(users[i].identitas.username, expectedKodeUnik);
-
             printf("Masukkan kode unik Anda (berdasarkan username): ");
             scanf("%s", inputKodeUnik);
 
