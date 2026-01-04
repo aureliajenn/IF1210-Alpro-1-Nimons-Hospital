@@ -136,15 +136,13 @@ IF1210---ALPRO-1-Nimons-Hospital/
 ## Prerequisites dan Cara Menjalankan Program
 
 ### Prerequisites
-- **Compiler**: GCC (GNU C Compiler)
-- **Build Tool**: Make
-- **OS**: Linux/Unix/MacOS/Windows (with MinGW/WSL for Windows)
+- **Compiler**: GCC (GNU C Compiler) atau toolchain setara
+- **Build tool**: `make` (direkomendasikan)
+- **OS**: Linux / macOS / Windows (dengan WSL atau MSYS2/MinGW)
 
 Untuk Windows, Anda bisa menggunakan:
-- **MinGW**: https://www.mingw-w64.org/
-- **WSL (Windows Subsystem for Linux)**: Recommended untuk pengalaman Linux di Windows
-
-### Cara Menjalankan
+- WSL (Windows Subsystem for Linux) — jalankan distribusi Linux, lalu gunakan `make` seperti di Linux.
+- MSYS2 / MinGW-w64 — buka shell `mingw64.exe` atau `msys2` dan jalankan `make`.
 
 #### 1. **Compile menggunakan Make**
 
@@ -155,31 +153,15 @@ make clean
 make
 ```
 
-**Penjelasan:**
-- `make clean` → Menghapus build sebelumnya
-- `make` → Mengcompile semua file C menjadi executable
-
 #### 2. **Menjalankan Program**
 
 Setelah compile berhasil, jalankan program dengan:
 
-**Linux/MacOS:**
 ```bash
-./build/final_program
-```
-
-**Windows (Command Prompt):**
-```bash
-.\build\final_program
-```
-
-**Windows (PowerShell):**
-```powershell
-./build/final_program
+make run
 ```
 
 #### 3. **Membersihkan Build (Opsional)**
-
 Untuk menghapus file hasil compile:
 
 ```bash
