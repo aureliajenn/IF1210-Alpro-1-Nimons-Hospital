@@ -186,7 +186,7 @@ Untuk menghapus file hasil compile:
 make clean
 ```
 
-## 👥Kontributor
+## Kontributor
 **Anggota Tim:**
 | NIM | Nama |
 |:--:|:------|
