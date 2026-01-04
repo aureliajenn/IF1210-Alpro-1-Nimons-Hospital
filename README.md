@@ -5,10 +5,10 @@ Sistem informasi rumah sakit untuk tugas besar mata kuliah IF1210 Algoritma dan 
 
 ## Daftar Isi
 - [Deskripsi](#deskripsi)
-- [Struktur Folder](#-struktur-folder)
-- [Fitur Utama](#-fitur-utama)
-- [Prerequisites & Cara Menjalankan Program](#-prerequisites-dan-cara-menjalankan-program)
-- [Kontributor](#-kontributor)
+- [Struktur Folder](#struktur-folder)
+- [Fitur Utama](#fitur-utama)
+- [Prerequisites & Cara Menjalankan Program](#prerequisites-dan-cara-menjalankan-program)
+- [Kontributor](#kontributor)
 
 ---
 
